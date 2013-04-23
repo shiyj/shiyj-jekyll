@@ -15,8 +15,7 @@ module Jekyll
         :autolink => true,
         :fenced_code_blocks => true,
         :strikethrough => true,
-        :space_after_headers => true,
-        :no_intra_emphasis => true
+        :space_after_headers => true
       })
       content.gsub!("```","\n```")
       mark.render(content)

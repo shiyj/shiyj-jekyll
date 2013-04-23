@@ -17,9 +17,9 @@ author: 史英建
 一周之前(原文是2012年8月1日发表)在多伦多举行的Throne of JS大会是我最近参加的一个最有意思的会议.它的网站上这样说:
 >>先前的将网页完全加载进来再"慢慢地处理"以使页面能动态地表现出来的方法已经不是最优的方案.构建流畅,快速响应和现代的应用要求你重新构思你的实现方法.
 这个引言是引出七个顶级的为单个页面或者富JS应用设计的JavaScript库和框架:AngularJS, Backbone, Batman, CanJS, Ember, Meteor, Knockout, Spine.把他们的创建者召集在一起,当面来比较各自的实现技术.
-免责声明:我参加这场大会是去展示Knockout(**译者注:作者Steven是Knockout.js的作者**),所以很明显我并不是中立的.在这篇文章中我着重于他们的创建者对他们使用的技术的领域和理念的陈述,并不代表我赞同或者不赞同.
+免责声明:我参加这场大会是去展示Knockout(*译者注:作者Steven是Knockout.js的作者*),所以很明显我并不是中立的.在这篇文章中我着重于他们的创建者对他们使用的技术的领域和理念的陈述,并不代表我赞同或者不赞同.
 
-*上边列出的是8个而不是7个,这个问题还没有人解释(**译者注:Trone of JS官网上的标题是7个框架,可能是泛指**);
+上边列出的是8个而不是7个,这个问题还没有人解释(**译者注:Trone of JS官网上的标题是7个框架,可能是泛指**);
 
 ### 概要:
 * 对大部分开发者来说,使用客户端框架来构建富网络应用已经是理所当然的.如果你没有使用,那么你要么是不开发程序要么是已经out了.
@@ -133,24 +133,25 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 #### Backbone
 * 作者：Jeremy Ashkenas and DocumentCloud
 * 内容：
-	    * Model-View模式，MIT 许可
-	    * 最小的类库——仅仅一个文件，800行代码！
-	    * 很专一的功能——仅仅提供REST持久化模型以及简单的路由和回调，这样就可以让你知道什么时候去渲染实体（需要自己设置渲染机制）
-	    * 最著名的，被许多大牌网站使用（或许是因为它小而易于被接受）
+ * Model-View模式，MIT 许可
+ * 最小的类库——仅仅一个文件，800行代码！
+ * 很专一的功能——仅仅提供REST持久化模型以及简单的路由和回调，这样就可以让你知道什么时候去渲染实体（需要自己设置渲染机制）
+ * 最著名的，被许多大牌网站使用（或许是因为它小而易于被接受）
 * 优点：
-	    * 它很小，你可以在使用之前通过读源代码来弄懂它。
-	    * 对你的服务端架构和文件结构都没有影响，可以只在页面的一小部分起作用，并不需要考虑整个页面。
-	    * Jeremy就像一个禅宗大师，对所有的问题都很有观点。他就像一个大人指导着一群吵闹的孩子。
+ * 它很小，你可以在使用之前通过读源代码来弄懂它。
+ * 对你的服务端架构和文件结构都没有影响，可以只在页面的一小部分起作用，并不需要考虑整个页面。
+ * Jeremy就像一个禅宗大师，对所有的问题都很有观点。他就像一个大人指导着一群吵闹的孩子。
 * 项目地址：[GitHub](https://github.com/documentcloud/backbone/) ，[官网](http://backbonejs.org/)
 * 发布时间：两年前
+
 #### Meteor
 * 作者：Meteor开发团队，他们刚刚获得了1120万美元的融资所以可以全职开发Meteor
 * 内容：
-	    * 这是一个来自未来世界的令人惊讶的框架，它拥有你所没有见过的东西（可能除了[Derby](http://derbyjs.com/))
-	    * 在服务端（Node.js + Mongo）和客户端使用相同的代码，使二者(包括数据库）连通起来.通过WebSockets来同步服务端和所有的客户端。
-	    * 当修改代码时就可以“实时部署”——客户端会快速更新而不会丢失他们的内容。
-	    * 如果提供视频观看会更加合适【[演示](http://www.meteor.com/screencast)】
-	    * 和其他的人一样，我真心希望这个项目会成功——WEB开发需要一些像这样有激情的项目来向前推进。
+ * 这是一个来自未来世界的令人惊讶的框架，它拥有你所没有见过的东西（可能除了[Derby](http://derbyjs.com/))
+ * 在服务端（Node.js + Mongo）和客户端使用相同的代码，使二者(包括数据库）连通起来.通过WebSockets来同步服务端和所有的客户端。
+ * 当修改代码时就可以“实时部署”——客户端会快速更新而不会丢失他们的内容。
+ * 如果提供视频观看会更加合适【[演示](http://www.meteor.com/screencast)】
+ * 和其他的人一样，我真心希望这个项目会成功——WEB开发需要一些像这样有激情的项目来向前推进。
 * 优点：当你收购了web开发的一些陈规旧俗，Meteor可以让你走在前沿。
 * 项目地址： [GitHub](https://github.com/meteor/meteor),[官网](http://www.meteor.com/)
 * 发布时间：仍是早期版本，目前我不知道有哪些网站正式使用Meteor。但是它的核心团队正在认真地做着这个项目。
@@ -158,14 +159,14 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 #### Ember
 * 作者: Yehuda Katz (Rails和Jquery的先前开发者),Ember团队已经 Yehuda 的伙伴Tilede
 * 内容:
-        * 它包含建立一个"强大的Web应用"的一切,采用的是MIT许可
-        * 在所有的框架中是功能最强大,当然库的大小也很大.
-        * 它的着眼点在于怎样把怎样把一个页面分解成一个个有层次的控件,然后通过一个有状态的路由系统来连接起来.
-        * 正在开发更加精细的数据接入类库(Ember.Data)
-        * 会在运行时对所有的页面控制,因此对于使用了很多内容的部分(如silverlight,ajax,flash)可能不合适.
-        * 文件结构和URL都是固定的,但是可以被重写.
-        * 其设计灵感来自Rails和Cocoa
-        * 使用:它为Rails提供工程模版(你也可以通过手动配置来使它应用在别的服务端技术上)
+  * 它包含建立一个"强大的Web应用"的一切,采用的是MIT许可
+  * 在所有的框架中是功能最强大,当然库的大小也很大.
+  * 它的着眼点在于怎样把怎样把一个页面分解成一个个有层次的控件,然后通过一个有状态的路由系统来连接起来.
+  * 正在开发更加精细的数据接入类库(Ember.Data)
+  * 会在运行时对所有的页面控制,因此对于使用了很多内容的部分(如silverlight,ajax,flash)可能不合适.
+  * 文件结构和URL都是固定的,但是可以被重写.
+  * 其设计灵感来自Rails和Cocoa
+  * 使用:它为Rails提供工程模版(你也可以通过手动配置来使它应用在别的服务端技术上)
 * 优点:常见的问题应该有常见的解决方法--Ember提供了所有的常见解决方案,你只需要考虑对你的应用程序来说那个是适用的.
 * 项目地址[GitHub](https://github.com/emberjs/ember.js/),[官网](http://emberjs.com/);
 * 开始时间: 仍然不是1.0的发布版本,不过很快会发布,API到时候也会发布(**译者注:已经发布1.0的pre版本)
@@ -173,13 +174,13 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 #### AngularJS
 * 作者:google的开发者,主要是他们内部使用,并且采用MIT协议
 * 内容:
-        *MVW(Model-View-Whatever )模式
-        *基于DOM的模版声明式绑定.
-        *内置基础的url路由和数据序列号
-        * 工具:他们实现了一个可以让你在调试时监视你的数据模型的chrome的调试插件,以及一个针对Jasmine 测试框架的插件
-* 特点:
-        * 按照他们所宣传的，这是一个未来浏览器会原生支持的框架，所以我们应该现在就用这种方式来编程。
-        * 对服务器端的架构和文件结构没有影响，可以用在不需要对整个页面控制的小部分。
+  * MVW(Model-View-Whatever )模式
+  * 基于DOM的模版声明式绑定.
+  * 内置基础的url路由和数据序列号
+  * 工具:他们实现了一个可以让你在调试时监视你的数据模型的chrome的调试插件,以及一个针对Jasmine 测试框架的插件
+* 优点:
+  * 按照他们所宣传的，这是一个未来浏览器会原生支持的框架，所以我们应该现在就用这种方式来编程。
+  * 对服务器端的架构和文件结构没有影响，可以用在不需要对整个页面控制的小部分。
 * 项目地址： [GitHub](https://github.com/angular/angular.js),[官网](http://angularjs.org/)
 * 开始时间：已发布（曾在google使用过）
 
@@ -187,22 +188,22 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 #### Knockout
 * 作者： Knockout团队和社区（包括我在内目前核心团队有三个成员）
 * 内容：
-            * Model-View-ViewModel (MVVM) in JavaScript, MIT licensed
-            * 关注与富UI：基于DOM的声明式绑定，拥有自动依赖检测的"观察者“模型
-            * 不强制绑定URL路由和数据——和其他第三方库结合（例如使用Sammy.js做路由，采用ajax方式存储数据）。
-            * 着重关注于易用性，有大量的文档和[交互的例子](http://learn.knockoutjs.com/)
+  * Model-View-ViewModel (MVVM) in JavaScript, MIT licensed
+  * 关注与富UI：基于DOM的声明式绑定，拥有自动依赖检测的"观察者“模型
+  * 不强制绑定URL路由和数据——和其他第三方库结合（例如使用Sammy.js做路由，采用ajax方式存储数据）。
+  * 着重关注于易用性，有大量的文档和[交互的例子](http://learn.knockoutjs.com/)
 * 特点：
-            * 专注于UI,支持IE6
-            * 对服务器架构和文件系统没有影响。可以用在不需要对整个页面控制的小部分。
+  * 专注于UI,支持IE6
+  * 对服务器架构和文件系统没有影响。可以用在不需要对整个页面控制的小部分。
 * 项目地址： [GitHub](https://github.com/SteveSanderson/knockout),[官网](http://knockoutjs.com/)
 * 开始时间： 发布将近两年
 
 #### Spine
 * 作者： Alex MacCaw
 * 内容：
-            * MVC in JavaScript, MIT license
-            * 最初作为O’Reilly一本书的示例代码，最终演变为一个开源代码工程
-            * 是Backbone的一个克隆版本（就像名字那样）（**译者注：Spine和Backbone都有脊柱的意思**)
+  * MVC in JavaScript, MIT license
+  * 最初作为O’Reilly一本书的示例代码，最终演变为一个开源代码工程
+  * 是Backbone的一个克隆版本（就像名字那样）（**译者注：Spine和Backbone都有脊柱的意思**)
 * 特点：你希望用不同的方式来使用Backbone[**二者不同可以参看这里**](http://stackoverflow.com/questions/6530444/backbone-js-vs-spine-js)
 * 项目地址： [GitHub](https://github.com/maccman/spine),[官网](http://spinejs.com/)
 * 开始时间： 已经发布1.0.0版本
@@ -210,10 +211,10 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 #### Batman
 * 作者：Shopify团队（一个电子商务平台公司）
 * 内容：
-            * 支持Javascript的MVC架构，几乎是为Rails+CoffeeScript开发者设计的。MIT 许可
-            * 定制性最强的一个框架，你必须按照它的约定（例如文件结构和URL路径），否则，就像它”高傲“的作者们所说的：“不遵循约定就别用”。
-            *全栈式的框架，拥有丰富的模型，视图和控制器及路由。当然也有观察模式的机理。
-            *基于DOM的模版
+  * 支持Javascript的MVC架构，几乎是为Rails+CoffeeScript开发者设计的。MIT 许可
+  * 定制性最强的一个框架，你必须按照它的约定（例如文件结构和URL路径），否则，就像它”高傲“的作者们所说的：“不遵循约定就别用”。
+  *全栈式的框架，拥有丰富的模型，视图和控制器及路由。当然也有观察模式的机理。
+  *基于DOM的模版
 * 特点： 如果你使用Rails和CoffeeScript，你会得心应手……
 * 项目地址： [GitHub](https://github.com/Shopify/batman),[官网](http://batmanjs.org/)
 * 开始时间：目前是0.9版，预计在未来几个月内发布1.0版本。
@@ -223,9 +224,9 @@ Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而
 
 * 作者：bitovi团队（一个js咨询培训公司）
 * 内容：
-            * MVC in JavaScript, MIT licensed
-            *  REST-persistable模型，基础的路由，基于字符串的模版。
-            * 并不很出名（我在上周前还不知道它），尽管它是一个很老的javascript mvc项目的重新开放。
+  * MVC in JavaScript, MIT licensed
+  *  REST-persistable模型，基础的路由，基于字符串的模版。
+  * 并不很出名（我在上周前还不知道它），尽管它是一个很老的javascript mvc项目的重新开放。
 * 特点：致力于构建一个轻量的，提供上述所有框架都具有功能特性的最好的框架。
 * 项目地址： [GitHub](https://github.com/jupiterjs/canjs),[官网](http://canjs.us/)
 
