@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'redcarpet'
 module Jekyll
   class MarkdownExt < Converter

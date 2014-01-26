@@ -5,7 +5,7 @@ task :default => :local
 desc "Create a new article."
 task :new do
   url =ask('Url:')
-  title=ask('Title:')
+  title=url
   #slug = title.empty?? nil : title.strip.slugize
   slug = url.empty?? nil : slugize(url.strip)
   article = "---\n"
@@ -13,7 +13,7 @@ task :new do
           'date' => Time.now.strftime("%d/%m/%Y"),
           'slug' => slug,
           'layout' => 'post',
-          'author' => "史英建" }
+          'author' => '史英建' }
   hash.each{|key,value| article << ("#{key}: #{value}\n")}
   #article = {'title' => '','author'=>'史英建', 'date' => Time.now.strftime("%d/%m/%Y")}.to_yaml
   article << "---\n"
@@ -23,12 +23,12 @@ task :new do
   path = "_posts/#{Time.now.strftime("%Y-%m-%d")}#{'-' + slug if slug}.toto"
 
   unless File.exist? path
-    File.open(path, "w") do |file|
+    File.open(path, "w:UTF-8") do |file|
       file.write article
     end
     puts "文章生成成功: #{path}."
   else
-    puts "已存在#{path}文件!."
+    puts "已存在#{path}文件!"
   end
 end
 

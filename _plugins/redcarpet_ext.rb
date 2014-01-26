@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'redcarpet' 
 require 'coderay'
 module Redcarpet

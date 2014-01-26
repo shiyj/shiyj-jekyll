@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'jekyll/tagging'
 module Jekyll
   class BlogTagsPage < Page
