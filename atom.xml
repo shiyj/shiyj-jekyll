@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2014-01-27T12:16:46+08:00</updated>
+ <updated>2014-01-27T14:55:00+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -13,7 +13,7 @@
 
  
  <entry>
-   <title>usage of fossil</title>
+   <title>fossil的使用</title>
    <link href="http://tom.preston-werner.com/2014/01/26/usage-of-fossil.html"/>
    <updated>2014-01-26T00:00:00+08:00</updated>
    <id>http://tom.preston-werner.com/2014/01/26/usage-of-fossil</id>
@@ -30,6 +30,8 @@
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;cd newrepo
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;fossil export --git ../repo.fossil | git fast-import&lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
+
+&lt;!--break--&gt;
 
 &lt;h3&gt;2.功能介绍&lt;/h3&gt;
 
@@ -160,8 +162,11 @@
 
 &lt;h4&gt;小心性能陷阱&lt;/h4&gt;
 
-&lt;p&gt;别为优化代码而去优化代码,这点越重视越好.在V8的代码中你很容易看到一些N方法比M方法更高效的地方,但是在某个模块或者整个程序上来看这些优化并不是你所期望的那么有作用.&lt;br/&gt;
-&lt;img src=&quot;/images/fast_javascript/speed-trap.jpg&quot; alt=&quot;过犹不及&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;别为优化代码而去优化代码,这点越重视越好.在V8的代码中你很容易看到一些N方法比M方法更高效的地方,但是在某个模块或者整个程序上来看这些优化并不是你所期望的那么有作用.&lt;/p&gt;
+
+&lt;!--break--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/fast_javascript/speed-trap.jpg&quot; alt=&quot;过犹不及&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;过犹不及&lt;/em&gt;&lt;/p&gt;
 
@@ -497,6 +502,8 @@
 &lt;p&gt;这是一篇翻译文章,原文为:&lt;a href=&quot;http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/&quot;&gt;Writing Fast, Memory-Efficient JavaScript&lt;/a&gt;&lt;br/&gt;
 ​&lt;/p&gt;
 
+&lt;!--break--&gt;
+
 &lt;p&gt;像google V8(Chrome和Node.js)这样的JavaScript解析引擎是为大型JavaScript应用能够快速执行而设计的.在你开发的过程中,如果你关心内存使用和性能,你就应该了解用户浏览器下的JavaScript解析引擎的原理.&lt;/p&gt;
 
 &lt;p&gt;不管是V8还是 SpiderMonkey (Firefox), Carakan(Opera), Chakra (IE)或者其他的解析引擎, 知道他们的原理可以更好地优化你的程序.&lt;/p&gt;
@@ -699,6 +706,8 @@
    <content type="html">&lt;p&gt;七个富应用JavaScript框架&lt;br/&gt;
 这是一篇翻译文章，原文在&lt;a href=&quot;http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/&quot;&gt;Rich JavaScript Applications – the Seven Frameworks (Throne of JS, 2012)&lt;/a&gt;&lt;/p&gt;
 
+&lt;!--break--&gt;
+
 &lt;h3&gt;正文&lt;/h3&gt;
 
 &lt;p&gt;一周之前(原文是2012年8月1日发表)在多伦多举行的Throne of JS大会是我最近参加的一个最有意思的会议.它的网站上这样说:&lt;/p&gt;
@@ -752,74 +761,74 @@
 
 &lt;p&gt;这是目前最大的分歧地方,我们可以按照以下方式分组:&lt;/p&gt;
 
-&lt;p&gt;类库框架&lt;br/&gt;
-Backbone (9552)Knockout (2357)Spine (2017)CanJS (321)&lt;br/&gt;
-Ember (3993)AngularJS (2925)Batman (958)Meteor (4172) — unusual, see later&lt;/p&gt;
+&lt;table border=2&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;类库&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;&lt;strong&gt;框架&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;Backbone (9552)&lt;/p&gt;&lt;p&gt;Knockout (2357)&lt;/p&gt;&lt;p&gt;Spine (2017)&lt;/p&gt;&lt;p&gt;CanJS (321)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;Ember (3993)&lt;/p&gt;&lt;p&gt;AngularJS (2925)&lt;/p&gt;&lt;p&gt;Batman (958)&lt;/p&gt;&lt;p&gt;Meteor (4172) — unusual, see later&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table &gt;
 
-&lt;p&gt;小括号内的数字是某一时刻各个项目在GitHub上关注者数量的快照,作为一个相对影响力的指标.&lt;/p&gt;
+小括号内的数字是某一时刻各个项目在GitHub上关注者数量的快照,作为一个相对影响力的指标.
 
-&lt;p&gt;这意味着什么呢?&lt;/p&gt;
+这意味着什么呢?
 
-&lt;ul&gt;
-&lt;li&gt; &lt;strong&gt;类库&lt;/strong&gt;可以集成到你的已存在的架构总并且增加特定的功能.&lt;/li&gt;
-&lt;li&gt; &lt;strong&gt;框架&lt;/strong&gt;为你提供了一个架构(文件结构等),你可以使用它来处理常见的需求.
+*  **类库**可以集成到你的已存在的架构总并且增加特定的功能.
+*  **框架**为你提供了一个架构(文件结构等),你可以使用它来处理常见的需求.
 到目前为止,最受追捧的框架模型时Ember,它的作者Yehuda Katz是以前Rails和SproutCore 项目的开发者之一.
 他的观点是任何功能简单的东西都不够强大并且并没有对这种状态有实质性的提高.
 相反的观点认为类库更加专注于解决问题,因此可以被简单地学习,接收和定制,并且能够减小项目因过分依赖一个第三方项目所带来的风险.
-根据我参与的谈论,我觉得观众被分为两派,各自支持自己的观点.&lt;/li&gt;
-&lt;/ul&gt;
+根据我参与的谈论,我觉得观众被分为两派,各自支持自己的观点.
 
-&lt;p&gt;需要指出一点:AngularJS 在某种程度上既是类库又是框架:他在开发阶段并没有要求一个特定的文件结构(像类库的部分),&lt;br/&gt;
-但是在运行时它提供了一个&amp;quot;应用生命周期&amp;quot;来加入你的代码(像框架的部分).&lt;br/&gt;
-我把它列在框架中是因为这是AngularJS团队选择的技术.&lt;/p&gt;
+需要指出一点:AngularJS 在某种程度上既是类库又是框架:他在开发阶段并没有要求一个特定的文件结构(像类库的部分),
+但是在运行时它提供了一个&quot;应用生命周期&quot;来加入你的代码(像框架的部分).
+我把它列在框架中是因为这是AngularJS团队选择的技术.
 
-&lt;h4&gt;争论点:什么是灵活?什么是集成?&lt;/h4&gt;
+#### 争论点:什么是灵活?什么是集成? 
+每个技术都有不同层次的约定:
+&lt;table border=2&gt;&lt;tbody&gt;&lt;tr&gt;
 
-&lt;p&gt;每个技术都有不同层次的约定:&lt;/p&gt;
 
-&lt;p&gt;视图&lt;br/&gt;
-URL 路由&lt;br/&gt;
-数据存储&lt;/p&gt;
+&lt;td valign=&quot;top&quot;&gt;&lt;/td&gt;&lt;td valign=&quot;top&quot;&gt;&lt;p&gt;&lt;strong&gt;视图&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td valign=&quot;top&quot;&gt;&lt;p&gt;&lt;strong&gt;URL 路由&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;&lt;strong&gt;数据存储&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;AngularJS&lt;br/&gt;
-内置基于DOM的模版(必须使用)&lt;br/&gt;
-内置(可选)&lt;br/&gt;
-内置系统(可选)&lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;AngularJS&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置基于DOM的模版(必须使用)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置(可选)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置系统(可选)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Backbone&lt;br/&gt;
-自己选择 (必须使用一个字符串模版handlebars.js)&lt;br/&gt;
-内置(可选)&lt;br/&gt;
-内置(可重写)&lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Backbone&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;自己选择 (必须使用一个字符串模版handlebars.js)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置(可选)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置(可重写)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Batman&lt;br/&gt;
- 内置基于DOM的模版(必须使用) &lt;br/&gt;
- 内置(必须使用) &lt;br/&gt;
- 内置系统(必须使用) &lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Batman&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置基于DOM的模版(必须使用) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(必须使用) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置系统(必须使用) &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;CanJS&lt;br/&gt;
-内置基于字符串的模版(必须使用)&lt;br/&gt;
- 内置(可选) &lt;br/&gt;
- 内置(可选) &lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;CanJS&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置基于字符串的模版(必须使用)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(可选) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(可选) &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Ember&lt;br/&gt;
- 内置基于字符串的模版(必须使用) &lt;br/&gt;
- 内置(必须使用) &lt;br/&gt;
- 内置(可重写) &lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Ember&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置基于字符串的模版(必须使用) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(必须使用) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(可重写) &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Knockout&lt;br/&gt;
-  内置基于DOM的模版(可选,也可以做基于字符串的)&lt;br/&gt;
-自己选择(大多选择sammy.js或者history.js)&lt;br/&gt;
-自己选择(例如: knockout.mapping 或者 $.ajax)&lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Knockout&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;  内置基于DOM的模版(可选,也可以做基于字符串的)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;自己选择(大多选择sammy.js或者history.js)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;自己选择(例如: knockout.mapping 或者 $.ajax)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Meteor&lt;br/&gt;
- 内置基于字符串的模版(必须使用) &lt;br/&gt;
- 内置(必须使用?)&lt;br/&gt;
-内置 (Mongo, mandatory)&lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Meteor&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置基于字符串的模版(必须使用) &lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(必须使用?)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置 (Mongo, mandatory)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
 
-&lt;p&gt;Spine&lt;br/&gt;
-自己选择基于字符串的模版&lt;br/&gt;
-内置(可选)&lt;br/&gt;
- 内置(可选?)&lt;/p&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;&lt;strong&gt;Spine&lt;/strong&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;自己选择基于字符串的模版&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;内置(可选)&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt; 内置(可选?)&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
 
 &lt;p&gt;正如所预料的一样,当一个类库觉得要做得开放一些,他的作者们就认为确保能够和其他第三方库组合是很重要的.而相反的观点是如果能够通过内建的方法集成可以让框架的各个部分无缝结合.这次观众又再次被分为不同的阵营.&lt;br/&gt;
 引用Tom Dale的一句话:&amp;quot;我们做了很多美妙的东西,并且真正不可思议的是它可以分成功一个个功能齐全的单元.&amp;quot;&lt;/p&gt;
@@ -1016,6 +1025,8 @@ URL 路由&lt;br/&gt;
 
 &lt;p&gt;这是一篇翻译文章，原文在&lt;a href=&quot;http://rubysource.com/rails-or-sinatra-the-best-of-both-worlds/&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
 
+&lt;!--break--&gt;
+
 &lt;h3&gt;正文：&lt;/h3&gt;
 
 &lt;p&gt;近些年，ruby世界里涌现了众多优秀的网络开发框架，其中两个优秀的框架成了ruby在web开发领域的领头羊。&lt;/p&gt;
@@ -1128,6 +1139,8 @@ URL 路由&lt;br/&gt;
 &lt;p&gt;我给它起名为GeoInker,中文可以读成&amp;quot;脚印客&amp;quot;。源代码、系统架构等详细的情况可以看看这个项目的主页:&lt;br/&gt;
 &lt;a href=&quot;http://geoinker.com&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://geoinker.com&lt;/a&gt;和我的一篇博客&lt;a href=&quot;http://www.shiyj.tk/2012/04/16/geoinker/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://www.shiyj.tk/2012/04/16/geoinker/&lt;/a&gt;，这里只简单说一下：&lt;/p&gt;
 
+&lt;!--break--&gt;
+
 &lt;ul&gt;
 &lt;li&gt;GeoInker是想做为一个为移动GIS提供解决方案的平台，目前只在android平台上测试和开发。&lt;/li&gt;
 &lt;li&gt;GeoInker内包含了一个空间数据库系统，可以解决GIS的数据问题。&lt;/li&gt;
@@ -1176,6 +1189,8 @@ URL 路由&lt;br/&gt;
 &lt;h4&gt;项目地址:&lt;a href=&quot;https://github.com/shiyj/GeoInker&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;https://github.com/shiyj/GeoInker&lt;/a&gt;&lt;/h4&gt;
 
 &lt;h4&gt;项目主页:&lt;a href=&quot;http://geoinker.com&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;http://geoinker.com&lt;/a&gt;&lt;/h4&gt;
+
+&lt;!--break--&gt;
 
 &lt;h3&gt;简介&lt;/h3&gt;
 
@@ -1281,6 +1296,8 @@ git不算是一门语言，它是一个版本控制器，如果你也想参与�
 &lt;p&gt;我的环境是ubuntu 10.04,安装的是postgresql-8.4.&lt;br/&gt;
 在新立得软件安装包中找到postgis和postgresql-8.4-postgis(不同的版本对应不同到包)这两个包,标记安装.&lt;br/&gt;
 安装完成后在postgresql-8.4-postgis这个包到属性里,&amp;quot;已安装的文件&amp;quot;选项卡下有这么几个重要到信息&lt;/p&gt;
+
+&lt;!--break--&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;/usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;/usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql&lt;/pre&gt;&lt;/div&gt;
@@ -1564,7 +1581,7 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 
 &lt;h3&gt;3.将该插件增加到phonegap的插件组中&lt;/h3&gt;
 
-&lt;p&gt;在 res/xml/plugins.xml中的标签内添加如下内容：&lt;/p&gt;
+&lt;p&gt;在 res/xml/plugins.xml中的&lt;plugins&gt;&lt;/plugins&gt;标签内添加如下内容：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;plugin&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;name&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;value&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;com.plugin.test.HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;/&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -1895,7 +1912,7 @@ open-uri是一个可以发送http请求的库，其open函数表示打开respons
     in &lt;code&gt;&amp;lt;top (required)&amp;gt;&amp;#39;: undefined method&lt;/code&gt;sort&lt;em&gt;text&amp;#39; for main:Object (NoMethodError)&lt;br/&gt;
         from &amp;lt;internal:lib/rubygems/custom&lt;/em&gt;require&amp;gt;:29:in &lt;code&gt;require&amp;#39;&lt;br/&gt;
         from &amp;lt;internal:lib/rubygems/custom_require&amp;gt;:29:in&lt;/code&gt;require&amp;#39;&lt;br/&gt;
-        from mytdd-test.rb:2:in `&amp;#39;&lt;br/&gt;
+        from mytdd-test.rb:2:in `&lt;main&gt;&amp;#39;&lt;br/&gt;
 这个错误是必然的，我们还没有实现sort_text自然无法找到这个方法了。&lt;br/&gt;
 虽然这个流程貌似没有多少&amp;quot;实际&amp;quot;意义,但这正是TDD精义的体现.ruby在web上有一个很优美的框架叫Rails,&lt;br/&gt;
 我感觉这个名字能够很好地解释TDD(尽管Rails并不是TDD的专属).简而言之,TDD为编程铺设了&amp;quot;&lt;strong&gt;轨道&lt;/strong&gt;&amp;quot;,&lt;br/&gt;
@@ -3114,7 +3131,7 @@ another windows gets broken. People start littering.In a relatively short space 
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Use the printf() function.&lt;/p&gt;
+&lt;p&gt;Use the &lt;code&gt;printf()&lt;/code&gt; function.&lt;/p&gt;
 
 &lt;p&gt;Powered by &lt;a href=&quot;/about&quot;&gt;Engin&lt;/a&gt; &amp;amp; toto&lt;/p&gt;
 </content>

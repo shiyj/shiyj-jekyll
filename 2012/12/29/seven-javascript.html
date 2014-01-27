@@ -50,6 +50,8 @@
   <p>七个富应用JavaScript框架<br/>
 这是一篇翻译文章，原文在<a href="http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/">Rich JavaScript Applications – the Seven Frameworks (Throne of JS, 2012)</a></p>
 
+<!--break-->
+
 <h3>正文</h3>
 
 <p>一周之前(原文是2012年8月1日发表)在多伦多举行的Throne of JS大会是我最近参加的一个最有意思的会议.它的网站上这样说:</p>
@@ -103,74 +105,74 @@
 
 <p>这是目前最大的分歧地方,我们可以按照以下方式分组:</p>
 
-<p>类库框架<br/>
-Backbone (9552)Knockout (2357)Spine (2017)CanJS (321)<br/>
-Ember (3993)AngularJS (2925)Batman (958)Meteor (4172) — unusual, see later</p>
+<table border=2><tbody><tr><td><strong>类库</strong></td><td><strong>框架</strong></td></tr>
+<tr><td><p>Backbone (9552)</p><p>Knockout (2357)</p><p>Spine (2017)</p><p>CanJS (321)</p></td>
+<td><p>Ember (3993)</p><p>AngularJS (2925)</p><p>Batman (958)</p><p>Meteor (4172) — unusual, see later</p></td></tr>
+</tbody></table >
 
-<p>小括号内的数字是某一时刻各个项目在GitHub上关注者数量的快照,作为一个相对影响力的指标.</p>
+小括号内的数字是某一时刻各个项目在GitHub上关注者数量的快照,作为一个相对影响力的指标.
 
-<p>这意味着什么呢?</p>
+这意味着什么呢?
 
-<ul>
-<li> <strong>类库</strong>可以集成到你的已存在的架构总并且增加特定的功能.</li>
-<li> <strong>框架</strong>为你提供了一个架构(文件结构等),你可以使用它来处理常见的需求.
+*  **类库**可以集成到你的已存在的架构总并且增加特定的功能.
+*  **框架**为你提供了一个架构(文件结构等),你可以使用它来处理常见的需求.
 到目前为止,最受追捧的框架模型时Ember,它的作者Yehuda Katz是以前Rails和SproutCore 项目的开发者之一.
 他的观点是任何功能简单的东西都不够强大并且并没有对这种状态有实质性的提高.
 相反的观点认为类库更加专注于解决问题,因此可以被简单地学习,接收和定制,并且能够减小项目因过分依赖一个第三方项目所带来的风险.
-根据我参与的谈论,我觉得观众被分为两派,各自支持自己的观点.</li>
-</ul>
+根据我参与的谈论,我觉得观众被分为两派,各自支持自己的观点.
 
-<p>需要指出一点:AngularJS 在某种程度上既是类库又是框架:他在开发阶段并没有要求一个特定的文件结构(像类库的部分),<br/>
-但是在运行时它提供了一个&quot;应用生命周期&quot;来加入你的代码(像框架的部分).<br/>
-我把它列在框架中是因为这是AngularJS团队选择的技术.</p>
+需要指出一点:AngularJS 在某种程度上既是类库又是框架:他在开发阶段并没有要求一个特定的文件结构(像类库的部分),
+但是在运行时它提供了一个"应用生命周期"来加入你的代码(像框架的部分).
+我把它列在框架中是因为这是AngularJS团队选择的技术.
 
-<h4>争论点:什么是灵活?什么是集成?</h4>
+#### 争论点:什么是灵活?什么是集成? 
+每个技术都有不同层次的约定:
+<table border=2><tbody><tr>
 
-<p>每个技术都有不同层次的约定:</p>
 
-<p>视图<br/>
-URL 路由<br/>
-数据存储</p>
+<td valign="top"></td><td valign="top"><p><strong>视图</strong></p></td>
+<td valign="top"><p><strong>URL 路由</strong></p></td>
+<td><p><strong>数据存储</strong></p></td></tr>
 
-<p>AngularJS<br/>
-内置基于DOM的模版(必须使用)<br/>
-内置(可选)<br/>
-内置系统(可选)</p>
+<tr><td><p><strong>AngularJS</strong></p></td>
+<td><p>内置基于DOM的模版(必须使用)</p></td>
+<td><p>内置(可选)</p></td>
+<td><p>内置系统(可选)</p></td></tr>
 
-<p>Backbone<br/>
-自己选择 (必须使用一个字符串模版handlebars.js)<br/>
-内置(可选)<br/>
-内置(可重写)</p>
+<tr><td><p><strong>Backbone</strong></p></td>
+<td><p>自己选择 (必须使用一个字符串模版handlebars.js)</p></td>
+<td><p>内置(可选)</p></td>
+<td><p>内置(可重写)</p></td></tr>
 
-<p>Batman<br/>
- 内置基于DOM的模版(必须使用) <br/>
- 内置(必须使用) <br/>
- 内置系统(必须使用) </p>
+<tr><td><p><strong>Batman</strong></p></td>
+<td><p> 内置基于DOM的模版(必须使用) </p></td>
+<td><p> 内置(必须使用) </p></td>
+<td><p> 内置系统(必须使用) </p></td></tr>
 
-<p>CanJS<br/>
-内置基于字符串的模版(必须使用)<br/>
- 内置(可选) <br/>
- 内置(可选) </p>
+<tr><td><p><strong>CanJS</strong></p></td>
+<td><p>内置基于字符串的模版(必须使用)</p></td>
+<td><p> 内置(可选) </p></td>
+<td><p> 内置(可选) </p></td></tr>
 
-<p>Ember<br/>
- 内置基于字符串的模版(必须使用) <br/>
- 内置(必须使用) <br/>
- 内置(可重写) </p>
+<tr><td><p><strong>Ember</strong></p></td>
+<td><p> 内置基于字符串的模版(必须使用) </p></td>
+<td><p> 内置(必须使用) </p></td>
+<td><p> 内置(可重写) </p></td></tr>
 
-<p>Knockout<br/>
-  内置基于DOM的模版(可选,也可以做基于字符串的)<br/>
-自己选择(大多选择sammy.js或者history.js)<br/>
-自己选择(例如: knockout.mapping 或者 $.ajax)</p>
+<tr><td><p><strong>Knockout</strong></p></td>
+<td><p>  内置基于DOM的模版(可选,也可以做基于字符串的)</p></td>
+<td><p>自己选择(大多选择sammy.js或者history.js)</p></td>
+<td><p>自己选择(例如: knockout.mapping 或者 $.ajax)</p></td></tr>
 
-<p>Meteor<br/>
- 内置基于字符串的模版(必须使用) <br/>
- 内置(必须使用?)<br/>
-内置 (Mongo, mandatory)</p>
+<tr><td><p><strong>Meteor</strong></p></td>
+<td><p> 内置基于字符串的模版(必须使用) </p></td>
+<td><p> 内置(必须使用?)</p></td>
+<td><p>内置 (Mongo, mandatory)</p></td></tr>
 
-<p>Spine<br/>
-自己选择基于字符串的模版<br/>
-内置(可选)<br/>
- 内置(可选?)</p>
+<tr><td><p><strong>Spine</strong></p></td>
+<td><p>自己选择基于字符串的模版</p></td>
+<td><p>内置(可选)</p></td>
+<td><p> 内置(可选?)</p></td></tr></tbody></table>
 
 <p>正如所预料的一样,当一个类库觉得要做得开放一些,他的作者们就认为确保能够和其他第三方库组合是很重要的.而相反的观点是如果能够通过内建的方法集成可以让框架的各个部分无缝结合.这次观众又再次被分为不同的阵营.<br/>
 引用Tom Dale的一句话:&quot;我们做了很多美妙的东西,并且真正不可思议的是它可以分成功一个个功能齐全的单元.&quot;</p>

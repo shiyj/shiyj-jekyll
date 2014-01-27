@@ -39,20 +39,35 @@
   
     <article class="post  clearfix">
       <header class="post_header" >
-        <h3 class="post_title"><a href="/2014/01/26/usage-of-fossil.html">usage of fossil</a></h3>
+        <h3 class="post_title"><a href="/2014/01/26/usage-of-fossil.html">fossil的使用</a></h3>
         <div class="post_info info">
           作者：<span class="post_at">史英建</span> | 
         	发表于：<span class="post_at">26 Jan 2014</span>
           标签：
           
+          <a href="/tags/fossil.html">fossil</a>
+          
         </div>
       </header>
 
       <section class="post_body body">
-        <h3>1.导入导出</h3>
+	  
+	    <h3>1.导入导出</h3>
+
 <p>git ===&gt;  fossil</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git fast-export &#8212;all | fossil import &#8212;git&#8230;
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git fast-export --all | fossil import --git newrepo.fossil</pre></div>
+</div>
+
+<p>fossil ===&gt;  git</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git init newrepo
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cd newrepo
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil export --git ../repo.fossil | git fast-import</pre></div>
+</div>
+
+
+      
         <div class="more"><a href="/2014/01/26/usage-of-fossil.html">阅读 &raquo;</a></div>
       </section>
     </article>
@@ -71,10 +86,17 @@
       </header>
 
       <section class="post_body body">
-        <h3>写出快速,节省内存的Javascript代码(二)</h3>
+	  
+	    <h3>写出快速,节省内存的Javascript代码(二)</h3>
+
 <p>【<a href="/2013/01/19/efficientjs/">写出快速,节省内存的Javascript代码(一)</a>】</p>
+
 <h4>小心性能陷阱</h4>
-<p>别为优化代码而去优化代码,这点越重视越好.在V8的代码中你很容易看到一些N方法比M方法更高效的地方,但是在某个模块或者整个程序上来看&#8230;
+
+<p>别为优化代码而去优化代码,这点越重视越好.在V8的代码中你很容易看到一些N方法比M方法更高效的地方,但是在某个模块或者整个程序上来看这些优化并不是你所期望的那么有作用.</p>
+
+
+      
         <div class="more"><a href="/2013/04/06/efficientjs2.html">阅读 &raquo;</a></div>
       </section>
     </article>
@@ -93,8 +115,14 @@
       </header>
 
       <section class="post_body body">
-        <h3>写出快速,节省内存的Javascript代码(一)</h3>
-<p>这是一篇翻译文章,原文为:<a href="http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/">Writing Fast, Memory-Efficient JavaScript</a>&lt;b&#8230;
+	  
+	    <h3>写出快速,节省内存的Javascript代码(一)</h3>
+
+<p>这是一篇翻译文章,原文为:<a href="http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/">Writing Fast, Memory-Efficient JavaScript</a><br/>
+​</p>
+
+
+      
         <div class="more"><a href="/2013/01/19/efficientjs.html">阅读 &raquo;</a></div>
       </section>
     </article>
@@ -111,8 +139,12 @@
       </header>
 
       <section class="post_body body">
-        <p>七个富应用JavaScript框架<br/>
-这是一篇翻译文章，原文在<a href="http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/">Rich JavaScript Applications – the Se&#8230;
+	  
+	    <p>七个富应用JavaScript框架<br/>
+这是一篇翻译文章，原文在<a href="http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/">Rich JavaScript Applications – the Seven Frameworks (Throne of JS, 2012)</a></p>
+
+
+      
         <div class="more"><a href="/2012/12/29/seven-javascript.html">阅读 &raquo;</a></div>
       </section>
     </article>
@@ -135,562 +167,16 @@
       </header>
 
       <section class="post_body body">
-        <h3>Rails or Sinatra: The Best of Both Worlds?</h3>
+	  
+	    <h3>Rails or Sinatra: The Best of Both Worlds?</h3>
+
 <h5>rails与sinatra，各自应用领域的佼佼者？</h5>
+
 <p>这是一篇翻译文章，原文在<a href="http://rubysource.com/rails-or-sinatra-the-best-of-both-worlds/">这里</a></p>
-<h3>正文：&#8230;
+
+
+      
         <div class="more"><a href="/2012/10/18/sinatra-vs-rails.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/04/17/thosedays.html">这些日子</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">17 Apr 2012</span>
-          标签：
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h3>首先是我把我的毕业设计作为一个开源项目发布。</h3>
-<p>我给它起名为GeoInker,中文可以读成&quot;脚印客&quot;。源代码、系统架构等详细的情况可以看看这个项目的主页:<br/>
-<a href="http://geoinker.com" rel="nofollow" target="_blank">http://geoinker.com</a>和我的一篇博客&lt;&#8230;
-        <div class="more"><a href="/2012/04/17/thosedays.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/04/16/geoinker.html">开源移动GIS解决方案--GeoInker发布</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">16 Apr 2012</span>
-          标签：
-          
-          <a href="/tags/%E7%A7%BB%E5%8A%A8GIS.html">移动GIS</a>
-          
-          <a href="/tags/GIS.html">GIS</a>
-          
-          <a href="/tags/MobileGIS.html">MobileGIS</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h3>我的第一个开源程序GeoInker发布!</h3>
-<h4>项目地址:<a href="https://github.com/shiyj/GeoInker" rel="nofollow" target="_blank">https://github.com/shiyj/GeoInker</a></h4>
-<h4>项目主页:&lt;a href=&#8220;http://geoinker.com&#8221;&#8230;
-        <div class="more"><a href="/2012/04/16/geoinker.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/02/29/postgisinit.html">ubuntu 下 PostGIS 的配置.</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">29 Feb 2012</span>
-          标签：
-          
-          <a href="/tags/postgis.html">postgis</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h3>0.安装postgresql,并配置密码等</h3>
-<p>详细可以看这里<a href="http://wiki.ubuntu.org.cn/PostgreSQL" rel="nofollow" target="_blank">http://wiki.ubuntu.org.cn/PostgreSQL</a></p>
-<h3>1.安装postgis.</h3>
-<p>我的环境是&#8230;
-        <div class="more"><a href="/2012/02/29/postgisinit.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/02/22/codehighliterfix.html">codehighlighter里中文乱码问题</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">22 Feb 2012</span>
-          标签：
-          
-          <a href="/tags/codehighliter.html">codehighliter</a>
-          
-          <a href="/tags/%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81.html">中文乱码</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>在toto博客中使用了 codehighliter 这个gem来表现代码部分到html格式.<br/>
-但是在代码中加入中文则出现乱码.</p>
-<p>本文介绍出现该问题到解决方法及我对该问题的追踪过程.</p>
-<h3>解决方法</h3>
-<h4>1.新建一个mylib.rb文件,写入下列代码:</h4>
-<div class="CodeRay">
-        <div class="more"><a href="/2012/02/22/codehighliterfix.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/01/26/txtblog2.html">ruby实现文本博客引擎构建(二)</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">26 Jan 2012</span>
-          标签：
-          
-          <a href="/tags/ruby.html">ruby</a>
-          
-          <a href="/tags/%E6%96%87%E6%9C%AC%E5%8D%9A%E5%AE%A2%E5%BC%95%E6%93%8E.html">文本博客引擎</a>
-          
-          <a href="/tags/toto.html">toto</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h3>4.配置路由</h3>
-<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
-        <div class="more"><a href="/2012/01/26/txtblog2.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2012/01/26/phonegapplugin.html">phonegap plugin 的编写(android)</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">26 Jan 2012</span>
-          标签：
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h4>Phonegap使用Javascript为不同移动开发提供了统一的接口,如调用本地GPS、摄像头、传感器等设备和本地存储等平台操作，但是如果我们想针对特殊的应用调用平台原生的代码库时如何制作插件呢？Phonegap为我们提供了编写平台原生代码的接口。</h4>
-<h3>0.问题描述：</h3>
-<blockquote>
-<blockquote>
-<p>在android平台上有一个&#8230;
-        <div class="more"><a href="/2012/01/26/phonegapplugin.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/12/06/txtblog.html">ruby实现的文本博客引擎构建(一)</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">06 Dec 2011</span>
-          标签：
-          
-          <a href="/tags/ruby.html">ruby</a>
-          
-          <a href="/tags/%E6%96%87%E6%9C%AC%E5%8D%9A%E5%AE%A2%E5%BC%95%E6%93%8E.html">文本博客引擎</a>
-          
-          <a href="/tags/toto.html">toto</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>本博客使用的是一个叫toto的文本博客引擎,<br/>
-toto采用文本而不是数据库来存储数据,这样就省去数据库的开销,<br/>
-完全使用静态文件渲染的方法来构建网站,<br/>
-很适合挂在heroku中的免费项目下.</p>
-<p>本文是我研究toto代码并修改、实现的过程,暂时称之为txtblog.</p>
-<h3>1.先运行起来!</h3>
-<blockquote>
-<p>&lt;b&#8230;</p>
-        <div class="more"><a href="/2011/12/06/txtblog.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/11/23/tdd.html">ruby的测试驱动开发实例</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">23 Nov 2011</span>
-          标签：
-          
-          <a href="/tags/TDD.html">TDD</a>
-          
-          <a href="/tags/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8.html">测试驱动</a>
-          
-          <a href="/tags/Ruby.html">Ruby</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <hr/>
-<h2>ruby的测试驱动开发实例</h2>
-<hr/>
-<p>Ruby被称为&quot;敏捷&quot;的语言,在开发中采用测试驱动会更加<strong>高效</strong>并且充满<strong>乐趣</strong>.</p>
-<h4>高效</h4>
-<p>刚接触Ruby时感觉它很难&quot;控制&quot;,并且可能是出于某种心理原因,总想在动态语言中找出自&#8230;
-        <div class="more"><a href="/2011/11/23/tdd.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/11/16/spatialitecsample3.html">spatialite c samples 解析（3）</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">16 Nov 2011</span>
-          标签：
-          
-          <a href="/tags/spatialite.html">spatialite</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <hr/>
-<h2>spatialite c samples 解析（3）</h2>
-<hr/>
-<h3>1.创建空间数据库</h3>
-<p>创建数据库和打开数据库使用同样的函数,只不过将参数改为可读写且能够创建(即不存在时可以重新创建一个数据库文件):</p>
-<div class="CodeRay">
-  <div class="code"><pre>
-        <div class="more"><a href="/2011/11/16/spatialitecsample3.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/11/04/spatialitecsample2.html">spatialite c samples 解析（2）</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">04 Nov 2011</span>
-          标签：
-          
-          <a href="/tags/spatialite.html">spatialite</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <hr/>
-<h2>spatialite c samples 解析（2）</h2>
-<hr/>
-<h3>1.在程序中使用spatialite数据类型。</h3>
-<p>gaiaAllocGeomColl函数可以分配一个空间数据类型.</p>
-<div class="CodeRay">
-  <div class="code"><pre>
-        <div class="more"><a href="/2011/11/04/spatialitecsample2.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/10/29/spatialitecsample.html">spatialite c samples 解析（1）</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">29 Oct 2011</span>
-          标签：
-          
-          <a href="/tags/spatialite.html">spatialite</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <hr/>
-<h2><strong>spatialite c samples 解析（1）</strong></h2>
-<hr/>
-<h4>0.初始化spatialite扩展</h4>
-<p>由于spatialite是基于sqlite的扩展，所以在使用sqlite查询之前要先将sqatilate初始化。<br/>
-代码如下<br/>
-    spatialite_init(0);&lt;/p&#8230;
-        <div class="more"><a href="/2011/10/29/spatialitecsample.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/10/29/spatailitegis.html">SpatialiteGIS源代码解读</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">29 Oct 2011</span>
-          标签：
-          
-          <a href="/tags/GIS.html">GIS</a>
-          
-          <a href="/tags/spatialite.html">spatialite</a>
-          
-          <a href="/tags/%E6%BA%90%E4%BB%A3%E7%A0%81.html">源代码</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>###Classdef.h</p>
-<p>定义了整个工程所需的类,总共65个:</p>
-<p>MyVariant:存储多样数据的类</p>
-<p>MyRowVariant:</p>
-<p>MyVariantList:存储索引的结果集</p>
-<p>MyBlobs:</p>
-<p>MyValues:存储待编辑的列的数值</p>
-<p>QueryColumn:地理数据表存储&lt;&#8230;
-        <div class="more"><a href="/2011/10/29/spatailitegis.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/10/24/compilespatialite.html">编译spatialite-GIS</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">24 Oct 2011</span>
-          标签：
-          
-          <a href="/tags/GIS.html">GIS</a>
-          
-          <a href="/tags/spatialite.html">spatialite</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h2>编译spatialite-<span class="caps">GIS</span></h2>
-<p>在ubuntugis包中的libspatialite-dev使用的是2.4.0-rc4-2，然而如果要编译<br/>
-spatialite-<span class="caps">GIS</span>,需要librasterlite，而librasterlite的编译依赖libspatialite-dev，且必须在2.3.1稳定版本中才行。<br/>
-否则会出现诸如：</p>
-<p>&lt;div&#8230;</p>
-        <div class="more"><a href="/2011/10/24/compilespatialite.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/10/10/myubuntuinit.html">ubuntu 环境配置</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">10 Oct 2011</span>
-          标签：
-          
-          <a href="/tags/ubuntu.html">ubuntu</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h2>ubuntu init</h2>
-<p>最近重新安装了系统，配置ubuntu很麻烦，把所需的都记录下来，不用每次都看别人的：</p>
-<h3>1 安装git</h3>
-<div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a>&lt;/sp&#8230;
-        <div class="more"><a href="/2011/10/10/myubuntuinit.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/07/16/chapt1sec.html">software entropy</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">16 Jul 2011</span>
-          标签：
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h3>1.2 Software Entropy</h3>
-<p>while software development is immune from almost all physical laws, entropy hits us head.<br/>
-Entropy is a term frome physics that refers to the amount of &quot;d&#8230;
-        <div class="more"><a href="/2011/07/16/chapt1sec.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/05/16/chapt1.html">A Pragmatic Philosophy</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">16 May 2011</span>
-          标签：
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <h2>Chapter 1</h2>
-<h3>A Pragmatic Philosophy</h3>
-<p>What distinguishes Pragmatic Programmers? We feel it&#39;s an attitude,a style,a philosophy of approaching problems and their solutions . The&#8230;
-        <div class="more"><a href="/2011/05/16/chapt1.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/05/03/targz.html">tar.gz 文件打开失败.</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">03 May 2011</span>
-          标签：
-          
-          <a href="/tags/tar.html">tar</a>
-          
-          <a href="/tags/file.html">file</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>从网站上下载的 a.tar.gz 文件打开时提示:</p>
-<div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gzip: stdin: not in gzip format <br />
-        <div class="more"><a href="/2011/05/03/targz.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/29/taint.html">ruby中taint对象污染机制</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">29 Apr 2011</span>
-          标签：
-          
-          <a href="/tags/ruby.html">ruby</a>
-          
-          <a href="/tags/taint.html">taint</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>ruby中的对象调用taint方法将其设置成&quot;污染&quot;的.如果一个对象被设置为taint,那么源自它的所以对象都被设置为taint了.<br/>
-在举例子之前先要说明下:类本身也是一个对象,是具有创建新对象能力的对象.</p>
-<div class="CodeRay">
-  <div class="code"><pre>
-        <div class="more"><a href="/2011/04/29/taint.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/29/syntax.html">神奇的.gems</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">29 Apr 2011</span>
-          标签：
-          
-          <a href="/tags/heroku.html">heroku</a>
-          
-          <a href="/tags/gems.html">gems</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>在heroku 中托管项目如何才能把自己所需要的gem包install了呢?<br/>
-例如:在我们本机开发时需要用到 coderay和rake-codehighlighter这两个gem.那么直接使用 gem install coderay 和 gem install rack-codehighlighter 就行了.然后再在项目中使用</p>
-        <div class="more"><a href="/2011/04/29/syntax.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/28/herokukey.html">heroku中添加公钥</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">28 Apr 2011</span>
-          标签：
-          
-          <a href="/tags/heroku.html">heroku</a>
-          
-          <a href="/tags/github.html">github</a>
-          
-          <a href="/tags/git.html">git</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>重装系统或在更换ssh keys时总是遇到出问题的事情如:<br/>
-    Permission denied (publickey)<br/>
-每次都重新生成阿啥的,结果忘记把keys给添加上.代码如下:</p>
-<div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers">
-        <div class="more"><a href="/2011/04/28/herokukey.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/28/herokuerr.html">heroku Application Error</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">28 Apr 2011</span>
-          标签：
-          
-          <a href="/tags/heroku.html">heroku</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>将代码push到heroku中后出现下面错误:</p>
-<h2>Application Error</h2>
-<p>An error occurred in the application and your page could not be served. Please try again in a few moments.</p>
-<p>If you are the appl&#8230;
-        <div class="more"><a href="/2011/04/28/herokuerr.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/28/git.html">Agent admitted failure to sign using the key</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">28 Apr 2011</span>
-          标签：
-          
-          <a href="/tags/git.html">git</a>
-          
-          <a href="/tags/ssh.html">ssh</a>
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>使用:</p>
-<div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</pre></div>
-<p></div>&#8230;</p>
-        <div class="more"><a href="/2011/04/28/git.html">阅读 &raquo;</a></div>
-      </section>
-    </article>
-  
-    <article class="post  clearfix">
-      <header class="post_header" >
-        <h3 class="post_title"><a href="/2011/04/26/tt.html">中文标题</a></h3>
-        <div class="post_info info">
-          作者：<span class="post_at">史英建</span> | 
-        	发表于：<span class="post_at">26 Apr 2011</span>
-          标签：
-          
-        </div>
-      </header>
-
-      <section class="post_body body">
-        <p>新的标题.</p>
-<h2>井号作用</h2>
-<h1>然后?</h1>
-<h3>三个试试是啥.</h3>
-<h4>四个试试是啥.</h4>
-<p><a href="http://www.google.com" title="google">google</a> is a website.</p>
-<p>url有点麻烦啊
-        <div class="more"><a href="/2011/04/26/tt.html">阅读 &raquo;</a></div>
       </section>
     </article>
   

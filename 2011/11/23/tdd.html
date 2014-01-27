@@ -171,7 +171,7 @@ open-uri是一个可以发送http请求的库，其open函数表示打开respons
     in <code>&lt;top (required)&gt;&#39;: undefined method</code>sort<em>text&#39; for main:Object (NoMethodError)<br/>
         from &lt;internal:lib/rubygems/custom</em>require&gt;:29:in <code>require&#39;<br/>
         from &lt;internal:lib/rubygems/custom_require&gt;:29:in</code>require&#39;<br/>
-        from mytdd-test.rb:2:in `&#39;<br/>
+        from mytdd-test.rb:2:in `<main>&#39;<br/>
 这个错误是必然的，我们还没有实现sort_text自然无法找到这个方法了。<br/>
 虽然这个流程貌似没有多少&quot;实际&quot;意义,但这正是TDD精义的体现.ruby在web上有一个很优美的框架叫Rails,<br/>
 我感觉这个名字能够很好地解释TDD(尽管Rails并不是TDD的专属).简而言之,TDD为编程铺设了&quot;<strong>轨道</strong>&quot;,<br/>
