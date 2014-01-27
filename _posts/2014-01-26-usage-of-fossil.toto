@@ -1,9 +1,10 @@
 ---
-title: usage of fossil
+title: fossil的使用
 date: 26/01/2014
 slug: usage-of-fossil
 layout: post
 author: 史英建
+tags: fossil
 ---
 
 ### 1.导入导出
@@ -16,7 +17,9 @@ fossil ===>  git
 	git init newrepo
 	cd newrepo
 	fossil export --git ../repo.fossil | git fast-import
-	
+
+<!--break-->
+
 ### 2.功能介绍
 #### 2.1迁出最新版本
 

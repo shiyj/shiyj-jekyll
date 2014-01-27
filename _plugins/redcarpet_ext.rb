@@ -9,7 +9,7 @@ module Redcarpet
       def initialize(extensions={})
         super(extensions.merge(:xhtml => true,
                                :no_styles => true,
-                               :filter_html => true,
+                               :filter_html => false,
                                :hard_wrap => true))
       end
 

@@ -10,6 +10,8 @@ author: 史英建
 我给它起名为GeoInker,中文可以读成"脚印客"。源代码、系统架构等详细的情况可以看看这个项目的主页:
 <http://geoinker.com>和我的一篇博客<http://www.shiyj.tk/2012/04/16/geoinker/>，这里只简单说一下：
 
+<!--break-->
+
 * GeoInker是想做为一个为移动GIS提供解决方案的平台，目前只在android平台上测试和开发。
 * GeoInker内包含了一个空间数据库系统，可以解决GIS的数据问题。
 * GeoInker为了开发方便，使用的是HTML+CSS+JavaScript作为UI表现层，深入的还有Java和C/C++做支持，

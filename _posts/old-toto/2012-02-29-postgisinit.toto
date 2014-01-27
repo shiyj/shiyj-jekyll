@@ -14,6 +14,9 @@ tags: postgis
 在新立得软件安装包中找到postgis和postgresql-8.4-postgis(不同的版本对应不同到包)这两个包,标记安装.
 安装完成后在postgresql-8.4-postgis这个包到属性里,"已安装的文件"选项卡下有这么几个重要到信息
 
+<!--break-->
+
+
 	/usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql
 	/usr/share/postgresql/8.4/contrib/postgis-1.5/spatial_ref_sys.sql
 

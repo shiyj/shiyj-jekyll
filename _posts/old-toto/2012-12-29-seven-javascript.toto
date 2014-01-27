@@ -10,7 +10,7 @@ author: 史英建
 这是一篇翻译文章，原文在[Rich JavaScript Applications – the Seven Frameworks (Throne of JS, 2012)][1]
 [1]:http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/
 
-
+<!--break-->
 
 ### 正文
 
@@ -46,7 +46,7 @@ author: 史英建
 #### 争论点:类库VS框架
 这是目前最大的分歧地方,我们可以按照以下方式分组:
 
-<table ><tbody><tr><td><strong>类库</strong></td><td><strong>框架</strong></td></tr>
+<table border=2><tbody><tr><td><strong>类库</strong></td><td><strong>框架</strong></td></tr>
 <tr><td><p>Backbone (9552)</p><p>Knockout (2357)</p><p>Spine (2017)</p><p>CanJS (321)</p></td>
 <td><p>Ember (3993)</p><p>AngularJS (2925)</p><p>Batman (958)</p><p>Meteor (4172) — unusual, see later</p></td></tr>
 </tbody></table >
@@ -68,7 +68,7 @@ author: 史英建
 
 #### 争论点:什么是灵活?什么是集成? 
 每个技术都有不同层次的约定:
-<table ><tbody><tr>
+<table border=2><tbody><tr>
 
 
 <td valign="top"></td><td valign="top"><p><strong>视图</strong></p></td>

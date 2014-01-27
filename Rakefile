@@ -17,7 +17,7 @@ task :new do
   hash.each{|key,value| article << ("#{key}: #{value}\n")}
   #article = {'title' => '','author'=>'史英建', 'date' => Time.now.strftime("%d/%m/%Y")}.to_yaml
   article << "---\n"
-  #article << "---\n###{title}\n---\n\n\n\n"
+  article << "\n\n<!--break-->\n\n\n\n"
   article << "Powered by [Engin](/about.html) & jekyll"
 
   path = "_posts/#{Time.now.strftime("%Y-%m-%d")}#{'-' + slug if slug}.toto"

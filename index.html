@@ -4,7 +4,7 @@ title: 首页
 ---
 
 <section id="articles">
-  {% for post in site.posts %}
+  {% for post in site.posts limit:5 %}
     <article class="post  clearfix">
       <header class="post_header" >
         <h3 class="post_title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
@@ -19,7 +19,11 @@ title: 首页
       </header>
 
       <section class="post_body body">
-        {{ post.content | truncate: 200 | textilize }}
+	  {% if post.content contains '<!--break-->' %}
+	    {{ post.content | split:'<!--break-->' | first }}
+      {% else %}
+	    {{ post.content | truncate: 200 | textilize }}
+      {% endif %}
         <div class="more"><a href="{{ post.url }}">阅读 &raquo;</a></div>
       </section>
     </article>
