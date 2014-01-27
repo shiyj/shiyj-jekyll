@@ -1,7 +1,0 @@
-markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-pygments: true
-disqus: enginblog
-tag_page_layout: onetag
-tag_page_dir: tags
