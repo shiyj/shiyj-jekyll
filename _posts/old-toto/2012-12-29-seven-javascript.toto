@@ -1,0 +1,244 @@
+---
+layout: post
+title: 七个富应用JavaScript框架
+date: 29/12/2012
+slug: seven-javascript
+author: 史英建
+---
+
+七个富应用JavaScript框架
+这是一篇翻译文章，原文在[Rich JavaScript Applications – the Seven Frameworks (Throne of JS, 2012)][1]
+[1]:http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/
+
+
+
+### 正文
+
+一周之前(原文是2012年8月1日发表)在多伦多举行的Throne of JS大会是我最近参加的一个最有意思的会议.它的网站上这样说:
+>>先前的将网页完全加载进来再"慢慢地处理"以使页面能动态地表现出来的方法已经不是最优的方案.构建流畅,快速响应和现代的应用要求你重新构思你的实现方法.
+这个引言是引出七个顶级的为单个页面或者富JS应用设计的JavaScript库和框架:AngularJS, Backbone, Batman, CanJS, Ember, Meteor, Knockout, Spine.把他们的创建者召集在一起,当面来比较各自的实现技术.
+免责声明:我参加这场大会是去展示Knockout(*译者注:作者Steven是Knockout.js的作者*),所以很明显我并不是中立的.在这篇文章中我着重于他们的创建者对他们使用的技术的领域和理念的陈述,并不代表我赞同或者不赞同.
+
+上边列出的是8个而不是7个,这个问题还没有人解释(**译者注:Trone of JS官网上的标题是7个框架,可能是泛指**);
+
+### 概要:
+* 对大部分开发者来说,使用客户端框架来构建富网络应用已经是理所当然的.如果你没有使用,那么你要么是不开发程序要么是已经out了.
+* 主要的框架对构建网络应用都有许多一致的地方(Model-View-*架构,声明式绑定等).所以无论你选择哪种框架,你都能获取相似的功能.
+* 一些主要的理念仍然有不同,特别是框架和类库之间的差别.你的选择可能会影响你的架构.
+* 这次大会很时髦很热闹,我们和不同的技术团体之间有很多社交活动和会谈.我喜欢这种方式.
+
+### 技术上的争论:赞同与反对
+就像以往的SPA(**译者注:single-page application,指在一个页面中通过ajax等技术来让用户体验一个连续流程的应用**)技术会议一样,一些相对清晰模式的相同和不同观点的争论也出现了.
+#### 赞同点:渐进增强并不适用构建真正的应用.(**译者注:渐进增强关注于内容,针对不同的浏览器做优化**)
+所有的技术都应该遵循这一的准则:严肃的JS应用程序需要合适的数据模型以及渲染客户端的能力,而不仅仅是处理ajax请求和调用jQuery的简单代码.
+引用Backbone作者Jeremy Ashkenas的话：＂就这点而言，说起单页面应用程序(SPA)就好像在说没有马的马车＂(这种观点已经不新鲜了...)
+
+#### 赞同点:Model-View-Whatever模型
+
+所有的技术都使用了模型\视图分离的模式.有的人专门讨论MVC,有的人讨论MVVM,甚至有的压根不去定义模型\视图之外的其他内容(只是说有模型,视图,以及让他们在运行起来的其他东西).这就使得基本上每个框架都很相似.
+#### 赞同点:数据绑定
+除了Backbone和spine之外,其他的都在视图中有内建的声明式数据绑定(backbone有"bring your own view technology"的设计).
+#### 赞同点:IE6已死
+在一个小组的讨论中,大部分框架的作者说他们对IE的支持是在IE7以上(事实上,Ember和AngularJS只支持IE8以上,Batman在IE9以下的IE浏览器上需要ES5 shim才能运行).这就是将要发生的:连jQuery的2.版本也将放弃对IE9以下的支持.
+只有Backbone和Knockout仍然支持IE6以上(我不知道Backbone的内部构件,但是对Knockout而言这意味着要面对处理大量令人发疯的IE6/IE7边缘的渲染和事件机制的命运.
+#### 赞同点:授权协议和源代码控制
+都是采用MIT授权协议,并且源代码托管在github上.
+#### 争论点:类库VS框架
+这是目前最大的分歧地方,我们可以按照以下方式分组:
+
+<table ><tbody><tr><td><strong>类库</strong></td><td><strong>框架</strong></td></tr>
+<tr><td><p>Backbone (9552)</p><p>Knockout (2357)</p><p>Spine (2017)</p><p>CanJS (321)</p></td>
+<td><p>Ember (3993)</p><p>AngularJS (2925)</p><p>Batman (958)</p><p>Meteor (4172) — unusual, see later</p></td></tr>
+</tbody></table >
+
+小括号内的数字是某一时刻各个项目在GitHub上关注者数量的快照,作为一个相对影响力的指标.
+
+这意味着什么呢?
+
+*  **类库**可以集成到你的已存在的架构总并且增加特定的功能.
+*  **框架**为你提供了一个架构(文件结构等),你可以使用它来处理常见的需求.
+到目前为止,最受追捧的框架模型时Ember,它的作者Yehuda Katz是以前Rails和SproutCore 项目的开发者之一.
+他的观点是任何功能简单的东西都不够强大并且并没有对这种状态有实质性的提高.
+相反的观点认为类库更加专注于解决问题,因此可以被简单地学习,接收和定制,并且能够减小项目因过分依赖一个第三方项目所带来的风险.
+根据我参与的谈论,我觉得观众被分为两派,各自支持自己的观点.
+
+需要指出一点:AngularJS 在某种程度上既是类库又是框架:他在开发阶段并没有要求一个特定的文件结构(像类库的部分),
+但是在运行时它提供了一个"应用生命周期"来加入你的代码(像框架的部分).
+我把它列在框架中是因为这是AngularJS团队选择的技术.
+
+#### 争论点:什么是灵活?什么是集成? 
+每个技术都有不同层次的约定:
+<table ><tbody><tr>
+
+
+<td valign="top"></td><td valign="top"><p><strong>视图</strong></p></td>
+<td valign="top"><p><strong>URL 路由</strong></p></td>
+<td><p><strong>数据存储</strong></p></td></tr>
+
+<tr><td><p><strong>AngularJS</strong></p></td>
+<td><p>内置基于DOM的模版(必须使用)</p></td>
+<td><p>内置(可选)</p></td>
+<td><p>内置系统(可选)</p></td></tr>
+
+<tr><td><p><strong>Backbone</strong></p></td>
+<td><p>自己选择 (必须使用一个字符串模版handlebars.js)</p></td>
+<td><p>内置(可选)</p></td>
+<td><p>内置(可重写)</p></td></tr>
+
+<tr><td><p><strong>Batman</strong></p></td>
+<td><p> 内置基于DOM的模版(必须使用) </p></td>
+<td><p> 内置(必须使用) </p></td>
+<td><p> 内置系统(必须使用) </p></td></tr>
+
+<tr><td><p><strong>CanJS</strong></p></td>
+<td><p>内置基于字符串的模版(必须使用)</p></td>
+<td><p> 内置(可选) </p></td>
+<td><p> 内置(可选) </p></td></tr>
+
+<tr><td><p><strong>Ember</strong></p></td>
+<td><p> 内置基于字符串的模版(必须使用) </p></td>
+<td><p> 内置(必须使用) </p></td>
+<td><p> 内置(可重写) </p></td></tr>
+
+<tr><td><p><strong>Knockout</strong></p></td>
+<td><p>  内置基于DOM的模版(可选,也可以做基于字符串的)</p></td>
+<td><p>自己选择(大多选择sammy.js或者history.js)</p></td>
+<td><p>自己选择(例如: knockout.mapping 或者 $.ajax)</p></td></tr>
+
+<tr><td><p><strong>Meteor</strong></p></td>
+<td><p> 内置基于字符串的模版(必须使用) </p></td>
+<td><p> 内置(必须使用?)</p></td>
+<td><p>内置 (Mongo, mandatory)</p></td></tr>
+
+<tr><td><p><strong>Spine</strong></p></td>
+<td><p>自己选择基于字符串的模版</p></td>
+<td><p>内置(可选)</p></td>
+<td><p> 内置(可选?)</p></td></tr></tbody></table>
+
+
+
+正如所预料的一样,当一个类库觉得要做得开放一些,他的作者们就认为确保能够和其他第三方库组合是很重要的.而相反的观点是如果能够通过内建的方法集成可以让框架的各个部分无缝结合.这次观众又再次被分为不同的阵营.
+引用Tom Dale的一句话:"我们做了很多美妙的东西,并且真正不可思议的是它可以分成功一个个功能齐全的单元."
+
+
+#### 争论点: 基于字符的还是基于DOM的模版
+(正如前表所述)对与基于字符串的模版大都选择Handlebars.js作为模版引擎.关于字符串模板的争论主要包括"它很快"(并未通过表决)并且"理论上服务器也可以渲染他们"(这一点也在争论中,因为只有你吧所有的模型代码都搬到服务器上才能实现,而实际上没有人这么做).
+基于DOM的模板一般都是纯粹地通过绑定到你的标签来做控制的(通过each,if等语句),这就对其他扩展的模版没有依赖.关于DOM模版的争论点主要包括"它很快"(并未通过表决),"代码可以易读易写,因为没有模版和标签之间的不协调,并且可以通过CSS来和它交互".
+以我看,最有力的论点是AngularJS的成员所指出的:在不久的将来,他们期望基于DOM的模版成为浏览器的原生支持,所以我们应该从现在就为将来的适应做准备.AngularJS来自Google,他们已经在Chromium和标准机构上实现.
+
+
+#### 争论点:服务端的依赖层次.(Levels of server-agnosticism)
+Batman 和Meteor对服务端有明显的依赖:Batman是为Rails而设计的,而Meteor使用的是自己的服务端程序.其他的大部分都以适应任何服务端为目标,但是对Ember来说实际上不管是架构、约定还是其他的工具都倾向于rails开发者。Ember绝对是可以应用于其他的服务端技术的，只不过其设置稍微麻烦点。
+### 各个框架的技术速览
+#### Backbone
+* 作者：Jeremy Ashkenas and DocumentCloud
+* 内容：
+ * Model-View模式，MIT 许可
+ * 最小的类库——仅仅一个文件，800行代码！
+ * 很专一的功能——仅仅提供REST持久化模型以及简单的路由和回调，这样就可以让你知道什么时候去渲染实体（需要自己设置渲染机制）
+ * 最著名的，被许多大牌网站使用（或许是因为它小而易于被接受）
+* 优点：
+ * 它很小，你可以在使用之前通过读源代码来弄懂它。
+ * 对你的服务端架构和文件结构都没有影响，可以只在页面的一小部分起作用，并不需要考虑整个页面。
+ * Jeremy就像一个禅宗大师，对所有的问题都很有观点。他就像一个大人指导着一群吵闹的孩子。
+* 项目地址：[GitHub](https://github.com/documentcloud/backbone/) ，[官网](http://backbonejs.org/)
+* 发布时间：两年前
+
+#### Meteor
+* 作者：Meteor开发团队，他们刚刚获得了1120万美元的融资所以可以全职开发Meteor
+* 内容：
+ * 这是一个来自未来世界的令人惊讶的框架，它拥有你所没有见过的东西（可能除了[Derby](http://derbyjs.com/))
+ * 在服务端（Node.js + Mongo）和客户端使用相同的代码，使二者(包括数据库）连通起来.通过WebSockets来同步服务端和所有的客户端。
+ * 当修改代码时就可以“实时部署”——客户端会快速更新而不会丢失他们的内容。
+ * 如果提供视频观看会更加合适【[演示](http://www.meteor.com/screencast)】
+ * 和其他的人一样，我真心希望这个项目会成功——WEB开发需要一些像这样有激情的项目来向前推进。
+* 优点：当你收购了web开发的一些陈规旧俗，Meteor可以让你走在前沿。
+* 项目地址： [GitHub](https://github.com/meteor/meteor),[官网](http://www.meteor.com/)
+* 发布时间：仍是早期版本，目前我不知道有哪些网站正式使用Meteor。但是它的核心团队正在认真地做着这个项目。
+
+#### Ember
+* 作者: Yehuda Katz (Rails和Jquery的先前开发者),Ember团队已经 Yehuda 的伙伴Tilede
+* 内容:
+  * 它包含建立一个"强大的Web应用"的一切,采用的是MIT许可
+  * 在所有的框架中是功能最强大,当然库的大小也很大.
+  * 它的着眼点在于怎样把怎样把一个页面分解成一个个有层次的控件,然后通过一个有状态的路由系统来连接起来.
+  * 正在开发更加精细的数据接入类库(Ember.Data)
+  * 会在运行时对所有的页面控制,因此对于使用了很多内容的部分(如silverlight,ajax,flash)可能不合适.
+  * 文件结构和URL都是固定的,但是可以被重写.
+  * 其设计灵感来自Rails和Cocoa
+  * 使用:它为Rails提供工程模版(你也可以通过手动配置来使它应用在别的服务端技术上)
+* 优点:常见的问题应该有常见的解决方法--Ember提供了所有的常见解决方案,你只需要考虑对你的应用程序来说那个是适用的.
+* 项目地址[GitHub](https://github.com/emberjs/ember.js/),[官网](http://emberjs.com/);
+* 开始时间: 仍然不是1.0的发布版本,不过很快会发布,API到时候也会发布(**译者注:已经发布1.0的pre版本)
+
+#### AngularJS
+* 作者:google的开发者,主要是他们内部使用,并且采用MIT协议
+* 内容:
+  * MVW(Model-View-Whatever )模式
+  * 基于DOM的模版声明式绑定.
+  * 内置基础的url路由和数据序列号
+  * 工具:他们实现了一个可以让你在调试时监视你的数据模型的chrome的调试插件,以及一个针对Jasmine 测试框架的插件
+* 优点:
+  * 按照他们所宣传的，这是一个未来浏览器会原生支持的框架，所以我们应该现在就用这种方式来编程。
+  * 对服务器端的架构和文件结构没有影响，可以用在不需要对整个页面控制的小部分。
+* 项目地址： [GitHub](https://github.com/angular/angular.js),[官网](http://angularjs.org/)
+* 开始时间：已发布（曾在google使用过）
+
+
+#### Knockout
+* 作者： Knockout团队和社区（包括我在内目前核心团队有三个成员）
+* 内容：
+  * Model-View-ViewModel (MVVM) in JavaScript, MIT licensed
+  * 关注与富UI：基于DOM的声明式绑定，拥有自动依赖检测的"观察者“模型
+  * 不强制绑定URL路由和数据——和其他第三方库结合（例如使用Sammy.js做路由，采用ajax方式存储数据）。
+  * 着重关注于易用性，有大量的文档和[交互的例子](http://learn.knockoutjs.com/)
+* 特点：
+  * 专注于UI,支持IE6
+  * 对服务器架构和文件系统没有影响。可以用在不需要对整个页面控制的小部分。
+* 项目地址： [GitHub](https://github.com/SteveSanderson/knockout),[官网](http://knockoutjs.com/)
+* 开始时间： 发布将近两年
+
+#### Spine
+* 作者： Alex MacCaw
+* 内容：
+  * MVC in JavaScript, MIT license
+  * 最初作为O’Reilly一本书的示例代码，最终演变为一个开源代码工程
+  * 是Backbone的一个克隆版本（就像名字那样）（**译者注：Spine和Backbone都有脊柱的意思**)
+* 特点：你希望用不同的方式来使用Backbone[**二者不同可以参看这里**](http://stackoverflow.com/questions/6530444/backbone-js-vs-spine-js)
+* 项目地址： [GitHub](https://github.com/maccman/spine),[官网](http://spinejs.com/)
+* 开始时间： 已经发布1.0.0版本
+
+#### Batman
+* 作者：Shopify团队（一个电子商务平台公司）
+* 内容：
+  * 支持Javascript的MVC架构，几乎是为Rails+CoffeeScript开发者设计的。MIT 许可
+  * 定制性最强的一个框架，你必须按照它的约定（例如文件结构和URL路径），否则，就像它”高傲“的作者们所说的：“不遵循约定就别用”。
+  *全栈式的框架，拥有丰富的模型，视图和控制器及路由。当然也有观察模式的机理。
+  *基于DOM的模版
+* 特点： 如果你使用Rails和CoffeeScript，你会得心应手……
+* 项目地址： [GitHub](https://github.com/Shopify/batman),[官网](http://batmanjs.org/)
+* 开始时间：目前是0.9版，预计在未来几个月内发布1.0版本。
+
+
+#### CanJS
+
+* 作者：bitovi团队（一个js咨询培训公司）
+* 内容：
+  * MVC in JavaScript, MIT licensed
+  *  REST-persistable模型，基础的路由，基于字符串的模版。
+  * 并不很出名（我在上周前还不知道它），尽管它是一个很老的javascript mvc项目的重新开放。
+* 特点：致力于构建一个轻量的，提供上述所有框架都具有功能特性的最好的框架。
+* 项目地址： [GitHub](https://github.com/jupiterjs/canjs),[官网](http://canjs.us/)
+
+#### 总结
+
+如果你在考虑究竟那个是最适合你的项目，我觉得应该考虑两个方面：
+
+
+* **应用范围**： 你希望一个框架或者类库能够帮助你做多少东西？你是希望有一个可以让你从0开始全程都为你提供架构帮助的全能框架，还是希望自己定制模式和类库？不管选择那种，对不同的项目和团队都是有价值的。
+
+* **设计美学**：你是否看过这些框架并且想自己构建一个小型的类库？你喜欢这样做吗？不要根据局限与描述或者功能列表去选择。忽略你自己的编码习惯就像仅仅根据小说的目录去买书或者是根据个人简历和履历来选择配偶。
+
+除了不同的地方，我可以肯定上述这些技术都遵循的一个功能：模型和视图分离。这是一种在20年钱就已经存在的经典设计模式。即使你在构建最简单的web应用界面你也能从这种模式中受益。
+
+Powered by [Engin](/about) & toto

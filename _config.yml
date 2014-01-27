@@ -1,0 +1,5 @@
+markdown: redcarpet
+pygments: true
+disqus: enginblog
+tag_page_layout: onetag
+tag_page_dir: tags
