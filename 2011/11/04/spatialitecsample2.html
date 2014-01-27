@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="spatialite c samples 解析（2） - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_spatialite c samples 解析（2）</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/11/04/spatialitecsample2.html">spatialite c samples 解析（2）</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">04 Nov 2011</span>
+      标签：
+      
+      <a href="/tags/spatialite.html">spatialite</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <hr/>
+
+<h2>spatialite c samples 解析（2）</h2>
+
+<hr/>
+
+<h3>1.在程序中使用spatialite数据类型。</h3>
+
+<p>gaiaAllocGeomColl函数可以分配一个空间数据类型.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    gaiaGeomCollPtr geo;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    geo=gaiaAllocGeomColl();
+</pre></div>
+</div>
+
+<p>然后再将空间数据写入到该变量中,通过执行下边函数即可:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    gaiaAddPointToGeomColl (geo, <span style="color:#60E">1</span><span style="color:#60E">.5</span>, <span style="color:#60E">2</span><span style="color:#60E">.75</span>);
+</pre></div>
+</div>
+
+<p>当然也有gaiaAddLinestringToGeomColl,gaiaAddPolygonToGeomColl来分别对应点,线,面.<br/>
+所不同的是线和面的分配方法稍微复杂些,函数的定义如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#088;font-weight:bold">void</span> gaiaAddPointToGeomColl( gaiaGeomCollPtr p , <span style="color:#0a8;font-weight:bold">double</span> x , <span style="color:#0a8;font-weight:bold">double</span> y );
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    gaiaLinestringPtr gaiaAddLinestringToGeomColl ( gaiaGeomCollPtr p , <span style="color:#0a8;font-weight:bold">int</span> points);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    gaiaPolygonPtr gaiaAddPolygonToGeomColl (gaiaGeomCollPtr p, <span style="color:#0a8;font-weight:bold">int</span> points, <span style="color:#0a8;font-weight:bold">int</span> num_interiors);
+</pre></div>
+</div>
+
+<p>后两者都有对应该类型的返回值.<br/>
+所以线的操做如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    gaiaLinestringPtr line;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    line = gaiaAddLinestringToGeomColl (geo_ln, <span style="color:#00D">5</span>);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    gaiaSetPoint (line-&gt;Coords, <span style="color:#00D">0</span>, <span style="color:#60E">1</span><span style="color:#60E">.0</span>, <span style="color:#60E">1</span><span style="color:#60E">.0</span>);
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    gaiaSetPoint (line-&gt;Coords, <span style="color:#00D">1</span>, <span style="color:#60E">2</span><span style="color:#60E">.0</span>, <span style="color:#60E">1</span><span style="color:#60E">.0</span>);
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    gaiaSetPoint (line-&gt;Coords, <span style="color:#00D">2</span>, <span style="color:#60E">2</span><span style="color:#60E">.0</span>, <span style="color:#60E">2</span><span style="color:#60E">.0</span>);
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    gaiaSetPoint (line-&gt;Coords, <span style="color:#00D">3</span>, <span style="color:#00D">10</span><span style="color:#60E">0</span><span style="color:#60E">.0</span>, <span style="color:#60E">2</span><span style="color:#60E">.0</span>);
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>    gaiaSetPoint (line-&gt;Coords, <span style="color:#00D">4</span>, <span style="color:#00D">10</span><span style="color:#60E">0</span><span style="color:#60E">.0</span>, <span style="color:#00D">10</span><span style="color:#60E">0</span><span style="color:#60E">.0</span>);
+</pre></div>
+</div>
+
+<p>需要注意的是line,它是geo<em>ln的一个成员,可以指向geo</em>ln,从gaiaGeomCollPtr的定义可以看出:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaGeomCollStruct {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Srid;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        gaiaPointPtr FirstPoint;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        gaiaLinestringPtr FirstLinestring;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        gaiaPolygonPtr FirstPolygon;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    }gaiaGeomColl;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaGeomColl * gaiaGeomCollPtr;
+</pre></div>
+</div>
+
+<p>真正的数据是存储在 FirstLinestring所指向的内存空间.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaLinestringStruct {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Points;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#0a8;font-weight:bold">double</span> * Coords;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#080;font-weight:bold">struct</span> gaiaLinestringStruct * Next;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    }gaiaLinestring;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaLinestring * gaiaLinestringPtr;
+</pre></div>
+</div>
+
+<p>面的操作与之类似.</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

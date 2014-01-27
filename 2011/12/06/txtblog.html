@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="ruby实现的文本博客引擎构建(一) - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_ruby实现的文本博客引擎构建(一)</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/12/06/txtblog.html">ruby实现的文本博客引擎构建(一)</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">06 Dec 2011</span>
+      标签：
+      
+      <a href="/tags/ruby.html">ruby</a>
+      
+      <a href="/tags/%E6%96%87%E6%9C%AC%E5%8D%9A%E5%AE%A2%E5%BC%95%E6%93%8E.html">文本博客引擎</a>
+      
+      <a href="/tags/toto.html">toto</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <p>本博客使用的是一个叫toto的文本博客引擎,<br/>
+toto采用文本而不是数据库来存储数据,这样就省去数据库的开销,<br/>
+完全使用静态文件渲染的方法来构建网站,<br/>
+很适合挂在heroku中的免费项目下.</p>
+
+<p>本文是我研究toto代码并修改、实现的过程,暂时称之为txtblog.</p>
+
+<h3>1.先运行起来!</h3>
+
+<blockquote>
+<blockquote>
+<p>要使自己的网站运行起来,即可以通过浏览器以http协议形式访问,我们需要Rack模块.<br/>
+rack是一个标准的Ruby网络服务运行接口(a modular Ruby webserver interface).</p>
+</blockquote>
+</blockquote>
+
+<p>我们就用它来构建网站的第一步:</p>
+
+<p>要使rack运行起来,只需要一个包含call方法的类,在其中引入rack的requset和response就可以了.<br/>
+如下为第一步:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#777">#/home/myhome/v1/txtblog.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Server</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">call</span> env
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>            <span style="color:#33B">@request</span>  = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Request</span>.new env
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>            <span style="color:#33B">@response</span> = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Response</span>.new
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>            body = [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;h1&gt;hello world&lt;/h1&gt;</span><span style="color:#710">&quot;</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;h2&gt;This is a simple website.&lt;/h2&gt;</span><span style="color:#710">&quot;</span></span>]
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>            <span style="color:#33B">@response</span>.body= body
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>            <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Content-Type</span><span style="color:#710">'</span></span>]   = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Mime</span>.mime_type(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">.html</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>            <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Cache-Control</span><span style="color:#710">'</span></span>] = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">no-cache, must-revalidate</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>            <span style="color:#33B">@response</span>.status = <span style="color:#00D">200</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>            <span style="color:#33B">@response</span>.finish
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>然后定义config.ru内容</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#777">#/home/myhome/v1/config.ru  </span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./txtblog</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    use <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">ShowExceptions</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    myserver = <span style="color:#036;font-weight:bold">Server</span>.new
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    run myserver
+</pre></div>
+</div>
+
+<p>接着在当前目录(config.ru所在目录)下运行 <code>thin start -p 3001</code>,<br/>
+在浏览器中打开 <a href="http://localhost:3001" rel="nofollow" target="_blank">http://localhost:3001</a> 即可看到返回的内容.</p>
+
+<p>以上即为一个简单的Web服务器,接下来我们希望能够读取出文件的内容来替换txtblog.rb中定义的body.</p>
+
+<h3>2.读取网站模板</h3>
+
+<blockquote>
+<blockquote>
+<p>网站模板也可以说成是网站的&quot;屏幕架子&quot;,我们的博客内容就是屏幕里的画面.<br/>
+此处使用的是可以嵌入ruby程序的html文件(rhtml),使用的ruby模块叫ERB(embedded ruby).</p>
+</blockquote>
+</blockquote>
+
+<p>为了便于控制我们将第一步中txtblog.rb中的Server类放在叫Txtblog的module中,<br/>
+然后再在Txtblog中定义一个Site类来读取网站模板,并在Server类中引用它.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Txtblog</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Site</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>            <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>                title = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Index</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                <span style="color:#036;font-weight:bold">ERB</span>.new(<span style="color:#036;font-weight:bold">File</span>.read(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">templates/layout.rhtml</span><span style="color:#710">&quot;</span></span>)).result(binding)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>            <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Server</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>            <span style="color:#33B">@site</span> = <span style="color:#036;font-weight:bold">Txtblog</span>::<span style="color:#036;font-weight:bold">Site</span>.new
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">call</span> env
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>            <span style="color:#33B">@request</span>  = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Request</span>.new env
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>            <span style="color:#33B">@response</span> = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Response</span>.new
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>            <span style="color:#777">#body = [&quot;&lt;h1&gt;hello world&lt;/h1&gt;&quot;,&quot;&lt;h2&gt;This is a simple website.&lt;/h2&gt;&quot;]</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>            body = []
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>            body &lt;&lt; <span style="color:#33B">@site</span>.index
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>            <span style="color:#33B">@response</span>.body= body
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>            <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Content-Type</span><span style="color:#710">'</span></span>]   = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Mime</span>.mime_type(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">.html</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>            <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Cache-Control</span><span style="color:#710">'</span></span>] = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">no-cache, must-revalidate</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>            <span style="color:#33B">@response</span>.status = <span style="color:#00D">200</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>            <span style="color:#33B">@response</span>.finish
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>这样,我们就成功地读取出来Erb文件中的内容并向其中<em>内嵌的title变量赋值</em>.<br/>
+运行<code>thin start -p 3001</code>即可看到读取出来的结果.</p>
+
+<p>这里需要补充的是如果所读取的erb文件中包含静态的如css、javascript、图片,<br/>
+需要在config.ru中引用rack的Static来设置网站的根目录.<br/>
+下边的这段代码表示将public文件夹设置为根目录,其下的css,js,images文件夹为可访问目录.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    use <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Static</span>, <span style="color:#A60">:urls</span> =&gt; [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/css</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/js</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/images</span><span style="color:#710">'</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/favicon.ico</span><span style="color:#710">'</span></span>], <span style="color:#A60">:root</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">public</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+
+<p>例如:如果要引用css文件夹内的app.css,<br/>
+只需指明路径 /css/app.css即可,而不是/public/css/app.css.</p>
+
+<h3>3.加载markdown</h3>
+
+<p>前边提到我们的博客是&quot;文本&quot;形式的,那么是不是写成包含html标签的文档呢?</p>
+
+<p>肯定不能那么繁杂,此处我们介绍一中类似html标签,却是更简洁的文本格式:markdown.<br/>
+ruby中使用rdiscount这样一个gem可以实现将markdown转换为html标记.<br/>
+关于markdown的详细规则可以参考其官网教程.</p>
+
+<p>我们重新修改代码如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">rdiscount</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Txtblog</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Server</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>            <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                <span style="color:#33B">@site</span> = <span style="color:#036;font-weight:bold">Txtblog</span>::<span style="color:#036;font-weight:bold">Site</span>.new
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>            <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>            <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">call</span> env
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                <span style="color:#33B">@request</span>  = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Request</span>.new env
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>                <span style="color:#33B">@response</span> = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Response</span>.new
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>                <span style="color:#777">#body = [&quot;&lt;h1&gt;hello world&lt;/h1&gt;&quot;,&quot;&lt;h2&gt;This is a simple website.&lt;/h2&gt;&quot;]</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>                body = []
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>                body &lt;&lt; <span style="color:#33B">@site</span>.index(&amp;<span style="color:#036;font-weight:bold">Proc</span>.new{ <span style="color:#33B">@site</span>.markdown })
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>                <span style="color:#33B">@response</span>.body= body
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>                <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Content-Type</span><span style="color:#710">'</span></span>]   = <span style="color:#036;font-weight:bold">Rack</span>::<span style="color:#036;font-weight:bold">Mime</span>.mime_type(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">.html</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>                <span style="color:#33B">@response</span>[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Cache-Control</span><span style="color:#710">'</span></span>] = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">no-cache, must-revalidate</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>                <span style="color:#33B">@response</span>.status = <span style="color:#00D">200</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>                <span style="color:#33B">@response</span>.finish
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>            <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Site</span>
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>            <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">index</span> &amp;blk
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>                title = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Index--</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>                <span style="color:#036;font-weight:bold">ERB</span>.new(<span style="color:#036;font-weight:bold">File</span>.read(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">templates/layout.rhtml</span><span style="color:#710">&quot;</span></span>)).result(binding)
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>            <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>            <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">markdown</span>
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>            <span style="color:#036;font-weight:bold">Markdown</span>.new(<span style="color:#036;font-weight:bold">File</span>.read(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">articles/test.md</span><span style="color:#710">&quot;</span></span>)).to_html
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>          <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>需要声明的一点是在layout.rhtml中要加入&lt;%= yield %&gt;这样一句嵌入语句.<br/>
+它表示将传给方法的代码块放入该位置来迭代.<br/>
+我们通过Proc.new将markdown渲染出来的文本带入到index读取的模板中,<br/>
+从而实现从&quot;屏幕(框架)&quot;中显示&quot;影像(博客)&quot;来.</p>
+
+<h3>总结</h3>
+
+<p>该部分只是简单地将文本引擎的流程描述出来,更细致的东西如路由响应等尚未实现.<br/>
+并且上述代码着实很&quot;丑陋&quot;,在下一步的描述中会逐步重构.<br/>
+但是作为一个简单的example,我想我应该展示了所有的东西.</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

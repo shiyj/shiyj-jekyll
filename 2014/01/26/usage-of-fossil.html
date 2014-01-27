@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="usage of fossil - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_usage of fossil</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2014/01/26/usage-of-fossil.html">usage of fossil</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">26 Jan 2014</span>
+      标签：
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <h3>1.导入导出</h3>
+
+<p>git ===&gt;  fossil</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git fast-export --all | fossil import --git newrepo.fossil</pre></div>
+</div>
+
+<p>fossil ===&gt;  git</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git init newrepo
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cd newrepo
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil export --git ../repo.fossil | git fast-import</pre></div>
+</div>
+
+<h3>2.功能介绍</h3>
+
+<h4>2.1迁出最新版本</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil open newrepo.fossil</pre></div>
+</div>
+
+<p>该命令相当于迁出了最新的版本到本地，以下几个命令可以查看迁出版本的状态：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil info
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>fossil status
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil changes
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>fossil diff
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>fossil timeline
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>fossil ls
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>fossil branch</pre></div>
+</div>
+
+<p>你可以将fossil迁出到不同的目录中，不过这样就有些太凌乱了…… </p>
+
+<h4>2.2改变内容并提交</h4>
+
+<p><code>add,rm,addremove</code>三个命令提供对文件的增加和删除操作；<br/>
+<code>commit</code> 即可将其提交到版本库中（执行commit并不一定会push命令，具体需要设置异步状态。推荐关闭异步直接执行push）</p>
+
+<h4>2.3同步</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>push和pull来和远程同步；sync命令是将pull和push组合起来的命令：
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>fossil push URL
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil pull URL
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>fossil sync URL</pre></div>
+</div>
+
+<p>需要注意的是，从远程同步过来内容只是在版本库内，如果要迁出到本地的工作目录下，需要执行update命令：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil update [VERSION]</pre></div>
+</div>
+
+<h4>2.4合并</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>执行合并之前需要首先将要合并的的分支（目标分支）更新，之后执行merge命令，例如要把dev分支合并到master分支：
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil updata master
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>fossil merge dev
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>fossil commit</pre></div>
+</div>
+
+<h4>2.5自建一个github?</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil 一个很吸引人的地方就是它自带的wiki、bug追踪、用户管理等功能。只需要一个简单的命令你就拥有了一个类似github的个人项目主页：
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>fossil ui repo-name
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>fossil server repo-name</pre></div>
+</div>
+
+<h3>3.使用实例</h3>
+
+<h4>3.1新建一个项目：</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil new test.fossil</pre></div>
+</div>
+
+<h4>3.2打开版本库</h4>
+
+<p>fossil是可以将版本库和工作库分开在不同的目录下。此处我们采用在版本库同级目录下新建一个workspace文件夹来存放工作文件：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir workspace
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cd workspace
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>workspace&gt;fossil open ../test.fossil
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>执行完open方法后会在目录下多出一个_FOSSIL_(windows)或者.fossil((L)Unix)文件用来记录工作库的状态。</pre></div>
+</div>
+
+<h4>3.3添加文件</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>随便在目录下增加一个文件，比如version.txt。写入文字信息后将其添加到版本管理中：
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>fossil add .
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>执行：`fossil status` 即可看到当前工作库的相关状态：
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>repository:   D:/soft/fossil/test/workspace/../test.fossil
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>local-root:   D:/soft/fossil/test/workspace/
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>config-db:    C:/Users/Administrator/AppData/Local/_fossil
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>checkout:     95121ec85a5ac89b574778b064c77c9fa34eb122 2014-01-08 02:33:28 UTC
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>tags:         trunk
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>comment:      initial empty check-in (user: Administrator)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>ADDED      version.txt</pre></div>
+</div>
+
+<h4>3.4提交</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil commit -m &quot;version 1&quot;</pre></div>
+</div>
+
+<p>执行后就将本地更改的内容提交到版本库中。</p>
+
+<h4>3.5关闭</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil close</pre></div>
+</div>
+
+<p>关闭是和打开对应的。打开是将版本库内的内容迁出到本地库，同时构建一个<em>FOSSIL</em>文件来维护版本库和工作库直接的关系；<br/>
+而关闭则是去除版本库和工作库直接的联系（即删除<em>FOSSIL</em>文件），但是保留本地工作库中的文件。<br/>
+如果再下次再次open版本库内容到当前工作目录时，会提示是否覆盖原内容，就和普通的复制粘贴一样。</p>
+
+<h4>3.6通过web页面查看</h4>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fossil ui ../test.fossil</pre></div>
+</div>
+
+<p>执行完命令后会打开你的默认浏览器，并将当前项目的信息显示在浏览器中。<br/>
+需要注意的是，我们提交到版本库内的代码、文本的编码最好是UTF-8，否则在web页面中查看时遇到中文等字符时会是乱码。<br/>
+不过，如果不更改编码也可以，在版本控制器内的代码可以是任意你迁出到本地支持的编码。</p>
+
+<p>Powered by <a href="/about.html">Engin</a> &amp; jekyll</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

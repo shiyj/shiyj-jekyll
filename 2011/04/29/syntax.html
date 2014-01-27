@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="神奇的.gems - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_神奇的.gems</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/04/29/syntax.html">神奇的.gems</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">29 Apr 2011</span>
+      标签：
+      
+      <a href="/tags/heroku.html">heroku</a>
+      
+      <a href="/tags/gems.html">gems</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <p>在heroku 中托管项目如何才能把自己所需要的gem包install了呢?<br/>
+例如:在我们本机开发时需要用到 coderay和rake-codehighlighter这两个gem.那么直接使用 gem install coderay 和 gem install rack-codehighlighter 就行了.然后再在项目中使用</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">coderay</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">rack/codehighlighter</span><span style="color:#710">'</span></span>
+</pre></div>
+</div>
+
+<p>将这两个包加载到程序中就行了.可是部署到heroku中却出现问题:`gem<em>original</em>require&#39;: no such file to load -- coderay (LoadError),如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    2011-04-30T02:13:37+00:00 app[web.1]: /usr/ruby1.8.7/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require': no such file to load -- coderay (LoadError)
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from config.ru:5
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /home/heroku_rack/heroku.ru:23
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:29:in `instance_eval'
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:29:in `initialize'
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:46:in `new'
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:46:in `map'
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /home/heroku_rack/heroku.ru:18
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:29:in `instance_eval'
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /usr/ruby1.8.7/lib/ruby/gems/1.8/gems/rack-1.0.1/lib/rack/builder.rb:29:in `initialize'
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    2011-04-30T02:13:37+00:00 app[web.1]:   from /home/heroku_rack/heroku.ru:11:in `new'</pre></div>
+</div>
+
+<p>原来在本地安装了并不一定在heroku中也安装.google了一下,发现了一个神奇的文件 : .gems</p>
+
+<p>.gems文件可以告诉heroku你要安装那些文件.具体实现方法:</p>
+
+<p>在项目的根目录下应该有一个隐藏文件 .gems文件,没有的话新建一个.然后在里边输入需要install的gem包.我的如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>builder
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>rdiscount
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>toto
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>coderay
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>rack-codehighlighter</pre></div>
+</div>
+
+<p>当然后边还有一些其他选项,具体可以参考这里:<a href="http://devcenter.heroku.com/articles/gemmanifest" rel="nofollow" target="_blank">http://devcenter.heroku.com/articles/gemmanifest</a></p>
+
+<p>然后用git命令将其push到heroku上.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git add .gems
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>git commit -m &quot;add gems&quot;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>git push heroku master</pre></div>
+</div>
+
+<p>运行结果如下:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>Counting objects: 8, done.
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>Delta compression using up to 2 threads.
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    Compressing objects: 100% (6/6), done.
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    Writing objects: 100% (6/6), 563 bytes, done.
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    Total 6 (delta 2), reused 0 (delta 0)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    -----&gt; Heroku receiving push
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    -----&gt; Rack app detected
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    -----&gt; Installing gem builder from http://rubygems.org
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>               Successfully installed builder-3.0.0
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>               1 gem installed
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    -----&gt; Installing gem rdiscount from http://rubygems.org
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>               Building native extensions.  This could take a while...
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>               Successfully installed rdiscount-1.6.8
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>               1 gem installed
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    -----&gt; Installing gem toto from http://rubygems.org
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>               Successfully installed toto-0.4.9
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>               1 gem installed
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    -----&gt; Installing gem coderay from http://rubygems.org
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>               Successfully installed coderay-0.9.7
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>               1 gem installed
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>    -----&gt; Installing gem rack-codehighlighter from http://rubygems.org
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>               Building native extensions.  This could take a while...
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>               Successfully installed nokogiri-1.4.4
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>               Successfully installed rack-codehighlighter-0.4.7
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>               2 gems installed
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>               Compiled slug size is 2.5MB
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>    -----&gt; Launching... done
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>               http://shiyj.heroku.com deployed to Heroku
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>    To git@heroku.com:shiyj.git
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>         f8fa0b1..a1f41c9  master -&gt; master</pre></div>
+</div>
+
+<p>再次刷新,程序可以运行了.</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

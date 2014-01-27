@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="写出快速,节省内存的Javascript代码(一) - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_写出快速,节省内存的Javascript代码(一)</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2013/01/19/efficientjs.html">写出快速,节省内存的Javascript代码(一)</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">19 Jan 2013</span>
+      标签：
+      
+      <a href="/tags/javascript.html">javascript</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <h3>写出快速,节省内存的Javascript代码(一)</h3>
+
+<p>这是一篇翻译文章,原文为:<a href="http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/">Writing Fast, Memory-Efficient JavaScript</a><br/>
+​</p>
+
+<p>像google V8(Chrome和Node.js)这样的JavaScript解析引擎是为大型JavaScript应用能够快速执行而设计的.在你开发的过程中,如果你关心内存使用和性能,你就应该了解用户浏览器下的JavaScript解析引擎的原理.</p>
+
+<p>不管是V8还是 SpiderMonkey (Firefox), Carakan(Opera), Chakra (IE)或者其他的解析引擎, 知道他们的原理可以更好地优化你的程序.</p>
+
+<p>但是这并不是说你就要针对一个浏览器或者一个解析引擎来优化,别做傻事了...</p>
+
+<p>你应该这样思考:</p>
+
+<ul>
+<li> 我的代码里是否有更高效的方法?</li>
+<li> 那些流行的JavaScript引擎都采用怎样的优化方法?</li>
+<li> 哪些是引擎无法优化的?哪些内容是垃圾回收机制可以帮我释放的?</li>
+</ul>
+
+<p><img src="/images/fast_javascript/car_engine.jpg" alt="car_engine"/></p>
+
+<p><em>能够快速加载的网站和能够高速行驶的跑车一样,需要使用专业的工具.</em></p>
+
+<p>有很多的陷阱使你无法写出高效节省内存的Javascript代码,本文我们将要去探索那些已经被测试为能够提升代码效率的方法.</p>
+
+<h4>V8引擎是怎样解析JavaScript的?</h4>
+
+<p>尽管你不需要了解JavaScript解析引擎的详细内容就可以构建一个大型的JavaScript应用程序,但是作为一个好司机差不多都会对他爱车的发动机看上一眼吧.由于Chrome是我的使用的浏览器,我准备说一点它的JavaScript解析引擎.V8由几个核心部件构成:</p>
+
+<ul>
+<li>一个基础的<strong>编译器</strong>:和其他的编译器不同的是它并不是执行字节码或者简化解释器,而是在执行前将JavaScript代码解析后直接转换为机器码.不过这段代码这个时候并不是被高度优化的.</li>
+<li>V8使用对象模型来描述你的对象.在JavaScript中对象被描述为相关联的数组,而在V8中它们被描述为<a href="https://developers.google.com/v8/design">hidden classes</a>.hidden classes是高效查找的内部类型系统.</li>
+<li><strong>运行时分析器</strong>检测运行的系统并标记出&quot;热&quot;方法(例如一段运行了很长时间的代码)</li>
+<li><strong>一个优化编译器</strong>重新编译并优化被运行时分析器标记为&quot;热&quot;方法的代码,执行诸如代码嵌入的优化(例如将函数调用替换为回调函数)</li>
+<li>V8支持<strong>逆向优化</strong>,即当优化编译器发现它之前优化的代码是被过度优化,它会释放之前产生的代码.</li>
+<li>它有一个<strong>垃圾回收器</strong>.理解它是如何工作的能有助于优化JavaScript代码.</li>
+</ul>
+
+<h4>垃圾回收器</h4>
+
+<p>垃圾回收机制是内存管理的一个方式.它被用在当一个对象不再被使用时来回收这个对象占用的内存.在像JavaScript这样的具有垃圾回收机制的语言中,当对象还在被引用着是不会被释放的.</p>
+
+<p>在大部分常见下并不需要手动取消引用.仅仅通过注意变量的位置(作用域越小越好,例如在方法需要的变量在内部定义而不是外部)就可以了.</p>
+
+<p><img src="/images/fast_javascript/robot-cleaner.jpg" alt="garbage_collection"/></p>
+
+<p><em>垃圾回收器尝试回收内存</em></p>
+
+<p>在JavaScript中是无法强制垃圾回收.你不能这样做是因为:垃圾回收进程是被运行时控制,它知道什么时间来清理垃圾.</p>
+
+<h5>清除错误的引用</h5>
+
+<p>在网上相当多的关于JavaScript的回收内存的讨论中很多是关于<code>delete</code>关键字.尽管它只是被用来从map中移除keys,一些开发者却认为它可以强制取消引用.尽量避免使用<code>delete</code>关键字.在下边的例子中,<code>delete o.x</code>这段代码有很多害处,因为它改变了对象o的hidden class,让它变成一个相对慢的对象.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> o = { <span style="color:#606">x</span>: <span style="color:#00D">1</span> }; 
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    <span style="color:#080;font-weight:bold">delete</span> o.x; <span style="color:#777">// true </span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    o.x; <span style="color:#777">// undefined</span>
+</pre></div>
+</div>
+
+<p>不过,你肯定可以在许多流行的JavaScript库中看的<code>delete</code>--它确实有它的用途.这里不使用的原因是为了避免修改运行时中的&quot;热&quot;对象的数据结构.JavaScript引擎可以侦测到这种&quot;热&quot;对象并且尝试去优化它们.如果这个对象的结构在它的生命周期内没有太大的改变这种侦测就很简单,但是<code>delete</code>可以却这种改变让侦测变得复杂.</p>
+
+<p>关于<code>null</code>的使用也有误区.把一个对象设为<code>null</code>,并没有把对象清空,而是把对象的引用设为空.使用<code>o.x = null</code>比使用<code>delete</code>好,但是这可能并不必要.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> o = { <span style="color:#606">x</span>: <span style="color:#00D">1</span> }; 
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    o = <span style="color:#069">null</span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    o; <span style="color:#777">// null</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    o.x <span style="color:#777">// TypeError</span>
+</pre></div>
+</div>
+
+<p>如果这个引用是这个对象的最后一次引用,那么这个对象会被回收,如果这次引用不是最后一个引用,这个对象仍然可以获取而不会被释放.</p>
+
+<p>另外一个要注意的是全局变量并不会在你页面的生命周期内被释放.不过这个页面被打开多久,全局对象的作用域在JavaScript运行时中始终留存.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> myGlobalNamespace = {};
+</pre></div>
+</div>
+
+<p>全局变量只有在你刷新页面、跳转到另一个页面、关闭标签或者退出你的浏览器时才会被清除.函数作用域中的变量会在函数结束时释放.当函数已经退出并且它们不再被引用时变量才会被释放.</p>
+
+<h5>经验法则</h5>
+
+<p>为了让垃圾回收器能够尽早回收更多的对象,<strong>别保留你不在需要的对象</strong>.这经常在无意中发生;记住下边的要点:<br/>
+* 像前边说的,最好在最近位置使用变量.例如,当一个全局变量在外部为空时用函数级的变量这样就会在不使用时释放.<br/>
+* 确保在事件响应listeners不在需要时移除它们,特别是当这些listeners绑定的DOM对象将要被移除的时候.<br/>
+* 如果你使用了局部的数据缓存,确保删除它们或者通过一定的塌陷机制来避免大量的不被重用的数据被存储.</p>
+
+<h5>函数</h5>
+
+<p>接下来我们看看函数.我们前边说过,垃圾回收机制作用在那些不再能够获取到的内存(对象)中.为了更好的举例,这儿有一个例子:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>      <span style="color:#080;font-weight:bold">var</span> bar = <span style="color:#080;font-weight:bold">new</span> LargeObject();
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      bar.someCall();
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    }
+</pre></div>
+</div>
+
+<p>当<code>foo</code>函数返回后,<code>bar</code>所指向的对象会被垃圾回收器释放,因为没有任何对象再引用它了.</p>
+
+<p>对比下边的代码:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">foo</span>() {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>      <span style="color:#080;font-weight:bold">var</span> bar = <span style="color:#080;font-weight:bold">new</span> LargeObject();
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      bar.someCall();
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>      <span style="color:#080;font-weight:bold">return</span> bar;
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    }
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>    <span style="color:#777">// somewhere else</span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>    <span style="color:#080;font-weight:bold">var</span> b = foo();
+</pre></div>
+</div>
+
+<p>现在我们有了一个对该对象的引用,并且这个引用会一直保持到<code>b</code>被赋值为其他对象(或者<code>b</code>超出作用域)</p>
+
+<h5>闭包</h5>
+
+<p>当你看到一个方法返回一个内部方法,这个内部方法就能够被外部作用域内的变量引用,即便它已经超出了被调用方法的作用域.<br/>
+这就是闭包:能够将变量设置到特殊的上下文环境中.例如:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">sum</span> (x) {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>      <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">sumIt</span>(y) {
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#080;font-weight:bold">return</span> x + y;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>      };
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      <span style="color:#080;font-weight:bold">return</span> sumIt;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    }
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#777">// Usage</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">var</span> sumA = sum(<span style="color:#00D">4</span>);
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">var</span> sumB = sumA(<span style="color:#00D">3</span>);
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    console.log(sumB); <span style="color:#777">// Returns 7</span>
+</pre></div>
+</div>
+
+<p>在调用<code>sum</code>函数的上下文环境中创建的函数对象不会被回收,因为它被一个全局变量引用仍然可以使用.它仍然可以通过<code>sumA</code>来执行.</p>
+
+<p>我们看看另一个例子,在这个例子中我们可以使用<code>largeStr</code>吗?</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> <span style="color:#06B;font-weight:bold">a</span> = <span style="color:#080;font-weight:bold">function</span> () {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>      <span style="color:#080;font-weight:bold">var</span> largeStr = <span style="color:#080;font-weight:bold">new</span> Array(<span style="color:#00D">1000000</span>).join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">x</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      <span style="color:#080;font-weight:bold">return</span> <span style="color:#080;font-weight:bold">function</span> () {
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        <span style="color:#080;font-weight:bold">return</span> largeStr;
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      };
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    }();
+</pre></div>
+</div>
+
+<p>是的,我们仍然可以通过<code>a()</code>获取到<code>largeStr</code>,但是如果这样呢:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> <span style="color:#06B;font-weight:bold">a</span> = <span style="color:#080;font-weight:bold">function</span> () {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>      <span style="color:#080;font-weight:bold">var</span> smallStr = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">x</span><span style="color:#710">'</span></span>;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      <span style="color:#080;font-weight:bold">var</span> largeStr = <span style="color:#080;font-weight:bold">new</span> Array(<span style="color:#00D">1000000</span>).join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">x</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>      <span style="color:#080;font-weight:bold">return</span> <span style="color:#080;font-weight:bold">function</span> (n) {
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      <span style="color:#080;font-weight:bold">return</span> smallStr;
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    };
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>    }();
+</pre></div>
+</div>
+
+<p>这样就无法获取<code>largeStr</code>,它就会被当做垃圾来回收.</p>
+
+<h5>计时器</h5>
+
+<p>内存泄露最厉害的地方是在循环上,或者在<code>setTimeout()/setInterval()</code>方法上.但这很常见.</p>
+
+<p>看一下下边的例子:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> myObj = {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>      <span style="color:#06B;font-weight:bold">callMeMaybe</span>: <span style="color:#080;font-weight:bold">function</span> () {
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#080;font-weight:bold">var</span> myRef = <span style="color:#950">this</span>;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        <span style="color:#080;font-weight:bold">var</span> val = setTimeout(<span style="color:#080;font-weight:bold">function</span> () { 
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Time is running out!</span><span style="color:#710">'</span></span>); 
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>          myRef.callMeMaybe();
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        }, <span style="color:#00D">1000</span>);
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>      }
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    };
+</pre></div>
+</div>
+
+<p>如果我们执行:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    myObj.callMeMaybe();
+</pre></div>
+</div>
+
+<p>来开始计时,我们每秒钟都会看的打印出来的&#39;Time is running out!&#39;.即便是我们执行:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    myObj=<span style="color:#069">null</span>;
+</pre></div>
+</div>
+
+<p>计时器仍然在运行.<code>myObj</code>不会被回收是因为传入到<code>setTimeout</code>方法中的闭包一直在保持着.也就是说,它因为使用了<code>myRef</code>而一直保持着对<code>myObj</code>的引用.如果我们把一个闭包传给任何一个别的函数,这个函数就会保持着对这个闭包的引用.<br/>
+还有一点需要注意的是在<code>setTimeout/setInterval</code>方法内部所引用的函数等需要执行完毕后才会被释放.</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

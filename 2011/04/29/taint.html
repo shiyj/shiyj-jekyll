@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="ruby中taint对象污染机制 - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_ruby中taint对象污染机制</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/04/29/taint.html">ruby中taint对象污染机制</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">29 Apr 2011</span>
+      标签：
+      
+      <a href="/tags/ruby.html">ruby</a>
+      
+      <a href="/tags/taint.html">taint</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <p>ruby中的对象调用taint方法将其设置成&quot;污染&quot;的.如果一个对象被设置为taint,那么源自它的所以对象都被设置为taint了.<br/>
+在举例子之前先要说明下:类本身也是一个对象,是具有创建新对象能力的对象.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">FileLoader</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">load</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>     <span style="color:#33B">@obj</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2011-04-26-tt.txt</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>       text =<span style="color:#036;font-weight:bold">File</span>.read(<span style="color:#33B">@obj</span>)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>     <span style="color:#069">self</span>.taint
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>     puts text
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>   <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">putout</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>       str=<span style="color:#069">self</span>.tainted? ?  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">load successfull!</span><span style="color:#710">&quot;</span></span> :  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">load faild!</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>       puts str
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>   <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  fl1=<span style="color:#036;font-weight:bold">FileLoader</span>.new
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  fl1.load
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  fl1.putout <span style="color:#777">#load successfull!</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  fl2=<span style="color:#036;font-weight:bold">FileLoader</span>.new
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  fl2.putout <span style="color:#777">#load faild!</span>
+</pre></div>
+</div>
+
+<p>说明:tainted?是用?方法来返回true or false,第二个?是三目运算符.</p>
+
+<p>上边例子说明污染机制通俗地说就是一个&quot;标记&quot;.将某个值和状态改变后把整个对象标记为&quot;污染&quot;,然后它可以&quot;传染&quot;给由它生成的其他对象也都&quot;被&quot;污染了.</p>
+
+<p>当然有污染就有去除污染的方法.ruby还提供了untaint来&quot;治疗&quot;污染.具体使用方法不再赘述.</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

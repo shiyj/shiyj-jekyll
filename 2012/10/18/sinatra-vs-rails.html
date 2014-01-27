@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="rails与sinatra，各自应用领域的佼佼者？ - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_rails与sinatra，各自应用领域的佼佼者？</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2012/10/18/sinatra-vs-rails.html">rails与sinatra，各自应用领域的佼佼者？</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">18 Oct 2012</span>
+      标签：
+      
+      <a href="/tags/rails.html">rails</a>
+      
+      <a href="/tags/sinatra.html">sinatra</a>
+      
+      <a href="/tags/%E7%BF%BB%E8%AF%91%E6%96%87%E7%AB%A0.html">翻译文章</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <h3>Rails or Sinatra: The Best of Both Worlds?</h3>
+
+<h5>rails与sinatra，各自应用领域的佼佼者？</h5>
+
+<p>这是一篇翻译文章，原文在<a href="http://rubysource.com/rails-or-sinatra-the-best-of-both-worlds/">这里</a></p>
+
+<h3>正文：</h3>
+
+<p>近些年，ruby世界里涌现了众多优秀的网络开发框架，其中两个优秀的框架成了ruby在web开发领域的领头羊。</p>
+
+<p>本网站（指<a href="http://rubysource.com" rel="nofollow" target="_blank">http://rubysource.com</a>)的大多数读者可能听说过Ruby on Rails：它是David Heinemeier Hansson（DHH）在2004年开发出来的号称可以提供开发效率并能让开发者愉快地编程的MVC框架；<br/>
+而Sinatra是由 Blake Mizerany在2007年开发出来的基于Rack之上带有轻量级的HTTP请求方式的领域特定语言（DSL)。<br/>
+二者的共同特点就是简约而优雅。<br/>
+通过 RubyGems.org的统计数据你就能看的这两个框架有多么受欢迎：Rails有700万的下载量而Sinatra也高达150万。</p>
+
+<p>我之所以使用Ruby做网络开发是被Rails吸引，但是最近几年我更多是在使用Sinatra（<a href="http://rubysource.com/7-things-i-love-about-sinatra/">我喜欢sinatra的七个原因</a>）。</p>
+
+<p>事实上我觉得Sinatra结合几个常用的gem就能满足我开发应用的需求。<br/>
+这也是让我怀疑Sinatra是否适用于所有的项目。<br/>
+那么什么时候用Sinatra什么时候用Rails呢？为了找到答案我问了几个Ruby的大牛。</p>
+
+<p>Konstantin Haase 是Sinatra当前的维护者，他觉得这两个框架是为了满足不同类型应用的需求。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    尽管有重复和叠加之嫌，它们确实是在解决不同的问题。Rails关注于变形模型驱动的程序，而Sinatra是一个在服务器端处理HTTP消息的类库。如果你想处理HTTPS请求/响应，那么Sinatra是理想的工具；而如果你要处理一个大集成并且需要引入尽可能多地模版时，Rails是不二之选。</pre></div>
+</div>
+
+<p>DHH 也觉得二者之间有区别，他觉得是你的应用程序的规模决定哪个框架更适合些。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    Sinat对应小型应用来说是很棒的，Rails却不是。如果你从小型应用来比较，Sinatra要优于Rails；但是如果是大型的程序，Rails要胜于Sintra。</pre></div>
+</div>
+
+<p>事实上，大部分人认同Rails适合大型工程项目而Sinatra适合小型应用或者API.DHH还说了一个选择Sintra还是Rails的经验：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    如果你的程序只有5到10个接口，使用Sinatra会很方便，毕竟如果你程序的核心部分代码不超过一两个代码页那么还是放在一起好。</pre></div>
+</div>
+
+<p>Github的Rich Olson 也认为Sinatra确实让小型应用变得更加优秀。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    Sinatra在API和小网站（内部应用，GitHub Jobs，等等）上表现的十分完美。</pre></div>
+</div>
+
+<p>DHH 解释为什么Rails构建大型的网络应用时是一个更好的选择：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    Rails成功的很大部分原因是它让程序员可以精挑细选最好的技术（“最好”是被我和Rails社区所定义的）……
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    我每周都修改Rails使它向我认为完美的框架改进。</pre></div>
+</div>
+
+<p>Konstantin Haase分享了他自己对Rails的热爱以及他对rails哲学的认识。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>我喜欢Rails。Rails改变了我们对网络应用的认识。Rails解决的问题许多Sinatra无法解决，因为它为你的应用程序提供了更多的假设。它为你设置了所有的东西而不管你是否会用得到。所以Rails架构上最大的特点就是假设所有的问题都可以用一个工具来解决。</pre></div>
+</div>
+
+<p>我们并不会说在Rails包含了很多我们不需要的东西，反而会觉得在使用它时会获得我们真正想要的东西。这很划算的，特别是我们在构建一个大的项目时。但是并不是所有人都觉得Rails是大型应用的唯一选择的观点， Peepcode Screencasts的Geoffrey Grosenbach 认为这种观点“是过时的，只适用2008年前的Sinatra而不是现在”。他特别指出了一个用Sinatra搭建的优秀应用：Gaug.es用来说明Sinatra在大型网站上的应用是非常胜任的。</p>
+
+<p>尽管如此，Konstantin Haase指出了使用Sinatra构建大型应用的一个可能的问题：<br/>
+        写一个复杂的Sinatra程序（或者一个在Sinatra中加入了其他的东西）要求开发者花费更多的时间去考虑架构和工具。这是有利也有弊。</p>
+
+<p>有的开发者可能觉得这是一个优势因为他们可以紧紧地控制他们程序里的内容并且知道程序的各个模块是如何联系起来的。Geoffrey Grosenbach认为这需要权衡是否需要这样：<br/>
+        使用Sinatra最大的好处是它的稳定，你需要在Rails简便的迁移（generarors）工具和自己的设计之间权衡。使用Sinatra可以让开发者和商业应用一个稳定的API因为这个框架基本上不会改变。你对你的程序有完全的掌控并且可以自己决定什么时间改变它。</p>
+
+<p>他还觉得在一些情况下Sinatra是一个完美的候选方案：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    我所有的新应用程序都是用Sinatra做的，我发现除了几个Rack的插件、一个简单的CouchDB库和负责前端的Backbone.js外我几乎不需要更多的工具就可以完成。</pre></div>
+</div>
+
+<p>雅虎员工以及Cloning Internet Applications with Ruby作者Sau Sheong Chang持有相同的观点：<br/>
+        Sinatra完全满足我对一个基础框架的需求，我需要的其他功能可以通过安装gem或者使用云平台上及其服务（比如heroku已经它所构建的插件生态系统）。剩下的东西我可以自己来编写。</p>
+
+<p>实际上，这种观点可以进一步上升为：你可以用Sinatra定制出完全符合你自己需求的框架。使用Sinatra并结合一些你需要的gem插件来构建你自己定制的框架。事实上， Padrino project 这个框架就是采用这种方式。</p>
+
+<p>DDH 却并不认同这种方式：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    把所有的东西分成很细小的部分然后让开发者自己去集成和Rails的理念已及Rails获得web框架好评的原因相悖。我们花费了大量的时间才做到这一点。尝试去重新做它并不是明智之举。</pre></div>
+</div>
+
+<p>Konstantin Haase提醒说：尽管可以完全决定在应用程序中使用哪些技术和类库很棒，你却需要花费很多时间来完成它。<br/>
+        Sinatra没有为使用者解决的问题就是它没有为你解决问题。你必须自己处理这些问题，可能要花费很多时间来处理它。</p>
+
+<p>如果预算很少，开发人员可能不会对这一点（耗费的时间）有很好的控制。DHH担心使用Sinatra会是在浪费时间来重复发明轮子：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Sinatra给你的便利可能很快会被你必须复制Rails中已经提供的方法所抵消。我很同情那些想仅仅使用Sinatra来搭建类似 Basecamp，GitHub，Shopify之类的网站程序。Rails之所以复杂庞大是因为它包含了解决构建这类大型应用所遇到的大部分问题的方法。想要重新构建这些解决方案的“简洁”奉行者的做法并不简洁。</pre></div>
+</div>
+
+<p>Railscasts的制作者Ryan Bates认为使用Rails的好处就是为一个项目从构想到实现节省很多时间：<br/>
+    Rails应用程序的默认配置提供了我在Sinatra中需要扩展安装的功能，这让使用Rails的开发变得更加快速。</p>
+
+<p>Rick Olson也认为是Rails的帮助才让GitHub从构想到诞生变得更加容易。<br/>
+    我觉得Rails是GitHub创建者在第一年开发中的一个主要的有利工具，他们可以充分利用Rails高水平的功能并且快速迭代。</p>
+
+<p>Chad Fowler(Ruby技术大会的联合组织者）所引述的Rails理念：“约定优于配置”是Rails为什么加快大型项目的开发速度的另一个原因：<br/>
+    Rails的生成器和结构提供了Sinatra所没有的便利。</p>
+
+<p>Rick Olson也指出这种约定有时候会让人觉得像是一些枷锁：<br/>
+    只有你认同了Rails“指定”的约定，Rails才是适合你的黄金之路。</p>
+
+<p>作为对照，Sinatra对使用没有任何限制。 Satish Talim 在 Ruby Learning上引述Aaron Quint 说的话：<br/>
+        Sinatra坚持这样的理念：我们不需要令人生厌的模式（WDNNSP:We Don’t Need No Stinking’ Pattern),这意味着Sinatra可以灵活地使用，Sinatra也没用限制你用什么方式去组织你自己的领域或者业务逻辑。它没有规定的文件夹结构，没有默认的数据库抽象层，对你在什么地方和怎么使用都没有限制。</p>
+
+<p>Sinatra受欢迎的很大原因是它能够让你用任何方式来组织应用程序。Sinatra让你可以不受工程大小、架构和工作流程的限制而自由使用。你可以构建一个API或者网络应用程序或者把你的程序打包成一个gem。</p>
+
+<p>有些人听到DHH是Sinatra精简主义的粉丝可能会吃惊：<br/>
+    我以前用过Sinatra并且也很喜欢它，它提供了一个针对小领域问题的完全不同的方法，并且做到很好。</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

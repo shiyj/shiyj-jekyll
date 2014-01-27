@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="ruby的测试驱动开发实例 - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_ruby的测试驱动开发实例</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/11/23/tdd.html">ruby的测试驱动开发实例</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">23 Nov 2011</span>
+      标签：
+      
+      <a href="/tags/TDD.html">TDD</a>
+      
+      <a href="/tags/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8.html">测试驱动</a>
+      
+      <a href="/tags/Ruby.html">Ruby</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <hr/>
+
+<h2>ruby的测试驱动开发实例</h2>
+
+<hr/>
+
+<p>Ruby被称为&quot;敏捷&quot;的语言,在开发中采用测试驱动会更加<strong>高效</strong>并且充满<strong>乐趣</strong>.</p>
+
+<h4>高效</h4>
+
+<p>刚接触Ruby时感觉它很难&quot;控制&quot;,并且可能是出于某种心理原因,总想在动态语言中找出自己熟悉的如C/C++等在语言、IDE方面相似的内容，<br/>
+不然就会很&quot;惶恐&quot;。这之中最明显的不适应是没有用的顺手的调试工具。</p>
+
+<p>将&quot;调试&quot;和&quot;测试&quot;相提并论我不知道是否合适，我觉得TDD在RUBY上的&quot;高效&quot;就和我们平时使用VC、Eclipse等IDE的调试一样，<br/>
+但更人性化、更可控、更易见易理解。</p>
+
+<h4>乐趣</h4>
+
+<ul>
+<li>每个模块的完成都有&quot;分摊&quot;的成就感，而这是1+1&gt;2的……</li>
+<li>不管失败还是成功，或者是重构时粗心大意，我都知道程序还在我的控制之中</li>
+</ul>
+
+<h3>TDD之旅</h3>
+
+<p>下面就一个具体的小例子来开始我们的TDD之旅.</p>
+
+<p>这个例子要从服务器通过http的request得到类似下列的字符串：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Linux 59
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>Windows 46
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>MacOS 53</pre></div>
+</div>
+
+<p>其中每一行有两个元素：一个字符串和随机数字。返回到客户端是&quot;Linux 59\nWindows 46\nMacOS 53\n&quot;这样一个字符串。</p>
+
+<p>服务器端的实现很简单，我比较喜欢Node.js,但这不是本文重点，就只贴出其代码，有兴趣可以查看相关资料。<br/>
+代码如下：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">var</span> http = require(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http</span><span style="color:#710">&quot;</span></span>);
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    http.createServer(<span style="color:#080;font-weight:bold">function</span>(request, response) {
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        response.writeHead(<span style="color:#00D">200</span>, {<span style="color:#606"><span style="color:#404">&quot;</span><span>Content-Type</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text/plain</span><span style="color:#710">&quot;</span></span>});
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#080;font-weight:bold">var</span> arr = [<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Linux</span><span style="color:#710">'</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Windows</span><span style="color:#710">'</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">MacOS</span><span style="color:#710">'</span></span>];
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#080;font-weight:bold">var</span> outputString=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#080;font-weight:bold">for</span>(<span style="color:#080;font-weight:bold">var</span> i=<span style="color:#00D">0</span>;i&lt;<span style="color:#00D">3</span>;i++){ 
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>            <span style="color:#080;font-weight:bold">var</span> numInput = <span style="color:#00D">100</span>;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>            <span style="color:#080;font-weight:bold">var</span> numOutput = <span style="color:#080;font-weight:bold">new</span> Number(Math.random() * numInput).toFixed(<span style="color:#00D">0</span>);
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>            outputString +=arr[i]+<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20"> </span><span style="color:#710">'</span></span>+numOutput+<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">\n</span><span style="color:#710">'</span></span>;
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        }
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        response.write(outputString);
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        response.end();
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    }).listen(<span style="color:#00D">8080</span>);
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>    console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Random Number Generator Running...</span><span style="color:#710">&quot;</span></span>);
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    console.log(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">http://localhost:8080</span><span style="color:#710">'</span></span>);
+</pre></div>
+</div>
+
+<p>我们要做的是</p>
+
+<ul>
+<li>从服务器读取出字符串</li>
+<li>将字符串按行读出，放入数组</li>
+<li>将每一行重新组合在一个hash表中，key值有:name,:num,:is_even.</li>
+<li>根据每行的那个随机数将其从大到小排列</li>
+<li>判断随机数是否是偶数</li>
+</ul>
+
+<p>最终显示结果为（包括了排序和判断偶数）：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    [{:name=&gt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Linux</span><span style="color:#710">&quot;</span></span>, :num=&gt;<span style="color:#00D">59</span>, :is_even=&gt;<span style="color:#069">false</span>}, 
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>     {:name=&gt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">MacOS</span><span style="color:#710">&quot;</span></span>, :num=&gt;<span style="color:#00D">53</span>, :is_even=&gt;<span style="color:#069">false</span>},
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>     {:name=&gt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Windows</span><span style="color:#710">&quot;</span></span>, :num=&gt;<span style="color:#00D">46</span>, :is_even=&gt;<span style="color:#069">true</span>}]
+</pre></div>
+</div>
+
+<p>TDD的基本思想是在开发功能代码之前先编写测试代码.也即先思考如何测试,并编写测试代码,然后再思考实现这些测试的方法.<br/>
+关于TDD的介绍网上很多,百度百科里介绍的也比较全面,而我们只看实践：<br/>
+首先我们把我们要实现的东西给写出来：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#777">#/home/myhome/mytdd.rb</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">open-uri</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    url = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">http://localhost:8080</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    page = open(url).read
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    p sort_text page
+</pre></div>
+</div>
+
+<p>以上代码前部分是向服务器http://localhost:8080发送请求并取得数据，<br/>
+open-uri是一个可以发送http请求的库，其open函数表示打开response返回的值。<br/>
+我们关注的重点是在 <code>sort_text</code> 这个方法上。<br/>
+很明显，我希望能够通过 <code>sort_text</code>将充服务器读取出来的数据按照我们预想的用hash数组来排序并判断偶数。<br/>
+但是下一步不是去实现这个函数，别忘了我们是“<strong>测试</strong>驱动开发“。<br/>
+先写下测试代码再说：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#777">#/home/myhome/mytdd-tests.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">test/unit</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">./mytdd</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">MytddTests</span> &lt; <span style="color:#036;font-weight:bold">Test</span>::<span style="color:#036;font-weight:bold">Unit</span>::<span style="color:#036;font-weight:bold">TestCase</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">test_sort_text</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>          assert_equal([{<span style="color:#A60">:name</span>=&gt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Linux</span><span style="color:#710">'</span></span>,<span style="color:#A60">:num</span>=&gt;<span style="color:#00D">50</span>,<span style="color:#A60">:is_even</span>=&gt;<span style="color:#069">true</span>},
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                       {<span style="color:#A60">:name</span>=&gt;<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Windows</span><span style="color:#710">'</span></span>, <span style="color:#A60">:num</span>=&gt;<span style="color:#00D">20</span>, <span style="color:#A60">:is_even</span>=&gt;<span style="color:#069">true</span>}],
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                       sort_text(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Windows 20</span><span style="color:#b0b">\n</span><span style="color:#D20">Linux 50</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>))
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>然后运行 <code>ruby mytdd-tests.rb</code>,得到如下提示：<br/>
+    in <code>&lt;top (required)&gt;&#39;: undefined method</code>sort<em>text&#39; for main:Object (NoMethodError)<br/>
+        from &lt;internal:lib/rubygems/custom</em>require&gt;:29:in <code>require&#39;<br/>
+        from &lt;internal:lib/rubygems/custom_require&gt;:29:in</code>require&#39;<br/>
+        from mytdd-test.rb:2:in `&#39;<br/>
+这个错误是必然的，我们还没有实现sort_text自然无法找到这个方法了。<br/>
+虽然这个流程貌似没有多少&quot;实际&quot;意义,但这正是TDD精义的体现.ruby在web上有一个很优美的框架叫Rails,<br/>
+我感觉这个名字能够很好地解释TDD(尽管Rails并不是TDD的专属).简而言之,TDD为编程铺设了&quot;<strong>轨道</strong>&quot;,<br/>
+我们的程序就是运行在这个轨道上的列车.虽然偶尔会发生&quot;不管你信不信反正我是信了&quot;的奇迹,<br/>
+但这个轨道确实能让我们对程序的运行路线有很强的控制.</p>
+
+<p>我们先让测试通过再说,它不是提示没有这个函数吗?没关系,我们在mytdd.rb中定义一个:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">sort_text</span> text
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>等等,怎么什么都没做?!</p>
+
+<p>不是,我们起码让测试可以运行了:<br/>
+    nil<br/>
+    Loaded suite mytdd-test<br/>
+    Started<br/>
+    F<br/>
+    Finished in 0.001084 seconds.</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    1) Failure:
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>test_sort_text(MytddTests) [v2-test.rb:7]:
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&lt;[{:name=&gt;&quot;Linux&quot;, :num=&gt;50, :is_even=&gt;true},
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span> {:name=&gt;&quot;Windows&quot;, :num=&gt;20, :is_even=&gt;true}]&gt; expected but was
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>&lt;nil&gt;.
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>1 tests, 1 assertions, 1 failures, 0 errors, 0 skips
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>Test run options: --seed 53447</pre></div>
+</div>
+
+<p>注意:测试失败和测试运行错误是两回事!!!<br/>
+测试失败表示我们写的功能出错,测试运行错误则是代码有语法错误.</p>
+
+<p>这个测试Failure提示我们:测试期望的结果是一个带hash的数组,而我们实际得到的却是一个nil值.</p>
+
+<p>这样的结果很容易理解,因为我们在mytdd.rb中定义的sort<em>text方法根本什么都没做,自然返回的是nil值.<br/>
+下边重要到实现阶段了.我希望通过三个函数来实现读取数组、构建hash和排序,所以在sort</em>text中我使用了三个方法:</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">sort_text</span> text
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>        arr=read_in_arr text
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        arr_hash=read_in_hash arr
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        result=sort_arr_hash arr_hash
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    <span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+
+<p>然后就是测试，重复上边的步骤：</p>
+
+<ul>
+<li>构建测试代码和数据</li>
+<li>运行测试，有错误，提示找不到方法</li>
+<li>作出三个没有具体实现的方法</li>
+<li>运行测试，无错误，但提示测试用例失败</li>
+<li>实现这三个方法</li>
+<li>再运行测试</li>
+</ul>
+
+<p>整个过程的<a href="/file/mytdd.tar.gz">源代码</a></p>
+
+<p>但这并不是TDD的全部。TDD还有一个重要的环节：重构Refactor。</p>
+
+<h4>重构Refactor</h4>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

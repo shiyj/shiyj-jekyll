@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="spatialite c samples 解析（1） - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_spatialite c samples 解析（1）</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2011/10/29/spatialitecsample.html">spatialite c samples 解析（1）</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">29 Oct 2011</span>
+      标签：
+      
+      <a href="/tags/spatialite.html">spatialite</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <hr/>
+
+<h2><strong>spatialite c samples 解析（1）</strong></h2>
+
+<hr/>
+
+<h4>0.初始化spatialite扩展</h4>
+
+<p>由于spatialite是基于sqlite的扩展，所以在使用sqlite查询之前要先将sqatilate初始化。<br/>
+代码如下<br/>
+    spatialite_init(0);</p>
+
+<h4>1.连接数据库</h4>
+
+<p>sqlite提供的连接数据库方法有三个：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open(
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        sqlite3 **ppDb          <span style="color:#777">/* OUT: SQLite db handle */</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    );
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open16(
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#088;font-weight:bold">const</span> <span style="color:#088;font-weight:bold">void</span> *filename,   <span style="color:#777">/* Database filename (UTF-16) */</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        sqlite3 **ppDb          <span style="color:#777">/* OUT: SQLite db handle */</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    );
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open_v2(
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      sqlite3 **ppDb,         <span style="color:#777">/* OUT: SQLite db handle */</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      <span style="color:#0a8;font-weight:bold">int</span> flags,              <span style="color:#777">/* Flags */</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *zVfs        <span style="color:#777">/* Name of VFS module to use */</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    );
+</pre></div>
+</div>
+
+<p>数据库连接被放在在 *ppDb内，其他的查询操作可以通过它来找到所连接数据库。如果连接成功那么函数返回SQLITE<em>OK;如果出现错误，<br/>
+可以使用sqlite3</em>errmsg() 或者 sqlite3<em>errmsg16()来获取错误的英文说明。需要注意的是，<br/>
+不管是否连接成功，当不再需要数据库连接时，与连接数据库操作的资源都应该通过sqlite3</em>close()来释放。</p>
+
+<p>其中 sqlite3<em>open</em>v2比另外两个多出的两个参数可以对所建立的连接进行额外的操作。<br/>
+例如flags可以取SQLITE<em>OPEN</em>READONLY,SQLITE<em>OPEN</em>READWRITE,SQLITE<em>OPEN</em>READWRITE|SQLITE<em>OPEN</em>CREATE 三个值，并且可以和SQLITE<em>OPEN</em>NOMUTEX,<br/>
+ SQLITE<em>OPEN</em>FULLMUTEX, SQLITE<em>OPEN</em>SHAREDCACHE, SQLITE<em>OPEN</em>PRIVATECACHE, <br/>
+ SQLITE<em>OPEN</em>URI 共同使用（通过或、交（|,&amp;)运算来操作）；zVfs是与操作系统的接口，取NULL则为程序默认。</p>
+
+<h4>2.数据库查询</h4>
+
+<p>此处以<code>sqlite3_prepare_v2</code>为例：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  <span style="color:#0a8;font-weight:bold">int</span> sqlite3_prepare_v2(
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>      sqlite3 *db,            <span style="color:#777">/* Database handle */</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *zSql,       <span style="color:#777">/* SQL statement, UTF-8 encoded */</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>      <span style="color:#0a8;font-weight:bold">int</span> nByte,              <span style="color:#777">/* Maximum length of zSql in bytes. */</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      sqlite3_stmt **ppStmt,  <span style="color:#777">/* OUT: Statement handle */</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> **pzTail     <span style="color:#777">/* OUT: Pointer to unused portion of zSql */</span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  );
+</pre></div>
+</div>
+
+<p>其中 <em>db即为上一步获取的</em>ppDb，zSql是将要编译的SQL查询语句，**ppStmt为操作处理。</p>
+
+<p>当执行prepare后，需要执行一次或多次 </p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite_step(sqlite2_stmt*);
+</pre></div>
+</div>
+
+<p>来读取数据。<br/>
+通过执行</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_column_count(sqlite3_stmt *pStmt);
+</pre></div>
+</div>
+
+<p>可以查出总共查询到数据表的列数。</p>
+
+<p>然后再执行spatialite中针对空间数据BLOB的方法来操作BLOB中的数据，下文再详细解释，先看代码：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    sqlite3 *handle;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    sqlite3_stmt *stmt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    spatialite_init(<span style="color:#00D">0</span>);
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    ret = sqlite3_open_v2(path,&amp;handle,SQLITE_OPEN_READONLY,<span style="color:#069">NULL</span>);
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#080;font-weight:bold">if</span>(ret != SQLITE_OK)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    { <span style="color:#777">//ERROR HERE }</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    sql = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT * FROM mytable</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    ret = sqlite2_prepare_v2(handle,sql,strlen(sql),&amp;stmt,<span style="color:#069">NULL</span>);
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">if</span>(ret != SQLITE_OK)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    { <span style="color:#777">//ERROR HERE }</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    n_columns = sqlite3_column_count(stmt);
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#080;font-weight:bold">while</span>(<span style="color:#069">true</span>)
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    {
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>        ret = sqlite3_step (stmt);
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        <span style="color:#080;font-weight:bold">if</span> (ret == SQLITE_DONE)
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>            <span style="color:#080;font-weight:bold">break</span>;
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>        <span style="color:#080;font-weight:bold">if</span> (ret == SQLITE_ROW)
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>        {
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>            row_no++;
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>            printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">row #%d</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>, row_no);
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        }
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>        <span style="color:#080;font-weight:bold">for</span> (ic = <span style="color:#00D">0</span>; ic &lt; n_columns; ic++)
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        {
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>            printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#b0b">\t</span><span style="color:#D20">%-10s = </span><span style="color:#710">&quot;</span></span>,sqlite3_column_name (stmt, ic));
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>            <span style="color:#080;font-weight:bold">switch</span> (sqlite3_column_type (stmt, ic))
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>            {
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>                <span style="color:#080;font-weight:bold">case</span> SQLITE_INTEGER:
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>                printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">%d</span><span style="color:#710">&quot;</span></span>, sqlite3_column_int (stmt, ic));
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>                    <span style="color:#080;font-weight:bold">break</span>;
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>                <span style="color:#080;font-weight:bold">case</span> SQLITE_BLOB:
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>                    blob = sqlite3_column_blob (stmt, ic);
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>                    blob_size = sqlite3_column_bytes (stmt, ic);
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>                    geom = gaiaFromSpatiaLiteBlobWkb (blob,blob_size);
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>                    <span style="color:#080;font-weight:bold">if</span> (!geom)
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>                        printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">BLOB [%d bytes]</span><span style="color:#710">&quot;</span></span>, blob_size);
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>                    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>                    {
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>                        geom_type = gaiaGeometryType (geom);
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>                        <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_UNKNOWN)
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>                            printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">EMPTY or NULL GEOMETRY</span><span style="color:#710">&quot;</span></span>);
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>                        <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>                        {
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>                            <span style="color:#0a8;font-weight:bold">char</span> *geom_name;
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>                            <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_POINT)
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>                                geom_name = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POINT</span><span style="color:#710">&quot;</span></span>;               
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>                            <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_POLYGON)
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>                                geom_name = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POLYGON</span><span style="color:#710">&quot;</span></span>;
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>                            printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">%s SRID=%d</span><span style="color:#710">&quot;</span></span>, geom_name,geom-&gt;Srid);
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>                            <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_POLYGON ||geom_type ==GAIA_MULTIPOLYGON)
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>                            {
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>                                gaiaGeomCollArea (geom, &amp;measure);
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>                                printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> area=%1.2lf</span><span style="color:#710">&quot;</span></span>, measure);
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>                            }
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>                        }
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>                        gaiaFreeGeomColl (geom);
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>                    }
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>                    <span style="color:#080;font-weight:bold">break</span>;
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>                }
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>    }
+</pre></div>
+</div>
+
+<p>以上代码在列属性上只列出了两个case:Integer和BLOB，Geometry类型也只列出Point和Polygon，<br/>
+更具体的参见<a href="http://www.sqlite.org/c3ref/funclist.html">sqlite c API</a>和<br/>
+<a href="http://www.gaia-gis.it/spatialite/spatialite-C-API-2.3.1.html">spatialite c API</a>。</p>
+
+<p>此处解释上边代码中遇到的几个spatialite函数。<br/>
+首先就是读取出BLOB数据：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#088;font-weight:bold">const</span> <span style="color:#088;font-weight:bold">void</span> * blob;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    blob = sqlite3_column_blob (stmt, ic);
+</pre></div>
+</div>
+
+<p>然后通过spatialite的方法读取为空间处理数据（以gaia开头的函数都是spatialite的方法，而以sqlite开通的为sqlite的方法，spatialite是sqlite的扩展即体现在此处)。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    gaiaGeomCollPtr geom;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    geom = gaiaFromSpatiaLiteBlobWkb (blob,blob_size);
+</pre></div>
+</div>
+
+<p>gaiaGeomCollPtr的定义如下：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaGeomCollStruct {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Srid;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        gaiaPointPtr FirstPoint;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        gaiaLinestringPtr FirstLinestring;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        gaiaPolygonPtr FirstPolygon;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    } gaiaGeomColl;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaGeomColl * gaiaGeomCollPtr;
+</pre></div>
+</div>
+
+<p>可见，gaiaGeomCollPtr 是指针形式，且其数据项包括该地理数据的MBR(Minimum Bounding Rectangle 最小外接矩形)。</p>
+
+<p>gaiaFromSpatiaLiteBlobWkb函数的第一个参数是<code>const unsigned char * blob_wkb</code>,而WKB(Well Known Binary)<br/>
+即为我们从数据库中读取的BLOB格式的数据。也就是说sqlite是将空间数据转换成WKB后存储。</p>
+
+<p>代码后边的<code>gaiaGeometryType gaiaGeomCollArea</code>等方法在此不赘述，详见<br/>
+<a href="http://www.gaia-gis.it/spatialite/spatialite-C-API-2.3.1.html">spatialite c API</a>。</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

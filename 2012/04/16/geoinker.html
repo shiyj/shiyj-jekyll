@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="开源移动GIS解决方案--GeoInker发布 - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_开源移动GIS解决方案--GeoInker发布</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2012/04/16/geoinker.html">开源移动GIS解决方案--GeoInker发布</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">16 Apr 2012</span>
+      标签：
+      
+      <a href="/tags/%E7%A7%BB%E5%8A%A8GIS.html">移动GIS</a>
+      
+      <a href="/tags/GIS.html">GIS</a>
+      
+      <a href="/tags/MobileGIS.html">MobileGIS</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <h3>我的第一个开源程序GeoInker发布!</h3>
+
+<h4>项目地址:<a href="https://github.com/shiyj/GeoInker" rel="nofollow" target="_blank">https://github.com/shiyj/GeoInker</a></h4>
+
+<h4>项目主页:<a href="http://geoinker.com" rel="nofollow" target="_blank">http://geoinker.com</a></h4>
+
+<h3>简介</h3>
+
+<p>GeoInker 是我的毕业设计,目标是搭建一个移动GIS平台,为各个行业应用提供在移动平台上的解决方案.</p>
+
+<p>目前开发的平台只有Android ,不过平台采用到特殊架构方式很容易就可以迁移到Windows Phone,iso等平台,<br/>
+这后边我详细介绍.<br/>
+如果感兴趣可以在github上follow,下边介绍下它目前的开发状况、架构、功能等:</p>
+
+<h3>GeoInker目前开发状况</h3>
+
+<p>GeoInker目前仅仅刚刚搭建好框架,功能不稳定,界面不美观,运行效率低下...</p>
+
+<p>但是,内涵很丰富,具体表现在以下两点:</p>
+
+<blockquote>
+<blockquote>
+<ul>
+<li>1.GeoInker 在移动平台上实习了空间数据库功能,即可以将空间数据存储在关系数据库中,并对其索引、查询和分析.</li>
+<li>2.GeoInker 的UI层采用的是HTML元素结合CSS和Javascript来实现,这就是为什么我上边说&quot;很容易迁移到其他平台&quot;.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+<p>针对第一点,它可以实习复杂的GIS操作,如空间拓扑关系,空间分析,空间索引.当然也包括最基本的增删改查.<br/>
+使用过如PostGIS和Oracke Spatial的应该都很清楚空间数据库是怎么回事.<br/>
+GeoInker采用的是Spatilite数据库,简单、轻巧而功能丰富.</p>
+
+<p>针对第二点,其带来的好处就是更轻松的平台移植,不过仍不能达到完全的&quot;write once run anywhere&quot;，<br/>
+根据需求的不同，也需要大量的中间件来填补差异。当然也不仅仅是平台移植方便，<br/>
+采用JS+HTML+CSS的开发方式其技术上的门槛就很低了。</p>
+
+<p>但是这两个特点带来了一个很大到问题：<strong><em>程序的效率极低！！！</em></strong></p>
+
+<p>对于第一点是受限于移动平台本身的处理能力，这方面可以在查询和处理数据的方法上做改善，<br/>
+但是改善空间不大。</p>
+
+<p>对于第二点效率问题就更加突出,在移动平台本身的处理能力达不到要求的情况下，<br/>
+还要用程序内嵌的浏览器去渲染更加复杂的空间数据，<br/>
+无异于笨熊戴着镣铐去跳舞……</p>
+
+<p>不过我对这些还是比较乐观的，毕竟科技的速度是你无法想像的，<br/>
+更何况在实施这个项目时所锻炼处出来的东西应该超过这个项目本身。<br/>
+<strong>那么还犹豫什么?一同开发它吧!!!</strong><br/>
+下面说一下开发它大致需要什么样的知识和背景,你看下这些东西是否是你感兴趣的.</p>
+
+<h3>需要具备的知识:</h3>
+
+<h4>1.需要熟悉的开发环境</h4>
+
+<ul>
+<li>操作系统: Ubuntu 系列</li>
+<li>IDE: Eclipse </li>
+</ul>
+
+<h4>2.需要掌握的编程语言</h4>
+
+<ul>
+<li>javascript (必须)
+javascript 用来做UI和一些数据绑定获取显示等操作.
+目前用到的类库是处理界面的Sencha Touch和处理GIS数据的openlayers，
+这两个需要掌握.
+此外GeoInker的后台服务我准备使用Node.js+MongoDB，
+javascript在后台也是可以大有作为的。</li>
+<li>Java (了解)
+Android的dalvik虚拟机采用的是Java运行时,
+如果你想调用它的内容如声音震动、联系人列表、文件列表等就必须要知道点Java。
+不过并不需要你去了解J2EE之类的工程级应用，简单到调用接口即可。</li>
+<li>C/C++（选用）
+Android是基于Linux的，所以原生的C/C++代码是可以运行在其中的，
+这也是GeoInker实现空间数据库的方法，不过大部分内容都是利用Spatialite现有的东西，
+需要自己写的并不多，所以C/C++在这个项目里如果想深入需要用到，但不用也可以满足需求。</li>
+<li>git
+git不算是一门语言，它是一个版本控制器，如果你也想参与到GeoInker的话这个是必需的（所幸git也是很简单的），
+如果只是想看看源代码作为正面或反面教材，嘿嘿，就用不到这个。
+不过提醒下，git是Linux的发起人Linus Torvalds继Linux后的另一开源项目，
+其“威望“可想而知。</li>
+</ul>
+
+<h3>最后</h3>
+
+<p>其实准备GeoInker很长时间了，一直都在忙它的功能实现但总是有这样那样的问题迟迟不能发布。<br/>
+包括现在它仍然是一个BUG丛生的程序，不过我想总该有一个开始吧，<br/>
+总该把以前的包袱扔掉接受新鲜的事物。<br/>
+西西弗斯的悲剧是日夜地重复，我性格上的弱点多少也有这点封闭、自卑的重复。<br/>
+我希望的是一个新的开始，新的开放的环境……</p>
+
+<p>Powered by <a href="/about">Engin</a> &amp; toto</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+
