@@ -1,0 +1,233 @@
+---
+title: ruboto入门
+date: 15/03/2014
+slug: start-ruboto
+layout: post
+author: 史英建
+tags: ruboto android
+---
+
+使用ruboto可以在android上用Ruby开发android程序。
+android开发一般使用JAVA，但是借助与JRuby，ruby代码是可以和java互通，这就是ruboto的实现基本思路。
+
+在开始使用ruboto之前，必须声明的是，ruboto并不是开发一个完美android程序的首选。
+虽然我对JAVA没有多少好感，却不得不说在android的开发上，JAVA不管在性能还是文档支持上都有很大的优越性。ruboto和phonegap等这些看起来很酷的技术实际上都无法达到原生应用的性能。所以，如果性能是你考虑的问题，直接用JAVA来吧。
+<!--break-->
+
+
+### 环境配置：
+ruboto 依赖JRuby&JDK（open jdk） 、android sdk，首先需要保证已经安装有这两个：
+由于之前装有rvm，可以直接在rvm中install jruby。
+不过，jruby放在了amazon s3服务器上，如果不设在代理是没法直接安装，
+而在ubuntu下的代理工具一直没有比较好的，懒得折腾就直接在windows下用free，，，，gate下载一个，再切换会ubuntu。
+
+这时无法使用rvm，不过也无所谓了，rvm里边乱七八糟的弄不懂，还不如直接自己设在环境变量：
+
+#### 重置rvm，再将JRuby设在为默认
+具体方法如下：
+
+```shell
+rvm reset
+export ANDROID_HOME=/home/engin/appstore/android-studio/android-studio/sdk
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools:$ANDROID_HOME/platform-tools
+export JRUBY_HOME=/home/engin/appstore/jruby-1.7.10
+export PATH=$PATH:$JRUBY_HOME/bin
+echo $PATH
+```
+将上述代码保存为sh文件，每次在使用ruboto时打开终端，执行`. start_ruboto.sh`就能在当前的终端中使用这个配置。
+
+*** 注意，`. start_ruboto.sh`是一个点号加空格再加文件名称，这是表示在当前的终端执行脚本，脚本的内容就和直接输入的类似点号的作用和 `source`  类似 ***
+
+之后就可以`gem install ruboto`来安装这个gem。
+
+### 创建一个android工程
+ruboto 提供的工具集和rails类似：简化开发工作量，隐藏实现细节。
+创建一个工程只需要如下代码即可为你生成一大堆的文件和代码：
+
+`$ ruboto gen app --package com.yourdomain.whatever --path path/to/where/you/want/the/app --name NameOfApp --target android-version --min-sdk another-android-version --activity MainActivityName`
+
+好吧，这个代码有点烦人，如果你不想copy上边代码，简单点的只需要其中两个：`--package`,`--target`.
+不过如果他默认生成的不合你的要求，你就要自己去`增加工作量`，`实现隐藏的细节`了。
+简洁版的如下：
+
+`$ ruboto gen app  --package com.geoinker.ruboto --target android-15`
+接着会在终端中现实一些实现细节，具体看你创建的文件夹下的内容吧。
+
+### 编译生成
+刚刚创建的那个demo会包含ruboto的一个小例子，直接编译就可以生成apk
+
+`rake install`
+
+rake 后边加上install表示和makd install差不多，如果没有生成apk就先生成apk然后install到android真机或者模拟器上。
+
+如果你在非eclipse下使用纯命令行开发过android程序的话应该明白实际上这句话执行的相当于：
+`ant debug & adb install xxx.apk`
+
+当然rake后边还可以干很多事情，除了基本的debug、release、install之外，还有更新等操作，这些才是ruboto（ruby）的魅力。
+
+如果上述命令执行成功的话，你会看到这样的提示：
+```shell
+-post-build:
+
+debug:
+
+BUILD SUCCESSFUL
+Total time: 18 seconds
+adb shell date -s 20140315.113441
+Sat Mar 15 11:34:34 CST 2014
+Installing package com.geoinker.ruboto
+1403 KB/s (61606 bytes in 0.042s)
+	pkg: /data/local/tmp/Ruboto-debug.apk
+Success
+```
+OK,编译成功，并且也安装到我的手机上了。
+
+#### 可能的错误
+
+不过别高兴太早，你很可能遇到这样的画面：
+
+![第一次使用错误](/images/start_ruboto/first_ruboto.png)
+
+Welcome to Ruboto!  This is the first Ruboto application installed on this device.  To continue, you need to install the Ruboto Core platform package.
+
+
+其实从我们生成的apk的大小上就能看出一些端倪来：
+根目录下的bin文件夹内有生成的apk文件，大小大概在60k左右（基本上是当前工程中所有代码文件的总和）；
+而ruboto是借助JRuby来进行ruby代码与dalvik虚拟机的交流，此外ruboto还自己实现了一些常用Android UI的绑定。
+所以，如果要运行ruboto程序，你必须要至少有JRuby来对ruby代码进行转换。
+
+#### 解决方案
+解决方法之一就是上边错误提示所说的：安装另外一个叫做ruboto-core的程序，相当于一个基础类库，之后你所有的基于ruboto的程序就都不需要JRuby依赖了。
+不过我们开发一个app需要用户再去下载另一个就没有多好的用户体验，说不定中途人家就不再安装了呢，
+更何况你在一部手机上安装2个以上的你开发的ruboto程序的几率有多大呢？
+
+那么还有一种就是将jruby直接打包到当前的工程里边，简单一句命令就OK了：
+```shell
+ruboto gen jruby
+```
+这条命令会将jruby放入工程的的libs目录下，再次打包的时候就会将它打进去。这时你的app就是一个可以独立运行的程序。
+更多的信息可以看[ruboto的wiki](https://github.com/ruboto/ruboto/wiki/Tutorial%3A-Running-Ruboto-without-having-to-install-the-Ruboto-Core)
+
+### ruboto的特点
+作为一个rubyist,恨不得世界上所有的项目/平台都用ruby来实现（IronRuby/JRuby 不就是这样吗？），那么ruboto是不是又是一个ruby发烧友在Android上的玩具呢？
+
+对于这个问题我觉得不是这样理解的，而是：
+1. 我不太了解JAVA，但我想开发Android程序。
+2. 我会Ruby
+
+不然，直接使用Java来吧。
+
+如上所述，ruboto就真的像是一个“玩具”而已，但是在实际开发的过程中，我发现ruboto给了我极大的简洁的快感。
+
+#### NO Eclipse
+每当打开eclipse我都需要停下来喝一杯水，特别是再加上android 那一堆插件后，我在老电脑基本上找不到运指如飞的感觉。
+
+eclipse在内存占用和资源消耗上的问题或许是它成为优秀开源IDE的原因（这一点和chrome很像），
+但当当初的简洁迅速变得越来越庞大时，你也从工具的使用者变成工具的维护者，我觉得这是在浪费生命。
+
+而直接使用ant和android tool来，编译起JAVA来又是一件比较“不明觉厉”的事，出问题了也不知道怎么去修改。而ruby就没有这种顾虑，这样又归到rubyist的逻辑上了……
+
+#### NO Compiling
+关于动态语言和静态语言的对比中，有一个漫画很有意思，在ruboto的github也有：
+![compoling](/images/start_ruboto/compiling.png)
+
+ruboto给我最大的感觉就是更新代码后瞬间就可以push到真机上。并且是一个简单的命令：
+```shell
+$ rake update_scripts:restart
+```
+
+### 使用实例
+虽然通过上面的创建工程命令可以生成一个简单的例子，但是对于初学者可能还是会无从下手。下面通过一个简单的例子来说明ruboto的使用。
+
+这个例子只有一个简单的功能：从网络上获取时间并在界面上显示。
+
+```ruby
+require 'ruboto/widget'
+require 'ruboto/util/toast'
+require 'ruboto/util/stack'
+
+with_large_stack {require 'net/http'}
+
+ruboto_import_widgets :Button, :LinearLayout, :TextView
+
+import 'android.net.Uri'
+# http://xkcd.com/378/
+
+class Run
+  def onCreate(bundle)
+    super
+    set_title 'Rubotto Demo!'
+
+    self.content_view =
+    linear_layout :orientation => :vertical do
+      @text_view = text_view :text => 'GeoInker Test', :id => 42, 
+        :layout => {:width => :match_parent},
+        :gravity => :center, :text_size => 18.0
+      button :text => 'Toast a TOAST', 
+        :layout => {:width => :match_parent},
+        :id => 43, :on_click_listener => proc { butterfly }
+      button :text => 'Get From URL', 
+        :layout => {:width => :match_parent},
+        :id => 44, :on_click_listener => proc { geturl }
+      @data = text_view :text => 'waiting...', :id => 44,
+        :layout => {:width => :match_parent}
+    end
+  rescue Exception
+    puts "Exception creating activity: #{$!}"
+    puts $!.backtrace.join("\n")
+  end
+
+  private
+
+  def log_d str
+    if !(str.is_a? String)
+      Java::android.util.Log.d "AAA","Not String"
+      log_d str.to_s
+      return
+    end
+    Java::android.util.Log.d "AAA",str
+  end
+  def butterfly
+    @num ||= 0
+    @num += 1
+    log_d "xxxxxx"
+    @text_view.text = "GeoInker click #{@num} Time"
+    toast 'Flipped a bit via butterfly'
+  end
+
+  def get_response url
+    log_d url
+    url_str = URI.parse url
+    site = Net::HTTP.new(url_str.host,url_str.port)
+    data = site.get(url_str.request_uri)
+    data.body
+  end
+  def geturl
+    time_url = "http://www.clocklink.com/scripts/PSP/ClockLink/TimeGen.dll?ID=&Clock=5012-Pink&TimeZone=GMT0800&Place=&Random=#{rand 500}"
+    Thread.new do
+      begin
+        txt = get_response(time_url)
+        log_d txt
+        log_d "after url"
+        txt.gsub! /[a-z,A-Z]+=/,''
+        txt.gsub! '&',':'
+        @data.postInvalidate
+        @data.text = txt
+      rescue Exception => e
+        log_d e.class.to_s
+        log_d e.message
+      end
+    end
+  end
+end
+
+```
+#### 说明：
+##### 1.`with_large_stack`的使用
+如果直接在ruboto上使用诸如`open-uri`,`net/http`这类ruby的比较“大”的gem时，往往会出现：“stack level to deep”。使用ruboto提供的`with_large_stack`方法就可以避免这种错误。
+##### 2.在ruby中调用原生API
+这个其实是JRuby的使用，在原Java包的前边加上Java的前缀就可以，比如上述代码中的log_d方法内就使用了android API中的log方法：
+```ruby
+Java::android.util.Log.d "AAA",str
+```
+Powered by [Engin](/about.html) & jekyll
