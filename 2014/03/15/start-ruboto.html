@@ -1,0 +1,333 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="/css/application.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--google analytics 谷歌分析代码-->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-23034032-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    <link rel="alternate" type="application/atom+xml" title="ruboto入门 - feed" href="/index.xml" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>史英建的博客Engin's Blog _-_ruboto入门</title>
+  </head>
+  <body>
+  		
+    <div id="container">
+      <div id="header">
+        <a  href="/"><h3>Shiyj is Talking </h3><img src="/images/ruby.png" height="100"></img></a>
+        <ul>
+          <li><a href="/" class="nav">首页</a></li>
+          <li><a href="/archives.html" class="nav">日志列表</a></li>
+          <li><a href="/tags" class = "nav">标签云</a></li>
+          <li><a href="/about.html" class="page_link">关于我</a></li>
+        </ul>
+      </div>
+      
+     
+			<div id="main" class="clearfix">
+		    <div id="yieldfield">
+		       <article class="post clearfix">
+  <header class="post_header">
+  <h3 class="post_title"><a href="/2014/03/15/start-ruboto.html">ruboto入门</a></h3>
+    <div class="post_info info">
+      作者：<span class="post_at">史英建</span> | 
+      发表于<span class="post_at">15 Mar 2014</span>
+      标签：
+      
+      <a href="/tags/ruboto.html">ruboto</a>
+      
+      <a href="/tags/android.html">android</a>
+      
+    </div>
+  </header>
+
+  <section class="post_body body">
+  <p>使用ruboto可以在android上用Ruby开发android程序。<br/>
+android开发一般使用JAVA，但是借助与JRuby，ruby代码是可以和java互通，这就是ruboto的实现基本思路。</p>
+
+<p>在开始使用ruboto之前，必须声明的是，ruboto并不是开发一个完美android程序的首选。<br/>
+虽然我对JAVA没有多少好感，却不得不说在android的开发上，JAVA不管在性能还是文档支持上都有很大的优越性。ruboto和phonegap等这些看起来很酷的技术实际上都无法达到原生应用的性能。所以，如果性能是你考虑的问题，直接用JAVA来吧。<br/>
+&lt;!--break--&gt;</p>
+
+<h3>环境配置：</h3>
+
+<p>ruboto 依赖JRuby&amp;JDK（open jdk） 、android sdk，首先需要保证已经安装有这两个：<br/>
+由于之前装有rvm，可以直接在rvm中install jruby。<br/>
+不过，jruby放在了amazon s3服务器上，如果不设在代理是没法直接安装，<br/>
+而在ubuntu下的代理工具一直没有比较好的，懒得折腾就直接在windows下用free，，，，gate下载一个，再切换会ubuntu。</p>
+
+<p>这时无法使用rvm，不过也无所谓了，rvm里边乱七八糟的弄不懂，还不如直接自己设在环境变量：</p>
+
+<h4>重置rvm，再将JRuby设在为默认</h4>
+
+<p>具体方法如下：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rvm reset
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>export ANDROID_HOME=/home/engin/appstore/android-studio/android-studio/sdk
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools:$ANDROID_HOME/platform-tools
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>export JRUBY_HOME=/home/engin/appstore/jruby-1.7.10
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>export PATH=$PATH:$JRUBY_HOME/bin
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>echo $PATH
+</pre></div>
+</div>
+
+<p>将上述代码保存为sh文件，每次在使用ruboto时打开终端，执行<code>. start_ruboto.sh</code>就能在当前的终端中使用这个配置。</p>
+
+<p>*** 注意，<code>. start_ruboto.sh</code>是一个点号加空格再加文件名称，这是表示在当前的终端执行脚本，脚本的内容就和直接输入的类似点号的作用和 <code>source</code>  类似 ***</p>
+
+<p>之后就可以<code>gem install ruboto</code>来安装这个gem。</p>
+
+<h3>创建一个android工程</h3>
+
+<p>ruboto 提供的工具集和rails类似：简化开发工作量，隐藏实现细节。<br/>
+创建一个工程只需要如下代码即可为你生成一大堆的文件和代码：</p>
+
+<p><code>$ ruboto gen app --package com.yourdomain.whatever --path path/to/where/you/want/the/app --name NameOfApp --target android-version --min-sdk another-android-version --activity MainActivityName</code></p>
+
+<p>好吧，这个代码有点烦人，如果你不想copy上边代码，简单点的只需要其中两个：<code>--package</code>,<code>--target</code>.<br/>
+不过如果他默认生成的不合你的要求，你就要自己去<code>增加工作量</code>，<code>实现隐藏的细节</code>了。<br/>
+简洁版的如下：</p>
+
+<p><code>$ ruboto gen app  --package com.geoinker.ruboto --target android-15</code><br/>
+接着会在终端中现实一些实现细节，具体看你创建的文件夹下的内容吧。</p>
+
+<h3>编译生成</h3>
+
+<p>刚刚创建的那个demo会包含ruboto的一个小例子，直接编译就可以生成apk</p>
+
+<p><code>rake install</code></p>
+
+<p>rake 后边加上install表示和makd install差不多，如果没有生成apk就先生成apk然后install到android真机或者模拟器上。</p>
+
+<p>如果你在非eclipse下使用纯命令行开发过android程序的话应该明白实际上这句话执行的相当于：<br/>
+<code>ant debug &amp; adb install xxx.apk</code></p>
+
+<p>当然rake后边还可以干很多事情，除了基本的debug、release、install之外，还有更新等操作，这些才是ruboto（ruby）的魅力。</p>
+
+<p>如果上述命令执行成功的话，你会看到这样的提示：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>-post-build:
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>debug:
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>BUILD SUCCESSFUL
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>Total time: 18 seconds
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>adb shell date -s 20140315.113441
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>Sat Mar 15 11:34:34 CST 2014
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>Installing package com.geoinker.ruboto
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>1403 KB/s (61606 bytes in 0.042s)
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    pkg: /data/local/tmp/Ruboto-debug.apk
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>Success
+</pre></div>
+</div>
+
+<p>OK,编译成功，并且也安装到我的手机上了。</p>
+
+<h4>可能的错误</h4>
+
+<p>不过别高兴太早，你很可能遇到这样的画面：</p>
+
+<p><img src="/images/start_ruboto/first_ruboto.png" alt="第一次使用错误"/></p>
+
+<p>Welcome to Ruboto!  This is the first Ruboto application installed on this device.  To continue, you need to install the Ruboto Core platform package.</p>
+
+<p>其实从我们生成的apk的大小上就能看出一些端倪来：<br/>
+根目录下的bin文件夹内有生成的apk文件，大小大概在60k左右（基本上是当前工程中所有代码文件的总和）；<br/>
+而ruboto是借助JRuby来进行ruby代码与dalvik虚拟机的交流，此外ruboto还自己实现了一些常用Android UI的绑定。<br/>
+所以，如果要运行ruboto程序，你必须要至少有JRuby来对ruby代码进行转换。</p>
+
+<h4>解决方案</h4>
+
+<p>解决方法之一就是上边错误提示所说的：安装另外一个叫做ruboto-core的程序，相当于一个基础类库，之后你所有的基于ruboto的程序就都不需要JRuby依赖了。<br/>
+不过我们开发一个app需要用户再去下载另一个就没有多好的用户体验，说不定中途人家就不再安装了呢，<br/>
+更何况你在一部手机上安装2个以上的你开发的ruboto程序的几率有多大呢？</p>
+
+<p>那么还有一种就是将jruby直接打包到当前的工程里边，简单一句命令就OK了：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ruboto gen jruby
+</pre></div>
+</div>
+
+<p>这条命令会将jruby放入工程的的libs目录下，再次打包的时候就会将它打进去。这时你的app就是一个可以独立运行的程序。<br/>
+更多的信息可以看<a href="https://github.com/ruboto/ruboto/wiki/Tutorial%3A-Running-Ruboto-without-having-to-install-the-Ruboto-Core">ruboto的wiki</a></p>
+
+<h3>ruboto的特点</h3>
+
+<p>作为一个rubyist,恨不得世界上所有的项目/平台都用ruby来实现（IronRuby/JRuby 不就是这样吗？），那么ruboto是不是又是一个ruby发烧友在Android上的玩具呢？</p>
+
+<p>对于这个问题我觉得不是这样理解的，而是：<br/>
+1. 我不太了解JAVA，但我想开发Android程序。<br/>
+2. 我会Ruby</p>
+
+<p>不然，直接使用Java来吧。</p>
+
+<p>如上所述，ruboto就真的像是一个“玩具”而已，但是在实际开发的过程中，我发现ruboto给了我极大的简洁的快感。</p>
+
+<h4>NO Eclipse</h4>
+
+<p>每当打开eclipse我都需要停下来喝一杯水，特别是再加上android 那一堆插件后，我在老电脑基本上找不到运指如飞的感觉。</p>
+
+<p>eclipse在内存占用和资源消耗上的问题或许是它成为优秀开源IDE的原因（这一点和chrome很像），<br/>
+但当当初的简洁迅速变得越来越庞大时，你也从工具的使用者变成工具的维护者，我觉得这是在浪费生命。</p>
+
+<p>而直接使用ant和android tool来，编译起JAVA来又是一件比较“不明觉厉”的事，出问题了也不知道怎么去修改。而ruby就没有这种顾虑，这样又归到rubyist的逻辑上了……</p>
+
+<h4>NO Compiling</h4>
+
+<p>关于动态语言和静态语言的对比中，有一个漫画很有意思，在ruboto的github也有：<br/>
+<img src="/images/start_ruboto/compiling.png" alt="compoling"/></p>
+
+<p>ruboto给我最大的感觉就是更新代码后瞬间就可以push到真机上。并且是一个简单的命令：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>$ rake update_scripts:restart
+</pre></div>
+</div>
+
+<h3>使用实例</h3>
+
+<p>虽然通过上面的创建工程命令可以生成一个简单的例子，但是对于初学者可能还是会无从下手。下面通过一个简单的例子来说明ruboto的使用。</p>
+
+<p>这个例子只有一个简单的功能：从网络上获取时间并在界面上显示。</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ruboto/widget</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ruboto/util/toast</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">ruboto/util/stack</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>with_large_stack {require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net/http</span><span style="color:#710">'</span></span>}
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>ruboto_import_widgets <span style="color:#A60">:Button</span>, <span style="color:#A60">:LinearLayout</span>, <span style="color:#A60">:TextView</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>import <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">android.net.Uri</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span><span style="color:#777"># http://xkcd.com/378/</span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span><span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Run</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">onCreate</span>(bundle)
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#080;font-weight:bold">super</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    set_title <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Rubotto Demo!</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    <span style="color:#069">self</span>.content_view =
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>    linear_layout <span style="color:#A60">:orientation</span> =&gt; <span style="color:#A60">:vertical</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>      <span style="color:#33B">@text_view</span> = text_view <span style="color:#A60">:text</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">GeoInker Test</span><span style="color:#710">'</span></span>, <span style="color:#A60">:id</span> =&gt; <span style="color:#00D">42</span>, 
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>        <span style="color:#A60">:layout</span> =&gt; {<span style="color:#A60">:width</span> =&gt; <span style="color:#A60">:match_parent</span>},
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        <span style="color:#A60">:gravity</span> =&gt; <span style="color:#A60">:center</span>, <span style="color:#A60">:text_size</span> =&gt; <span style="color:#60E">18.0</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>      button <span style="color:#A60">:text</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Toast a TOAST</span><span style="color:#710">'</span></span>, 
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        <span style="color:#A60">:layout</span> =&gt; {<span style="color:#A60">:width</span> =&gt; <span style="color:#A60">:match_parent</span>},
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>        <span style="color:#A60">:id</span> =&gt; <span style="color:#00D">43</span>, <span style="color:#A60">:on_click_listener</span> =&gt; proc { butterfly }
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>      button <span style="color:#A60">:text</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Get From URL</span><span style="color:#710">'</span></span>, 
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>        <span style="color:#A60">:layout</span> =&gt; {<span style="color:#A60">:width</span> =&gt; <span style="color:#A60">:match_parent</span>},
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        <span style="color:#A60">:id</span> =&gt; <span style="color:#00D">44</span>, <span style="color:#A60">:on_click_listener</span> =&gt; proc { geturl }
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>      <span style="color:#33B">@data</span> = text_view <span style="color:#A60">:text</span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">waiting...</span><span style="color:#710">'</span></span>, <span style="color:#A60">:id</span> =&gt; <span style="color:#00D">44</span>,
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>        <span style="color:#A60">:layout</span> =&gt; {<span style="color:#A60">:width</span> =&gt; <span style="color:#A60">:match_parent</span>}
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>  <span style="color:#080;font-weight:bold">rescue</span> <span style="color:#036;font-weight:bold">Exception</span>
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>    puts <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Exception creating activity: </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#d70">$!</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>    puts <span style="color:#d70">$!</span>.backtrace.join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span>)
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>  private
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">log_d</span> str
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>    <span style="color:#080;font-weight:bold">if</span> !(str.is_a? <span style="color:#036;font-weight:bold">String</span>)
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>      <span style="color:#036;font-weight:bold">Java</span>::android.util.Log.d <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AAA</span><span style="color:#710">&quot;</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Not String</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>      log_d str.to_s
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>      <span style="color:#080;font-weight:bold">return</span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>    <span style="color:#036;font-weight:bold">Java</span>::android.util.Log.d <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AAA</span><span style="color:#710">&quot;</span></span>,str
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">butterfly</span>
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>    <span style="color:#33B">@num</span> ||= <span style="color:#00D">0</span>
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>    <span style="color:#33B">@num</span> += <span style="color:#00D">1</span>
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>    log_d <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">xxxxxx</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>    <span style="color:#33B">@text_view</span>.text = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">GeoInker click </span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@num</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20"> Time</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>    toast <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Flipped a bit via butterfly</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">get_response</span> url
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>    log_d url
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>    url_str = <span style="color:#036;font-weight:bold">URI</span>.parse url
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>    site = <span style="color:#036;font-weight:bold">Net</span>::<span style="color:#036;font-weight:bold">HTTP</span>.new(url_str.host,url_str.port)
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>    data = site.get(url_str.request_uri)
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>    data.body
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">geturl</span>
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>    time_url = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://www.clocklink.com/scripts/PSP/ClockLink/TimeGen.dll?ID=&amp;Clock=5012-Pink&amp;TimeZone=GMT0800&amp;Place=&amp;Random=</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span>rand <span style="color:#00D">500</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span>    <span style="color:#036;font-weight:bold">Thread</span>.new <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n64" name="n64">64</a></span>      <span style="color:#080;font-weight:bold">begin</span>
+<span class="line-numbers"><a href="#n65" name="n65">65</a></span>        txt = get_response(time_url)
+<span class="line-numbers"><a href="#n66" name="n66">66</a></span>        log_d txt
+<span class="line-numbers"><a href="#n67" name="n67">67</a></span>        log_d <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">after url</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n68" name="n68">68</a></span>        txt.gsub! <span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">[a-z,A-Z]+=</span><span style="color:#404">/</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n69" name="n69">69</a></span>        txt.gsub! <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&amp;</span><span style="color:#710">'</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">:</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><strong><a href="#n70" name="n70">70</a></strong></span>        <span style="color:#33B">@data</span>.postInvalidate
+<span class="line-numbers"><a href="#n71" name="n71">71</a></span>        <span style="color:#33B">@data</span>.text = txt
+<span class="line-numbers"><a href="#n72" name="n72">72</a></span>      <span style="color:#080;font-weight:bold">rescue</span> <span style="color:#036;font-weight:bold">Exception</span> =&gt; e
+<span class="line-numbers"><a href="#n73" name="n73">73</a></span>        log_d e.class.to_s
+<span class="line-numbers"><a href="#n74" name="n74">74</a></span>        log_d e.message
+<span class="line-numbers"><a href="#n75" name="n75">75</a></span>      <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n76" name="n76">76</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n77" name="n77">77</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n78" name="n78">78</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n79" name="n79">79</a></span>
+</pre></div>
+</div>
+
+<h4>说明：</h4>
+
+<h5>1.<code>with_large_stack</code>的使用</h5>
+
+<p>如果直接在ruboto上使用诸如<code>open-uri</code>,<code>net/http</code>这类ruby的比较“大”的gem时，往往会出现：“stack level to deep”。使用ruboto提供的<code>with_large_stack</code>方法就可以避免这种错误。</p>
+
+<h5>2.在ruby中调用原生API</h5>
+
+<p>这个其实是JRuby的使用，在原Java包的前边加上Java的前缀就可以，比如上述代码中的log_d方法内就使用了android API中的log方法：</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#036;font-weight:bold">Java</span>::android.util.Log.d <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AAA</span><span style="color:#710">&quot;</span></span>,str
+</pre></div>
+</div>
+
+<p>Powered by <a href="/about.html">Engin</a> &amp; jekyll</p>
+
+  </section>
+  <section id="comment_form" class="comment_form clearfix">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'enginblog'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+</article>
+
+
+		    </div>
+				<div id="webleft">
+					<embed src="/images/time.swf" wmode="transparent" width="200px" height="100px"></embed>
+          <iframe frameborder="0" scrolling="no" src="http://v.t.qq.com/show/show.php?n=giszzu&w=202&h=452&fl=1&l=2&o=29&c=1&si=e9d8d3d76e7861abaf728b6778b40fc997220bc8" width="202" height="452">
+          </iframe>
+        </div>
+			</div>
+      <div id="footer" class="clearfix">
+        &copy; <a href="http://about.me/shiyj">史英建</a> | <a href="http://github.com/shiyj">源代码</a>|<a href="/about.html">关于我</a>
+      </div>
+
+    </div>
+  </body>
+</html>
+

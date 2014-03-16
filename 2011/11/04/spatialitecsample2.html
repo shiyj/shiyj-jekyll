@@ -73,9 +73,9 @@
 <p>当然也有gaiaAddLinestringToGeomColl,gaiaAddPolygonToGeomColl来分别对应点,线,面.<br/>
 所不同的是线和面的分配方法稍微复杂些,函数的定义如下:</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#088;font-weight:bold">void</span> gaiaAddPointToGeomColl( gaiaGeomCollPtr p , <span style="color:#0a8;font-weight:bold">double</span> x , <span style="color:#0a8;font-weight:bold">double</span> y );
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    gaiaLinestringPtr gaiaAddLinestringToGeomColl ( gaiaGeomCollPtr p , <span style="color:#0a8;font-weight:bold">int</span> points);
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    gaiaPolygonPtr gaiaAddPolygonToGeomColl (gaiaGeomCollPtr p, <span style="color:#0a8;font-weight:bold">int</span> points, <span style="color:#0a8;font-weight:bold">int</span> num_interiors);
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#088;font-weight:bold">void</span> gaiaAddPointToGeomColl( gaiaGeomCollPtr p , <span style="color:#0a5;font-weight:bold">double</span> x , <span style="color:#0a5;font-weight:bold">double</span> y );
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    gaiaLinestringPtr gaiaAddLinestringToGeomColl ( gaiaGeomCollPtr p , <span style="color:#0a5;font-weight:bold">int</span> points);
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    gaiaPolygonPtr gaiaAddPolygonToGeomColl (gaiaGeomCollPtr p, <span style="color:#0a5;font-weight:bold">int</span> points, <span style="color:#0a5;font-weight:bold">int</span> num_interiors);
 </pre></div>
 </div>
 
@@ -95,14 +95,14 @@
 <p>需要注意的是line,它是geo<em>ln的一个成员,可以指向geo</em>ln,从gaiaGeomCollPtr的定义可以看出:</p>
 <div class="CodeRay">
   <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaGeomCollStruct {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Srid;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a5;font-weight:bold">int</span> Srid;
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        gaiaPointPtr FirstPoint;
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        gaiaLinestringPtr FirstLinestring;
 <span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        gaiaPolygonPtr FirstPolygon;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxY;
 <span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    }gaiaGeomColl;
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaGeomColl * gaiaGeomCollPtr;
 </pre></div>
@@ -111,12 +111,12 @@
 <p>真正的数据是存储在 FirstLinestring所指向的内存空间.</p>
 <div class="CodeRay">
   <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaLinestringStruct {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Points;
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#0a8;font-weight:bold">double</span> * Coords;
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a5;font-weight:bold">int</span> Points;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        <span style="color:#0a5;font-weight:bold">double</span> * Coords;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxY;
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#080;font-weight:bold">struct</span> gaiaLinestringStruct * Next;
 <span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    }gaiaLinestring;
 <span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaLinestring * gaiaLinestringPtr;

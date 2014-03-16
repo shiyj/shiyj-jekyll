@@ -4,13 +4,265 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2014-01-27T14:55:00+08:00</updated>
+ <updated>2014-03-16T22:48:35+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>ruboto入门</title>
+   <link href="http://tom.preston-werner.com/2014/03/15/start-ruboto.html"/>
+   <updated>2014-03-15T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2014/03/15/start-ruboto</id>
+   <content type="html">&lt;p&gt;使用ruboto可以在android上用Ruby开发android程序。&lt;br/&gt;
+android开发一般使用JAVA，但是借助与JRuby，ruby代码是可以和java互通，这就是ruboto的实现基本思路。&lt;/p&gt;
+
+&lt;p&gt;在开始使用ruboto之前，必须声明的是，ruboto并不是开发一个完美android程序的首选。&lt;br/&gt;
+虽然我对JAVA没有多少好感，却不得不说在android的开发上，JAVA不管在性能还是文档支持上都有很大的优越性。ruboto和phonegap等这些看起来很酷的技术实际上都无法达到原生应用的性能。所以，如果性能是你考虑的问题，直接用JAVA来吧。&lt;br/&gt;
+&amp;lt;!--break--&amp;gt;&lt;/p&gt;
+
+&lt;h3&gt;环境配置：&lt;/h3&gt;
+
+&lt;p&gt;ruboto 依赖JRuby&amp;amp;JDK（open jdk） 、android sdk，首先需要保证已经安装有这两个：&lt;br/&gt;
+由于之前装有rvm，可以直接在rvm中install jruby。&lt;br/&gt;
+不过，jruby放在了amazon s3服务器上，如果不设在代理是没法直接安装，&lt;br/&gt;
+而在ubuntu下的代理工具一直没有比较好的，懒得折腾就直接在windows下用free，，，，gate下载一个，再切换会ubuntu。&lt;/p&gt;
+
+&lt;p&gt;这时无法使用rvm，不过也无所谓了，rvm里边乱七八糟的弄不懂，还不如直接自己设在环境变量：&lt;/p&gt;
+
+&lt;h4&gt;重置rvm，再将JRuby设在为默认&lt;/h4&gt;
+
+&lt;p&gt;具体方法如下：&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;rvm reset
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;export ANDROID_HOME=/home/engin/appstore/android-studio/android-studio/sdk
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools:$ANDROID_HOME/platform-tools
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;export JRUBY_HOME=/home/engin/appstore/jruby-1.7.10
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;export PATH=$PATH:$JRUBY_HOME/bin
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;echo $PATH
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;将上述代码保存为sh文件，每次在使用ruboto时打开终端，执行&lt;code&gt;. start_ruboto.sh&lt;/code&gt;就能在当前的终端中使用这个配置。&lt;/p&gt;
+
+&lt;p&gt;*** 注意，&lt;code&gt;. start_ruboto.sh&lt;/code&gt;是一个点号加空格再加文件名称，这是表示在当前的终端执行脚本，脚本的内容就和直接输入的类似点号的作用和 &lt;code&gt;source&lt;/code&gt;  类似 ***&lt;/p&gt;
+
+&lt;p&gt;之后就可以&lt;code&gt;gem install ruboto&lt;/code&gt;来安装这个gem。&lt;/p&gt;
+
+&lt;h3&gt;创建一个android工程&lt;/h3&gt;
+
+&lt;p&gt;ruboto 提供的工具集和rails类似：简化开发工作量，隐藏实现细节。&lt;br/&gt;
+创建一个工程只需要如下代码即可为你生成一大堆的文件和代码：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ruboto gen app --package com.yourdomain.whatever --path path/to/where/you/want/the/app --name NameOfApp --target android-version --min-sdk another-android-version --activity MainActivityName&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;好吧，这个代码有点烦人，如果你不想copy上边代码，简单点的只需要其中两个：&lt;code&gt;--package&lt;/code&gt;,&lt;code&gt;--target&lt;/code&gt;.&lt;br/&gt;
+不过如果他默认生成的不合你的要求，你就要自己去&lt;code&gt;增加工作量&lt;/code&gt;，&lt;code&gt;实现隐藏的细节&lt;/code&gt;了。&lt;br/&gt;
+简洁版的如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ ruboto gen app  --package com.geoinker.ruboto --target android-15&lt;/code&gt;&lt;br/&gt;
+接着会在终端中现实一些实现细节，具体看你创建的文件夹下的内容吧。&lt;/p&gt;
+
+&lt;h3&gt;编译生成&lt;/h3&gt;
+
+&lt;p&gt;刚刚创建的那个demo会包含ruboto的一个小例子，直接编译就可以生成apk&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;rake install&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;rake 后边加上install表示和makd install差不多，如果没有生成apk就先生成apk然后install到android真机或者模拟器上。&lt;/p&gt;
+
+&lt;p&gt;如果你在非eclipse下使用纯命令行开发过android程序的话应该明白实际上这句话执行的相当于：&lt;br/&gt;
+&lt;code&gt;ant debug &amp;amp; adb install xxx.apk&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;当然rake后边还可以干很多事情，除了基本的debug、release、install之外，还有更新等操作，这些才是ruboto（ruby）的魅力。&lt;/p&gt;
+
+&lt;p&gt;如果上述命令执行成功的话，你会看到这样的提示：&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;-post-build:
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;debug:
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;BUILD SUCCESSFUL
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;Total time: 18 seconds
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;adb shell date -s 20140315.113441
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;Sat Mar 15 11:34:34 CST 2014
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;Installing package com.geoinker.ruboto
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;1403 KB/s (61606 bytes in 0.042s)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    pkg: /data/local/tmp/Ruboto-debug.apk
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;Success
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;OK,编译成功，并且也安装到我的手机上了。&lt;/p&gt;
+
+&lt;h4&gt;可能的错误&lt;/h4&gt;
+
+&lt;p&gt;不过别高兴太早，你很可能遇到这样的画面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/start_ruboto/first_ruboto.png&quot; alt=&quot;第一次使用错误&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Welcome to Ruboto!  This is the first Ruboto application installed on this device.  To continue, you need to install the Ruboto Core platform package.&lt;/p&gt;
+
+&lt;p&gt;其实从我们生成的apk的大小上就能看出一些端倪来：&lt;br/&gt;
+根目录下的bin文件夹内有生成的apk文件，大小大概在60k左右（基本上是当前工程中所有代码文件的总和）；&lt;br/&gt;
+而ruboto是借助JRuby来进行ruby代码与dalvik虚拟机的交流，此外ruboto还自己实现了一些常用Android UI的绑定。&lt;br/&gt;
+所以，如果要运行ruboto程序，你必须要至少有JRuby来对ruby代码进行转换。&lt;/p&gt;
+
+&lt;h4&gt;解决方案&lt;/h4&gt;
+
+&lt;p&gt;解决方法之一就是上边错误提示所说的：安装另外一个叫做ruboto-core的程序，相当于一个基础类库，之后你所有的基于ruboto的程序就都不需要JRuby依赖了。&lt;br/&gt;
+不过我们开发一个app需要用户再去下载另一个就没有多好的用户体验，说不定中途人家就不再安装了呢，&lt;br/&gt;
+更何况你在一部手机上安装2个以上的你开发的ruboto程序的几率有多大呢？&lt;/p&gt;
+
+&lt;p&gt;那么还有一种就是将jruby直接打包到当前的工程里边，简单一句命令就OK了：&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;ruboto gen jruby
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这条命令会将jruby放入工程的的libs目录下，再次打包的时候就会将它打进去。这时你的app就是一个可以独立运行的程序。&lt;br/&gt;
+更多的信息可以看&lt;a href=&quot;https://github.com/ruboto/ruboto/wiki/Tutorial%3A-Running-Ruboto-without-having-to-install-the-Ruboto-Core&quot;&gt;ruboto的wiki&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;ruboto的特点&lt;/h3&gt;
+
+&lt;p&gt;作为一个rubyist,恨不得世界上所有的项目/平台都用ruby来实现（IronRuby/JRuby 不就是这样吗？），那么ruboto是不是又是一个ruby发烧友在Android上的玩具呢？&lt;/p&gt;
+
+&lt;p&gt;对于这个问题我觉得不是这样理解的，而是：&lt;br/&gt;
+1. 我不太了解JAVA，但我想开发Android程序。&lt;br/&gt;
+2. 我会Ruby&lt;/p&gt;
+
+&lt;p&gt;不然，直接使用Java来吧。&lt;/p&gt;
+
+&lt;p&gt;如上所述，ruboto就真的像是一个“玩具”而已，但是在实际开发的过程中，我发现ruboto给了我极大的简洁的快感。&lt;/p&gt;
+
+&lt;h4&gt;NO Eclipse&lt;/h4&gt;
+
+&lt;p&gt;每当打开eclipse我都需要停下来喝一杯水，特别是再加上android 那一堆插件后，我在老电脑基本上找不到运指如飞的感觉。&lt;/p&gt;
+
+&lt;p&gt;eclipse在内存占用和资源消耗上的问题或许是它成为优秀开源IDE的原因（这一点和chrome很像），&lt;br/&gt;
+但当当初的简洁迅速变得越来越庞大时，你也从工具的使用者变成工具的维护者，我觉得这是在浪费生命。&lt;/p&gt;
+
+&lt;p&gt;而直接使用ant和android tool来，编译起JAVA来又是一件比较“不明觉厉”的事，出问题了也不知道怎么去修改。而ruby就没有这种顾虑，这样又归到rubyist的逻辑上了……&lt;/p&gt;
+
+&lt;h4&gt;NO Compiling&lt;/h4&gt;
+
+&lt;p&gt;关于动态语言和静态语言的对比中，有一个漫画很有意思，在ruboto的github也有：&lt;br/&gt;
+&lt;img src=&quot;/images/start_ruboto/compiling.png&quot; alt=&quot;compoling&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;ruboto给我最大的感觉就是更新代码后瞬间就可以push到真机上。并且是一个简单的命令：&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;$ rake update_scripts:restart
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;使用实例&lt;/h3&gt;
+
+&lt;p&gt;虽然通过上面的创建工程命令可以生成一个简单的例子，但是对于初学者可能还是会无从下手。下面通过一个简单的例子来说明ruboto的使用。&lt;/p&gt;
+
+&lt;p&gt;这个例子只有一个简单的功能：从网络上获取时间并在界面上显示。&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;require &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;ruboto/widget&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;require &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;ruboto/util/toast&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;require &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;ruboto/util/stack&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;with_large_stack {require &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;net/http&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;}
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;ruboto_import_widgets &lt;span style=&quot;color:#A60&quot;&gt;:Button&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:LinearLayout&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:TextView&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;import &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;android.net.Uri&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;span style=&quot;color:#777&quot;&gt;# http://xkcd.com/378/&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color:#B06;font-weight:bold&quot;&gt;Run&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;onCreate&lt;/span&gt;(bundle)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;super&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    set_title &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Rubotto Demo!&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#069&quot;&gt;self&lt;/span&gt;.content_view =
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;    linear_layout &lt;span style=&quot;color:#A60&quot;&gt;:orientation&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:vertical&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#33B&quot;&gt;@text_view&lt;/span&gt; = text_view &lt;span style=&quot;color:#A60&quot;&gt;:text&lt;/span&gt; =&amp;gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;GeoInker Test&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:id&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;42&lt;/span&gt;, 
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:layout&lt;/span&gt; =&amp;gt; {&lt;span style=&quot;color:#A60&quot;&gt;:width&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:match_parent&lt;/span&gt;},
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:gravity&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:center&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:text_size&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#60E&quot;&gt;18.0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;      button &lt;span style=&quot;color:#A60&quot;&gt;:text&lt;/span&gt; =&amp;gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Toast a TOAST&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, 
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n23&quot; name=&quot;n23&quot;&gt;23&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:layout&lt;/span&gt; =&amp;gt; {&lt;span style=&quot;color:#A60&quot;&gt;:width&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:match_parent&lt;/span&gt;},
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n24&quot; name=&quot;n24&quot;&gt;24&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:id&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;43&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:on_click_listener&lt;/span&gt; =&amp;gt; proc { butterfly }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n25&quot; name=&quot;n25&quot;&gt;25&lt;/a&gt;&lt;/span&gt;      button &lt;span style=&quot;color:#A60&quot;&gt;:text&lt;/span&gt; =&amp;gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Get From URL&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, 
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n26&quot; name=&quot;n26&quot;&gt;26&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:layout&lt;/span&gt; =&amp;gt; {&lt;span style=&quot;color:#A60&quot;&gt;:width&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:match_parent&lt;/span&gt;},
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n27&quot; name=&quot;n27&quot;&gt;27&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:id&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;44&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:on_click_listener&lt;/span&gt; =&amp;gt; proc { geturl }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n28&quot; name=&quot;n28&quot;&gt;28&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#33B&quot;&gt;@data&lt;/span&gt; = text_view &lt;span style=&quot;color:#A60&quot;&gt;:text&lt;/span&gt; =&amp;gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;waiting...&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;color:#A60&quot;&gt;:id&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;44&lt;/span&gt;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n29&quot; name=&quot;n29&quot;&gt;29&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#A60&quot;&gt;:layout&lt;/span&gt; =&amp;gt; {&lt;span style=&quot;color:#A60&quot;&gt;:width&lt;/span&gt; =&amp;gt; &lt;span style=&quot;color:#A60&quot;&gt;:match_parent&lt;/span&gt;}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n30&quot; name=&quot;n30&quot;&gt;30&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n31&quot; name=&quot;n31&quot;&gt;31&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;rescue&lt;/span&gt; &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Exception&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n32&quot; name=&quot;n32&quot;&gt;32&lt;/a&gt;&lt;/span&gt;    puts &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Exception creating activity: &lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;#{&lt;/span&gt;&lt;span style=&quot;color:#d70&quot;&gt;$!&lt;/span&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n33&quot; name=&quot;n33&quot;&gt;33&lt;/a&gt;&lt;/span&gt;    puts &lt;span style=&quot;color:#d70&quot;&gt;$!&lt;/span&gt;.backtrace.join(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#b0b&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n34&quot; name=&quot;n34&quot;&gt;34&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n35&quot; name=&quot;n35&quot;&gt;35&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n36&quot; name=&quot;n36&quot;&gt;36&lt;/a&gt;&lt;/span&gt;  private
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n37&quot; name=&quot;n37&quot;&gt;37&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n38&quot; name=&quot;n38&quot;&gt;38&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;log_d&lt;/span&gt; str
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n39&quot; name=&quot;n39&quot;&gt;39&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;if&lt;/span&gt; !(str.is_a? &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;String&lt;/span&gt;)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n40&quot; name=&quot;n40&quot;&gt;40&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Java&lt;/span&gt;::android.util.Log.d &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;AAA&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;,&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Not String&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n41&quot; name=&quot;n41&quot;&gt;41&lt;/a&gt;&lt;/span&gt;      log_d str.to_s
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n42&quot; name=&quot;n42&quot;&gt;42&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n43&quot; name=&quot;n43&quot;&gt;43&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n44&quot; name=&quot;n44&quot;&gt;44&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Java&lt;/span&gt;::android.util.Log.d &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;AAA&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;,str
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n45&quot; name=&quot;n45&quot;&gt;45&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n46&quot; name=&quot;n46&quot;&gt;46&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;butterfly&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n47&quot; name=&quot;n47&quot;&gt;47&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#33B&quot;&gt;@num&lt;/span&gt; ||= &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n48&quot; name=&quot;n48&quot;&gt;48&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#33B&quot;&gt;@num&lt;/span&gt; += &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n49&quot; name=&quot;n49&quot;&gt;49&lt;/a&gt;&lt;/span&gt;    log_d &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;xxxxxx&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n50&quot; name=&quot;n50&quot;&gt;50&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#33B&quot;&gt;@text_view&lt;/span&gt;.text = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;GeoInker click &lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;#{&lt;/span&gt;&lt;span style=&quot;color:#33B&quot;&gt;@num&lt;/span&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt; Time&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n51&quot; name=&quot;n51&quot;&gt;51&lt;/a&gt;&lt;/span&gt;    toast &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Flipped a bit via butterfly&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n52&quot; name=&quot;n52&quot;&gt;52&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n53&quot; name=&quot;n53&quot;&gt;53&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n54&quot; name=&quot;n54&quot;&gt;54&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;get_response&lt;/span&gt; url
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n55&quot; name=&quot;n55&quot;&gt;55&lt;/a&gt;&lt;/span&gt;    log_d url
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n56&quot; name=&quot;n56&quot;&gt;56&lt;/a&gt;&lt;/span&gt;    url_str = &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;URI&lt;/span&gt;.parse url
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n57&quot; name=&quot;n57&quot;&gt;57&lt;/a&gt;&lt;/span&gt;    site = &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Net&lt;/span&gt;::&lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;HTTP&lt;/span&gt;.new(url_str.host,url_str.port)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n58&quot; name=&quot;n58&quot;&gt;58&lt;/a&gt;&lt;/span&gt;    data = site.get(url_str.request_uri)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n59&quot; name=&quot;n59&quot;&gt;59&lt;/a&gt;&lt;/span&gt;    data.body
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n60&quot; name=&quot;n60&quot;&gt;60&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n61&quot; name=&quot;n61&quot;&gt;61&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;geturl&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n62&quot; name=&quot;n62&quot;&gt;62&lt;/a&gt;&lt;/span&gt;    time_url = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;http://www.clocklink.com/scripts/PSP/ClockLink/TimeGen.dll?ID=&amp;amp;Clock=5012-Pink&amp;amp;TimeZone=GMT0800&amp;amp;Place=&amp;amp;Random=&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;#{&lt;/span&gt;rand &lt;span style=&quot;color:#00D&quot;&gt;500&lt;/span&gt;&lt;span style=&quot;font-weight:bold;color:#666&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n63&quot; name=&quot;n63&quot;&gt;63&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Thread&lt;/span&gt;.new &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n64&quot; name=&quot;n64&quot;&gt;64&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;begin&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n65&quot; name=&quot;n65&quot;&gt;65&lt;/a&gt;&lt;/span&gt;        txt = get_response(time_url)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n66&quot; name=&quot;n66&quot;&gt;66&lt;/a&gt;&lt;/span&gt;        log_d txt
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n67&quot; name=&quot;n67&quot;&gt;67&lt;/a&gt;&lt;/span&gt;        log_d &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;after url&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n68&quot; name=&quot;n68&quot;&gt;68&lt;/a&gt;&lt;/span&gt;        txt.gsub! &lt;span style=&quot;background-color:hsla(300,100%,50%,0.06)&quot;&gt;&lt;span style=&quot;color:#404&quot;&gt;/&lt;/span&gt;&lt;span style=&quot;color:#808&quot;&gt;[a-z,A-Z]+=&lt;/span&gt;&lt;span style=&quot;color:#404&quot;&gt;/&lt;/span&gt;&lt;/span&gt;,&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n69&quot; name=&quot;n69&quot;&gt;69&lt;/a&gt;&lt;/span&gt;        txt.gsub! &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;,&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n70&quot; name=&quot;n70&quot;&gt;70&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;        &lt;span style=&quot;color:#33B&quot;&gt;@data&lt;/span&gt;.postInvalidate
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n71&quot; name=&quot;n71&quot;&gt;71&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#33B&quot;&gt;@data&lt;/span&gt;.text = txt
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n72&quot; name=&quot;n72&quot;&gt;72&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;rescue&lt;/span&gt; &lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Exception&lt;/span&gt; =&amp;gt; e
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n73&quot; name=&quot;n73&quot;&gt;73&lt;/a&gt;&lt;/span&gt;        log_d e.class.to_s
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n74&quot; name=&quot;n74&quot;&gt;74&lt;/a&gt;&lt;/span&gt;        log_d e.message
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n75&quot; name=&quot;n75&quot;&gt;75&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n76&quot; name=&quot;n76&quot;&gt;76&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n77&quot; name=&quot;n77&quot;&gt;77&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n78&quot; name=&quot;n78&quot;&gt;78&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n79&quot; name=&quot;n79&quot;&gt;79&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h4&gt;说明：&lt;/h4&gt;
+
+&lt;h5&gt;1.&lt;code&gt;with_large_stack&lt;/code&gt;的使用&lt;/h5&gt;
+
+&lt;p&gt;如果直接在ruboto上使用诸如&lt;code&gt;open-uri&lt;/code&gt;,&lt;code&gt;net/http&lt;/code&gt;这类ruby的比较“大”的gem时，往往会出现：“stack level to deep”。使用ruboto提供的&lt;code&gt;with_large_stack&lt;/code&gt;方法就可以避免这种错误。&lt;/p&gt;
+
+&lt;h5&gt;2.在ruby中调用原生API&lt;/h5&gt;
+
+&lt;p&gt;这个其实是JRuby的使用，在原Java包的前边加上Java的前缀就可以，比如上述代码中的log_d方法内就使用了android API中的log方法：&lt;/p&gt;
+&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#036;font-weight:bold&quot;&gt;Java&lt;/span&gt;::android.util.Log.d &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;AAA&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;,str
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Powered by &lt;a href=&quot;/about.html&quot;&gt;Engin&lt;/a&gt; &amp;amp; jekyll&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>fossil的使用</title>
@@ -188,22 +440,22 @@
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;         &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#606&quot;&gt;data&lt;/span&gt;: dataArrayObject,
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;init&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addTable();
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addEvents();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addTable();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addEvents();
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;            },
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addTable&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                 &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; i = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; i &amp;lt; rows; i++) {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;                     &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tr&lt;/span&gt; = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;lt;tr&amp;gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;                     &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; j = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; j &amp;lt; &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.data.length; j++) {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;                        &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tr&lt;/span&gt;.append(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt; + &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.data[j][&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;] + &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;                     &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; j = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; j &amp;lt; &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.data.length; j++) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;                        &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tr&lt;/span&gt;.append(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt; + &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.data[j][&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;] + &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;                     }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;                     &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tr&lt;/span&gt;.appendTo(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tbody&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;                 }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;             },
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addEvents&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;                 &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;table td&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;).on(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;click&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                    &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                    &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;                 });
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;             }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n23&quot; name=&quot;n23&quot;&gt;23&lt;/a&gt;&lt;/span&gt;         };
@@ -222,8 +474,8 @@
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;              &lt;span style=&quot;color:#606&quot;&gt;data&lt;/span&gt;: dataArray,
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;              &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;init&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addTable();
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addEvents();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addTable();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addEvents();
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;              },
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;              &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addTable&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; td, tr;
@@ -231,9 +483,9 @@
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; frag2 = document.createDocumentFragment();
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; i = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; i &amp;lt; rows; i++) {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;                      tr = document.createElement(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;tr&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;                      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; j = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; j &amp;lt; &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.data.length; j++) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;                      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; (&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; j = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;; j &amp;lt; &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.data.length; j++) {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;                          td = document.createElement(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;td&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;                          td.appendChild(document.createTextNode(&lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.data[j]));
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;                          td.appendChild(document.createTextNode(&lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.data[j]));
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;                          frag2.appendChild(td);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;                      }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;                      tr.appendChild(frag2);
@@ -243,7 +495,7 @@
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n23&quot; name=&quot;n23&quot;&gt;23&lt;/a&gt;&lt;/span&gt;              },
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n24&quot; name=&quot;n24&quot;&gt;24&lt;/a&gt;&lt;/span&gt;              &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addEvents&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n25&quot; name=&quot;n25&quot;&gt;25&lt;/a&gt;&lt;/span&gt;                  &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;table&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;).on(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;click&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;td&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n26&quot; name=&quot;n26&quot;&gt;26&lt;/a&gt;&lt;/span&gt;                      &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n26&quot; name=&quot;n26&quot;&gt;26&lt;/a&gt;&lt;/span&gt;                      &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n27&quot; name=&quot;n27&quot;&gt;27&lt;/a&gt;&lt;/span&gt;                  });
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n28&quot; name=&quot;n28&quot;&gt;28&lt;/a&gt;&lt;/span&gt;              }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n29&quot; name=&quot;n29&quot;&gt;29&lt;/a&gt;&lt;/span&gt;          };
@@ -257,19 +509,19 @@
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;moduleG&lt;/span&gt; = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {};
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    moduleG.prototype.data = dataArray;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    moduleG.prototype.&lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;init&lt;/span&gt; = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addTable();
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.addEvents();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addTable();
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.addEvents();
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    };
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    moduleG.prototype.&lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addTable&lt;/span&gt; = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; template = _.template(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;#template&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;).text());
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;          &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; html = template({&lt;span style=&quot;color:#606&quot;&gt;&lt;span style=&quot;color:#404&quot;&gt;'&lt;/span&gt;&lt;span&gt;data&lt;/span&gt;&lt;span style=&quot;color:#404&quot;&gt;'&lt;/span&gt;&lt;/span&gt; : &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.data});
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;          &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; html = template({&lt;span style=&quot;color:#606&quot;&gt;&lt;span style=&quot;color:#404&quot;&gt;'&lt;/span&gt;&lt;span&gt;data&lt;/span&gt;&lt;span style=&quot;color:#404&quot;&gt;'&lt;/span&gt;&lt;/span&gt; : &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.data});
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$tbody&lt;/span&gt;.append(html);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    };
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    moduleG.prototype.&lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;addEvents&lt;/span&gt; = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;         &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;table&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;).on(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;click&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;td&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;             &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;$&lt;/span&gt;(&lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;).toggleClass(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;active&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;         });
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;    };
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;
@@ -332,8 +584,8 @@
 如果你必须要拷贝一个对象，用一个数组或者定制的“拷贝构造”方法来拷贝每一个属性。这应该是最快的方式了。&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;clone&lt;/span&gt;(original) {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.foo = original.foo;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;.bar = original.bar;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.foo = original.foo;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;.bar = original.bar;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; copy = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;new&lt;/span&gt; clone(original);
 &lt;/pre&gt;&lt;/div&gt;
@@ -669,7 +921,7 @@
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; myObj = {
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;callMeMaybe&lt;/span&gt;: &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; myRef = &lt;span style=&quot;color:#950&quot;&gt;this&lt;/span&gt;;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; myRef = &lt;span style=&quot;color:#963&quot;&gt;this&lt;/span&gt;;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; val = setTimeout(&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; () { 
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        console.log(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Time is running out!&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;); 
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;          myRef.callMeMaybe();
@@ -1499,7 +1751,7 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;package&lt;/span&gt; &lt;span style=&quot;color:#707;font-weight:bold&quot;&gt;com.test&lt;/span&gt;;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color:#B06;font-weight:bold&quot;&gt;HelloWorld&lt;/span&gt; {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; sayHello(&lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; name){
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; sayHello(&lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; name){
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;            &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello world from: &lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;+name;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;    }
@@ -1540,13 +1792,13 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color:#B06;font-weight:bold&quot;&gt;HelloWorld&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;extends&lt;/span&gt; Plugin {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; ACTION =&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; ACTION =&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#007&quot;&gt;@Override&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; PluginResult execute(&lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; action, JSONArray data, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; callbackId) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;public&lt;/span&gt; PluginResult execute(&lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; action, JSONArray data, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; callbackId) {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;    PluginResult result = &lt;span style=&quot;color:#069&quot;&gt;null&lt;/span&gt;;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;if&lt;/span&gt;(ACTION.equals(action)) {
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;try&lt;/span&gt; {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; name = data.getString(&lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; name = data.getString(&lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;      JSONObject fileInfo = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;new&lt;/span&gt; JSONObject();
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n23&quot; name=&quot;n23&quot;&gt;23&lt;/a&gt;&lt;/span&gt;      fileInfo.put(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;, sayHello(name));
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n24&quot; name=&quot;n24&quot;&gt;24&lt;/a&gt;&lt;/span&gt;      result = &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;new&lt;/span&gt; PluginResult(Status.OK,fileInfo); 
@@ -1558,7 +1810,7 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n30&quot; name=&quot;n30&quot;&gt;30&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n31&quot; name=&quot;n31&quot;&gt;31&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; result;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n32&quot; name=&quot;n32&quot;&gt;32&lt;/a&gt;&lt;/span&gt;  }
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n33&quot; name=&quot;n33&quot;&gt;33&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; sayHello(&lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;String&lt;/span&gt; name){
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n33&quot; name=&quot;n33&quot;&gt;33&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; sayHello(&lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;String&lt;/span&gt; name){
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n34&quot; name=&quot;n34&quot;&gt;34&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello world from: &lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;+name;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n35&quot; name=&quot;n35&quot;&gt;35&lt;/a&gt;&lt;/span&gt;  }
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n36&quot; name=&quot;n36&quot;&gt;36&lt;/a&gt;&lt;/span&gt;}
@@ -1583,7 +1835,7 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 
 &lt;p&gt;在 res/xml/plugins.xml中的&lt;plugins&gt;&lt;/plugins&gt;标签内添加如下内容：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;plugin&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;name&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;value&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;com.plugin.test.HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#070&quot;&gt;&amp;lt;plugin&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;name&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;value&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;com.plugin.test.HelloWorld&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;/&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -1591,11 +1843,11 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 
 &lt;p&gt;在主程序loadUrl的html文件中增加一个id=hello的button和id=result的div，并添加js调用代码：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;disabled&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;id&lt;/span&gt; = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;type&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;button&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;value&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;id&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;result&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;script&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;type&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;text/javascript&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;disabled&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;id&lt;/span&gt; = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;type&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;button&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;value&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#070&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;id&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;result&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;hr&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;script&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;type&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;text/javascript&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;  document.addEventListener(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;deviceready&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;,bindEv,&lt;span style=&quot;color:#069&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;function&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;bindEv&lt;/span&gt;(){&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;var&lt;/span&gt; btn = document.getElementById(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;hello&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;);&lt;/span&gt;
@@ -1606,7 +1858,7 @@ swap()在处理中文字符串时就无法解析,原因可能是起原生c代码
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;    }&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;    btn.disabled=&lt;span style=&quot;color:#069&quot;&gt;false&lt;/span&gt;;&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;background-color:hsla(0,0%,0%,0.07);color:black&quot;&gt;  }&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -2067,7 +2319,7 @@ open-uri是一个可以发送http请求的库，其open函数表示打开respons
 
 &lt;p&gt;然后创建一个存放空间数据的数据表test:&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#B06;font-weight:bold&quot;&gt;CREATE&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;TABLE&lt;/span&gt; test (PK &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;INTEGER&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;NOT&lt;/span&gt; &lt;span style=&quot;color:#069&quot;&gt;NULL&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;PRIMARY&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;KEY&lt;/span&gt;,name &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;VARCHAR&lt;/span&gt;(&lt;span style=&quot;color:#00D&quot;&gt;6&lt;/span&gt;))
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#B06;font-weight:bold&quot;&gt;CREATE&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;TABLE&lt;/span&gt; test (PK &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;INTEGER&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;NOT&lt;/span&gt; &lt;span style=&quot;color:#069&quot;&gt;NULL&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;PRIMARY&lt;/span&gt; &lt;span style=&quot;color:#339;font-weight:bold&quot;&gt;KEY&lt;/span&gt;,name &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;VARCHAR&lt;/span&gt;(&lt;span style=&quot;color:#00D&quot;&gt;6&lt;/span&gt;))
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -2190,9 +2442,9 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 &lt;p&gt;当然也有gaiaAddLinestringToGeomColl,gaiaAddPolygonToGeomColl来分别对应点,线,面.&lt;br/&gt;
 所不同的是线和面的分配方法稍微复杂些,函数的定义如下:&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; gaiaAddPointToGeomColl( gaiaGeomCollPtr p , &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; x , &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; y );
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    gaiaLinestringPtr gaiaAddLinestringToGeomColl ( gaiaGeomCollPtr p , &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; points);
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    gaiaPolygonPtr gaiaAddPolygonToGeomColl (gaiaGeomCollPtr p, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; points, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; num_interiors);
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; gaiaAddPointToGeomColl( gaiaGeomCollPtr p , &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; x , &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; y );
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    gaiaLinestringPtr gaiaAddLinestringToGeomColl ( gaiaGeomCollPtr p , &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; points);
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    gaiaPolygonPtr gaiaAddPolygonToGeomColl (gaiaGeomCollPtr p, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; points, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; num_interiors);
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -2212,14 +2464,14 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 &lt;p&gt;需要注意的是line,它是geo&lt;em&gt;ln的一个成员,可以指向geo&lt;/em&gt;ln,从gaiaGeomCollPtr的定义可以看出:&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;struct&lt;/span&gt; gaiaGeomCollStruct {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; Srid;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; Srid;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        gaiaPointPtr FirstPoint;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        gaiaLinestringPtr FirstLinestring;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        gaiaPolygonPtr FirstPolygon;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    }gaiaGeomColl;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; gaiaGeomColl * gaiaGeomCollPtr;
 &lt;/pre&gt;&lt;/div&gt;
@@ -2228,12 +2480,12 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 &lt;p&gt;真正的数据是存储在 FirstLinestring所指向的内存空间.&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;struct&lt;/span&gt; gaiaLinestringStruct {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; Points;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; * Coords;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; Points;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; * Coords;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;struct&lt;/span&gt; gaiaLinestringStruct * Next;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    }gaiaLinestring;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; gaiaLinestring * gaiaLinestringPtr;
@@ -2267,19 +2519,19 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 
 &lt;p&gt;sqlite提供的连接数据库方法有三个：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open(
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; *filename,   &lt;span style=&quot;color:#777&quot;&gt;/* Database filename (UTF-8) */&lt;/span&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open(
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; *filename,   &lt;span style=&quot;color:#777&quot;&gt;/* Database filename (UTF-8) */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        sqlite3 **ppDb          &lt;span style=&quot;color:#777&quot;&gt;/* OUT: SQLite db handle */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    );
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open16(
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open16(
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; *filename,   &lt;span style=&quot;color:#777&quot;&gt;/* Database filename (UTF-16) */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        sqlite3 **ppDb          &lt;span style=&quot;color:#777&quot;&gt;/* OUT: SQLite db handle */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    );
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open_v2(
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; *filename,   &lt;span style=&quot;color:#777&quot;&gt;/* Database filename (UTF-8) */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_open_v2(
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; *filename,   &lt;span style=&quot;color:#777&quot;&gt;/* Database filename (UTF-8) */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;      sqlite3 **ppDb,         &lt;span style=&quot;color:#777&quot;&gt;/* OUT: SQLite db handle */&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; flags,              &lt;span style=&quot;color:#777&quot;&gt;/* Flags */&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; *zVfs        &lt;span style=&quot;color:#777&quot;&gt;/* Name of VFS module to use */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; flags,              &lt;span style=&quot;color:#777&quot;&gt;/* Flags */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; *zVfs        &lt;span style=&quot;color:#777&quot;&gt;/* Name of VFS module to use */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    );
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -2297,12 +2549,12 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 
 &lt;p&gt;此处以&lt;code&gt;sqlite3_prepare_v2&lt;/code&gt;为例：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_prepare_v2(
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_prepare_v2(
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;      sqlite3 *db,            &lt;span style=&quot;color:#777&quot;&gt;/* Database handle */&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; *zSql,       &lt;span style=&quot;color:#777&quot;&gt;/* SQL statement, UTF-8 encoded */&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; nByte,              &lt;span style=&quot;color:#777&quot;&gt;/* Maximum length of zSql in bytes. */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; *zSql,       &lt;span style=&quot;color:#777&quot;&gt;/* SQL statement, UTF-8 encoded */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; nByte,              &lt;span style=&quot;color:#777&quot;&gt;/* Maximum length of zSql in bytes. */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;      sqlite3_stmt **ppStmt,  &lt;span style=&quot;color:#777&quot;&gt;/* OUT: Statement handle */&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; **pzTail     &lt;span style=&quot;color:#777&quot;&gt;/* OUT: Pointer to unused portion of zSql */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;const&lt;/span&gt; &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; **pzTail     &lt;span style=&quot;color:#777&quot;&gt;/* OUT: Pointer to unused portion of zSql */&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  );
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -2311,14 +2563,14 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 
 &lt;p&gt;当执行prepare后，需要执行一次或多次 &lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite_step(sqlite2_stmt*);
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite_step(sqlite2_stmt*);
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;p&gt;来读取数据。&lt;br/&gt;
 通过执行&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_column_count(sqlite3_stmt *pStmt);
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; sqlite3_column_count(sqlite3_stmt *pStmt);
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
@@ -2368,7 +2620,7 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n40&quot; name=&quot;n40&quot;&gt;40&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                            printf (&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;EMPTY or NULL GEOMETRY&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;);
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n41&quot; name=&quot;n41&quot;&gt;41&lt;/a&gt;&lt;/span&gt;                        &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;else&lt;/span&gt;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n42&quot; name=&quot;n42&quot;&gt;42&lt;/a&gt;&lt;/span&gt;                        {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n43&quot; name=&quot;n43&quot;&gt;43&lt;/a&gt;&lt;/span&gt;                            &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;char&lt;/span&gt; *geom_name;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n43&quot; name=&quot;n43&quot;&gt;43&lt;/a&gt;&lt;/span&gt;                            &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;char&lt;/span&gt; *geom_name;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n44&quot; name=&quot;n44&quot;&gt;44&lt;/a&gt;&lt;/span&gt;                            &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;if&lt;/span&gt; (geom_type == GAIA_POINT)
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n45&quot; name=&quot;n45&quot;&gt;45&lt;/a&gt;&lt;/span&gt;                                geom_name = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;POINT&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;;               
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n46&quot; name=&quot;n46&quot;&gt;46&lt;/a&gt;&lt;/span&gt;                            &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;if&lt;/span&gt; (geom_type == GAIA_POLYGON)
@@ -2410,14 +2662,14 @@ Rtree添加了四个索引表idx_,而多出的50M容量就是建立的空间索�
 &lt;p&gt;gaiaGeomCollPtr的定义如下：&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
   &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;struct&lt;/span&gt; gaiaGeomCollStruct {
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; Srid;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;int&lt;/span&gt; Srid;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;        gaiaPointPtr FirstPoint;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        gaiaLinestringPtr FirstLinestring;
 &lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        gaiaPolygonPtr FirstPolygon;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MinY;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxX;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; MaxY;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    } gaiaGeomColl;
 &lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;typedef&lt;/span&gt; gaiaGeomColl * gaiaGeomCollPtr;
 &lt;/pre&gt;&lt;/div&gt;
@@ -2612,7 +2864,7 @@ spatialite-GIS,需要librasterlite，而librasterlite的编译依赖libspatialit
 
 &lt;p&gt;还有就是源文件中这一句代码是错的，&lt;/p&gt;
 &lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; ZoomTo(&lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; minx, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; minx, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; maxx, &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;double&lt;/span&gt; maxy);
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; ZoomTo(&lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; minx, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; minx, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; maxx, &lt;span style=&quot;color:#0a5;font-weight:bold&quot;&gt;double&lt;/span&gt; maxy);
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 

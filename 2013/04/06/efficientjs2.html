@@ -81,22 +81,22 @@
 <span class="line-numbers"> <a href="#n2" name="n2">2</a></span>         <span style="color:#080;font-weight:bold">return</span> {
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>             <span style="color:#606">data</span>: dataArrayObject,
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>             <span style="color:#06B;font-weight:bold">init</span>: <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>             <span style="color:#950">this</span>.addTable();
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>             <span style="color:#950">this</span>.addEvents();
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>             <span style="color:#963">this</span>.addTable();
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>             <span style="color:#963">this</span>.addEvents();
 <span class="line-numbers"> <a href="#n7" name="n7">7</a></span>            },
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span>             <span style="color:#06B;font-weight:bold">addTable</span>: <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
 <span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>                 <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i &lt; rows; i++) {
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>                     <span style="color:#369;font-weight:bold">$tr</span> = <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;tr&gt;&lt;/tr&gt;</span><span style="color:#710">'</span></span>);
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>                     <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> j = <span style="color:#00D">0</span>; j &lt; <span style="color:#950">this</span>.data.length; j++) {
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>                        <span style="color:#369;font-weight:bold">$tr</span>.append(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;td&gt;</span><span style="color:#710">'</span></span> + <span style="color:#950">this</span>.data[j][<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">id</span><span style="color:#710">'</span></span>] + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;/td&gt;</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>                     <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> j = <span style="color:#00D">0</span>; j &lt; <span style="color:#963">this</span>.data.length; j++) {
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>                        <span style="color:#369;font-weight:bold">$tr</span>.append(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;td&gt;</span><span style="color:#710">'</span></span> + <span style="color:#963">this</span>.data[j][<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">id</span><span style="color:#710">'</span></span>] + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;/td&gt;</span><span style="color:#710">'</span></span>);
 <span class="line-numbers"><a href="#n14" name="n14">14</a></span>                     }
 <span class="line-numbers"><a href="#n15" name="n15">15</a></span>                     <span style="color:#369;font-weight:bold">$tr</span>.appendTo(<span style="color:#369;font-weight:bold">$tbody</span>);
 <span class="line-numbers"><a href="#n16" name="n16">16</a></span>                 }
 <span class="line-numbers"><a href="#n17" name="n17">17</a></span>             },
 <span class="line-numbers"><a href="#n18" name="n18">18</a></span>             <span style="color:#06B;font-weight:bold">addEvents</span>: <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"><a href="#n19" name="n19">19</a></span>                 <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">table td</span><span style="color:#710">'</span></span>).on(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">click</span><span style="color:#710">'</span></span>, <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>                    <span style="color:#369;font-weight:bold">$</span>(<span style="color:#950">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>                    <span style="color:#369;font-weight:bold">$</span>(<span style="color:#963">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
 <span class="line-numbers"><a href="#n21" name="n21">21</a></span>                 });
 <span class="line-numbers"><a href="#n22" name="n22">22</a></span>             }
 <span class="line-numbers"><a href="#n23" name="n23">23</a></span>         };
@@ -115,8 +115,8 @@
 <span class="line-numbers"> <a href="#n2" name="n2">2</a></span>          <span style="color:#080;font-weight:bold">return</span> {
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>              <span style="color:#606">data</span>: dataArray,
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>              <span style="color:#06B;font-weight:bold">init</span>: <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                  <span style="color:#950">this</span>.addTable();
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                  <span style="color:#950">this</span>.addEvents();
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                  <span style="color:#963">this</span>.addTable();
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                  <span style="color:#963">this</span>.addEvents();
 <span class="line-numbers"> <a href="#n7" name="n7">7</a></span>              },
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span>              <span style="color:#06B;font-weight:bold">addTable</span>: <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                  <span style="color:#080;font-weight:bold">var</span> td, tr;
@@ -124,9 +124,9 @@
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>                  <span style="color:#080;font-weight:bold">var</span> frag2 = document.createDocumentFragment();
 <span class="line-numbers"><a href="#n12" name="n12">12</a></span>                  <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i &lt; rows; i++) {
 <span class="line-numbers"><a href="#n13" name="n13">13</a></span>                      tr = document.createElement(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">tr</span><span style="color:#710">'</span></span>);
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>                      <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> j = <span style="color:#00D">0</span>; j &lt; <span style="color:#950">this</span>.data.length; j++) {
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>                      <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> j = <span style="color:#00D">0</span>; j &lt; <span style="color:#963">this</span>.data.length; j++) {
 <span class="line-numbers"><a href="#n15" name="n15">15</a></span>                          td = document.createElement(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">td</span><span style="color:#710">'</span></span>);
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>                          td.appendChild(document.createTextNode(<span style="color:#950">this</span>.data[j]));
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>                          td.appendChild(document.createTextNode(<span style="color:#963">this</span>.data[j]));
 <span class="line-numbers"><a href="#n17" name="n17">17</a></span>                          frag2.appendChild(td);
 <span class="line-numbers"><a href="#n18" name="n18">18</a></span>                      }
 <span class="line-numbers"><a href="#n19" name="n19">19</a></span>                      tr.appendChild(frag2);
@@ -136,7 +136,7 @@
 <span class="line-numbers"><a href="#n23" name="n23">23</a></span>              },
 <span class="line-numbers"><a href="#n24" name="n24">24</a></span>              <span style="color:#06B;font-weight:bold">addEvents</span>: <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"><a href="#n25" name="n25">25</a></span>                  <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">table</span><span style="color:#710">'</span></span>).on(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">click</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">td</span><span style="color:#710">'</span></span>, <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"><a href="#n26" name="n26">26</a></span>                      <span style="color:#369;font-weight:bold">$</span>(<span style="color:#950">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>                      <span style="color:#369;font-weight:bold">$</span>(<span style="color:#963">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
 <span class="line-numbers"><a href="#n27" name="n27">27</a></span>                  });
 <span class="line-numbers"><a href="#n28" name="n28">28</a></span>              }
 <span class="line-numbers"><a href="#n29" name="n29">29</a></span>          };
@@ -150,19 +150,19 @@
 <span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    <span style="color:#06B;font-weight:bold">moduleG</span> = <span style="color:#080;font-weight:bold">function</span> () {};
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    moduleG.prototype.data = dataArray;
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    moduleG.prototype.<span style="color:#06B;font-weight:bold">init</span> = <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>          <span style="color:#950">this</span>.addTable();
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>          <span style="color:#950">this</span>.addEvents();
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>          <span style="color:#963">this</span>.addTable();
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>          <span style="color:#963">this</span>.addEvents();
 <span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    };
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    moduleG.prototype.<span style="color:#06B;font-weight:bold">addTable</span> = <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"> <a href="#n9" name="n9">9</a></span>          <span style="color:#080;font-weight:bold">var</span> template = _.template(<span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">#template</span><span style="color:#710">'</span></span>).text());
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>          <span style="color:#080;font-weight:bold">var</span> html = template({<span style="color:#606"><span style="color:#404">'</span><span>data</span><span style="color:#404">'</span></span> : <span style="color:#950">this</span>.data});
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>          <span style="color:#080;font-weight:bold">var</span> html = template({<span style="color:#606"><span style="color:#404">'</span><span>data</span><span style="color:#404">'</span></span> : <span style="color:#963">this</span>.data});
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>          <span style="color:#369;font-weight:bold">$tbody</span>.append(html);
 <span class="line-numbers"><a href="#n12" name="n12">12</a></span>    };
 <span class="line-numbers"><a href="#n13" name="n13">13</a></span>
 <span class="line-numbers"><a href="#n14" name="n14">14</a></span>
 <span class="line-numbers"><a href="#n15" name="n15">15</a></span>    moduleG.prototype.<span style="color:#06B;font-weight:bold">addEvents</span> = <span style="color:#080;font-weight:bold">function</span> () {
 <span class="line-numbers"><a href="#n16" name="n16">16</a></span>         <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">table</span><span style="color:#710">'</span></span>).on(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">click</span><span style="color:#710">'</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">td</span><span style="color:#710">'</span></span>, <span style="color:#080;font-weight:bold">function</span> () {
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>             <span style="color:#369;font-weight:bold">$</span>(<span style="color:#950">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>             <span style="color:#369;font-weight:bold">$</span>(<span style="color:#963">this</span>).toggleClass(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">active</span><span style="color:#710">'</span></span>);
 <span class="line-numbers"><a href="#n18" name="n18">18</a></span>         });
 <span class="line-numbers"><a href="#n19" name="n19">19</a></span>    };
 <span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
@@ -225,8 +225,8 @@
 如果你必须要拷贝一个对象，用一个数组或者定制的“拷贝构造”方法来拷贝每一个属性。这应该是最快的方式了。</p>
 <div class="CodeRay">
   <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">clone</span>(original) {
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    <span style="color:#950">this</span>.foo = original.foo;
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#950">this</span>.bar = original.bar;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    <span style="color:#963">this</span>.foo = original.foo;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    <span style="color:#963">this</span>.bar = original.bar;
 <span class="line-numbers"><a href="#n4" name="n4">4</a></span>    }
 <span class="line-numbers"><a href="#n5" name="n5">5</a></span>    <span style="color:#080;font-weight:bold">var</span> copy = <span style="color:#080;font-weight:bold">new</span> clone(original);
 </pre></div>

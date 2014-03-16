@@ -61,7 +61,7 @@
 <div class="CodeRay">
   <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">package</span> <span style="color:#707;font-weight:bold">com.test</span>;
 <span class="line-numbers"><a href="#n2" name="n2">2</a></span>    <span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">HelloWorld</span> {
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> sayHello(<span style="color:#0a8;font-weight:bold">String</span> name){
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a5;font-weight:bold">String</span> sayHello(<span style="color:#0a5;font-weight:bold">String</span> name){
 <span class="line-numbers"><a href="#n4" name="n4">4</a></span>            <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello world from: </span><span style="color:#710">&quot;</span></span>+name;
 <span class="line-numbers"><a href="#n5" name="n5">5</a></span>        }
 <span class="line-numbers"><a href="#n6" name="n6">6</a></span>    }
@@ -102,13 +102,13 @@
 <span class="line-numbers"><a href="#n12" name="n12">12</a></span>
 <span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">HelloWorld</span> <span style="color:#088;font-weight:bold">extends</span> Plugin {
 <span class="line-numbers"><a href="#n14" name="n14">14</a></span>
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#088;font-weight:bold">public</span> <span style="color:#088;font-weight:bold">static</span> <span style="color:#088;font-weight:bold">final</span> <span style="color:#0a8;font-weight:bold">String</span> ACTION =<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span>;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  <span style="color:#088;font-weight:bold">public</span> <span style="color:#088;font-weight:bold">static</span> <span style="color:#088;font-weight:bold">final</span> <span style="color:#0a5;font-weight:bold">String</span> ACTION =<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span>;
 <span class="line-numbers"><a href="#n16" name="n16">16</a></span>  <span style="color:#007">@Override</span>
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#088;font-weight:bold">public</span> PluginResult execute(<span style="color:#0a8;font-weight:bold">String</span> action, JSONArray data, <span style="color:#0a8;font-weight:bold">String</span> callbackId) {
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#088;font-weight:bold">public</span> PluginResult execute(<span style="color:#0a5;font-weight:bold">String</span> action, JSONArray data, <span style="color:#0a5;font-weight:bold">String</span> callbackId) {
 <span class="line-numbers"><a href="#n18" name="n18">18</a></span>    PluginResult result = <span style="color:#069">null</span>;
 <span class="line-numbers"><a href="#n19" name="n19">19</a></span>    <span style="color:#080;font-weight:bold">if</span>(ACTION.equals(action)) {
 <span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>      <span style="color:#080;font-weight:bold">try</span> {
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      <span style="color:#0a8;font-weight:bold">String</span> name = data.getString(<span style="color:#00D">0</span>);
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>      <span style="color:#0a5;font-weight:bold">String</span> name = data.getString(<span style="color:#00D">0</span>);
 <span class="line-numbers"><a href="#n22" name="n22">22</a></span>      JSONObject fileInfo = <span style="color:#080;font-weight:bold">new</span> JSONObject();
 <span class="line-numbers"><a href="#n23" name="n23">23</a></span>      fileInfo.put(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span>, sayHello(name));
 <span class="line-numbers"><a href="#n24" name="n24">24</a></span>      result = <span style="color:#080;font-weight:bold">new</span> PluginResult(Status.OK,fileInfo); 
@@ -120,7 +120,7 @@
 <span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>      }
 <span class="line-numbers"><a href="#n31" name="n31">31</a></span>    <span style="color:#080;font-weight:bold">return</span> result;
 <span class="line-numbers"><a href="#n32" name="n32">32</a></span>  }
-<span class="line-numbers"><a href="#n33" name="n33">33</a></span>  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> sayHello(<span style="color:#0a8;font-weight:bold">String</span> name){
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a5;font-weight:bold">String</span> sayHello(<span style="color:#0a5;font-weight:bold">String</span> name){
 <span class="line-numbers"><a href="#n34" name="n34">34</a></span>    <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello world from: </span><span style="color:#710">&quot;</span></span>+name;
 <span class="line-numbers"><a href="#n35" name="n35">35</a></span>  }
 <span class="line-numbers"><a href="#n36" name="n36">36</a></span>}
@@ -145,7 +145,7 @@
 
 <p>在 res/xml/plugins.xml中的<plugins></plugins>标签内添加如下内容：</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#070;font-weight:bold">&lt;plugin</span> <span style="color:#b48">name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">HelloWorld</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">com.plugin.test.HelloWorld</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#070">&lt;plugin</span> <span style="color:#b48">name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">HelloWorld</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">com.plugin.test.HelloWorld</span><span style="color:#710">&quot;</span></span><span style="color:#070">/&gt;</span>
 </pre></div>
 </div>
 
@@ -153,11 +153,11 @@
 
 <p>在主程序loadUrl的html文件中增加一个id=hello的button和id=result的div，并添加js调用代码：</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;input</span> <span style="color:#b48">disabled</span> <span style="color:#b48">id</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">button</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#070;font-weight:bold">&lt;hr&gt;</span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">result</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#070;font-weight:bold">&lt;hr&gt;</span>
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#070;font-weight:bold">&lt;script</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text/javascript</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#070">&lt;input</span> <span style="color:#b48">disabled</span> <span style="color:#b48">id</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">button</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello</span><span style="color:#710">&quot;</span></span> <span style="color:#070">/&gt;</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#070">&lt;hr&gt;</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#070">&lt;div</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">result</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span><span style="color:#070">&lt;/div&gt;</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#070">&lt;hr&gt;</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span><span style="color:#070">&lt;script</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text/javascript</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span>
 <span class="line-numbers"> <a href="#n6" name="n6">6</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  document.addEventListener(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">deviceready</span><span style="color:#710">'</span></span>,bindEv,<span style="color:#069">true</span>);</span>
 <span class="line-numbers"> <a href="#n7" name="n7">7</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  <span style="color:#080;font-weight:bold">function</span> <span style="color:#06B;font-weight:bold">bindEv</span>(){</span>
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    <span style="color:#080;font-weight:bold">var</span> btn = document.getElementById(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hello</span><span style="color:#710">&quot;</span></span>);</span>
@@ -168,7 +168,7 @@
 <span class="line-numbers"><a href="#n13" name="n13">13</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    }</span>
 <span class="line-numbers"><a href="#n14" name="n14">14</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">    btn.disabled=<span style="color:#069">false</span>;</span>
 <span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  }</span>
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span><span style="color:#070">&lt;/script&gt;</span>
 </pre></div>
 </div>
 

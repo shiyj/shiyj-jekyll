@@ -65,19 +65,19 @@
 
 <p>sqlite提供的连接数据库方法有三个：</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open(
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#0a5;font-weight:bold">int</span> sqlite3_open(
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a5;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        sqlite3 **ppDb          <span style="color:#777">/* OUT: SQLite db handle */</span>
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    );
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open16(
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    <span style="color:#0a5;font-weight:bold">int</span> sqlite3_open16(
 <span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#088;font-weight:bold">const</span> <span style="color:#088;font-weight:bold">void</span> *filename,   <span style="color:#777">/* Database filename (UTF-16) */</span>
 <span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        sqlite3 **ppDb          <span style="color:#777">/* OUT: SQLite db handle */</span>
 <span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    );
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_open_v2(
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#0a5;font-weight:bold">int</span> sqlite3_open_v2(
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a5;font-weight:bold">char</span> *filename,   <span style="color:#777">/* Database filename (UTF-8) */</span>
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>      sqlite3 **ppDb,         <span style="color:#777">/* OUT: SQLite db handle */</span>
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      <span style="color:#0a8;font-weight:bold">int</span> flags,              <span style="color:#777">/* Flags */</span>
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *zVfs        <span style="color:#777">/* Name of VFS module to use */</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      <span style="color:#0a5;font-weight:bold">int</span> flags,              <span style="color:#777">/* Flags */</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a5;font-weight:bold">char</span> *zVfs        <span style="color:#777">/* Name of VFS module to use */</span>
 <span class="line-numbers"><a href="#n14" name="n14">14</a></span>    );
 </pre></div>
 </div>
@@ -95,12 +95,12 @@
 
 <p>此处以<code>sqlite3_prepare_v2</code>为例：</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  <span style="color:#0a8;font-weight:bold">int</span> sqlite3_prepare_v2(
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  <span style="color:#0a5;font-weight:bold">int</span> sqlite3_prepare_v2(
 <span class="line-numbers"><a href="#n2" name="n2">2</a></span>      sqlite3 *db,            <span style="color:#777">/* Database handle */</span>
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> *zSql,       <span style="color:#777">/* SQL statement, UTF-8 encoded */</span>
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>      <span style="color:#0a8;font-weight:bold">int</span> nByte,              <span style="color:#777">/* Maximum length of zSql in bytes. */</span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a5;font-weight:bold">char</span> *zSql,       <span style="color:#777">/* SQL statement, UTF-8 encoded */</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>      <span style="color:#0a5;font-weight:bold">int</span> nByte,              <span style="color:#777">/* Maximum length of zSql in bytes. */</span>
 <span class="line-numbers"><a href="#n5" name="n5">5</a></span>      sqlite3_stmt **ppStmt,  <span style="color:#777">/* OUT: Statement handle */</span>
-<span class="line-numbers"><a href="#n6" name="n6">6</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a8;font-weight:bold">char</span> **pzTail     <span style="color:#777">/* OUT: Pointer to unused portion of zSql */</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>      <span style="color:#088;font-weight:bold">const</span> <span style="color:#0a5;font-weight:bold">char</span> **pzTail     <span style="color:#777">/* OUT: Pointer to unused portion of zSql */</span>
 <span class="line-numbers"><a href="#n7" name="n7">7</a></span>  );
 </pre></div>
 </div>
@@ -109,14 +109,14 @@
 
 <p>当执行prepare后，需要执行一次或多次 </p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite_step(sqlite2_stmt*);
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a5;font-weight:bold">int</span> sqlite_step(sqlite2_stmt*);
 </pre></div>
 </div>
 
 <p>来读取数据。<br/>
 通过执行</p>
 <div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a8;font-weight:bold">int</span> sqlite3_column_count(sqlite3_stmt *pStmt);
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    <span style="color:#0a5;font-weight:bold">int</span> sqlite3_column_count(sqlite3_stmt *pStmt);
 </pre></div>
 </div>
 
@@ -166,7 +166,7 @@
 <span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>                            printf (<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">EMPTY or NULL GEOMETRY</span><span style="color:#710">&quot;</span></span>);
 <span class="line-numbers"><a href="#n41" name="n41">41</a></span>                        <span style="color:#080;font-weight:bold">else</span>
 <span class="line-numbers"><a href="#n42" name="n42">42</a></span>                        {
-<span class="line-numbers"><a href="#n43" name="n43">43</a></span>                            <span style="color:#0a8;font-weight:bold">char</span> *geom_name;
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>                            <span style="color:#0a5;font-weight:bold">char</span> *geom_name;
 <span class="line-numbers"><a href="#n44" name="n44">44</a></span>                            <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_POINT)
 <span class="line-numbers"><a href="#n45" name="n45">45</a></span>                                geom_name = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">POINT</span><span style="color:#710">&quot;</span></span>;               
 <span class="line-numbers"><a href="#n46" name="n46">46</a></span>                            <span style="color:#080;font-weight:bold">if</span> (geom_type == GAIA_POLYGON)
@@ -208,14 +208,14 @@
 <p>gaiaGeomCollPtr的定义如下：</p>
 <div class="CodeRay">
   <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>    <span style="color:#080;font-weight:bold">typedef</span> <span style="color:#080;font-weight:bold">struct</span> gaiaGeomCollStruct {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a8;font-weight:bold">int</span> Srid;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        <span style="color:#0a5;font-weight:bold">int</span> Srid;
 <span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        gaiaPointPtr FirstPoint;
 <span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        gaiaLinestringPtr FirstLinestring;
 <span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        gaiaPolygonPtr FirstPolygon;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinX;
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MinY;
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxX;
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a8;font-weight:bold">double</span> MaxY;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinX;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MinY;
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxX;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        <span style="color:#0a5;font-weight:bold">double</span> MaxY;
 <span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    } gaiaGeomColl;
 <span class="line-numbers"><a href="#n11" name="n11">11</a></span>    <span style="color:#080;font-weight:bold">typedef</span> gaiaGeomColl * gaiaGeomCollPtr;
 </pre></div>
